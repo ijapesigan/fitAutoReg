@@ -1,0 +1,30 @@
+project:
+  type: book
+  output-dir: quarto
+
+book:
+  title: "fitAutoReg"
+  author: "Ivan Jacob Agaloos Pesigan"
+  date: today
+  search: true
+  repo-url: https://github.com/ijapesigan/fitAutoReg
+  repo-actions: [edit]
+  site-url: https://ijapesigan.github.io/fitAutoReg/index.html
+  sidebar:
+    collapse-level: 3
+    pinned: true
+  chapters:
+    - index.qmd
+    - .setup/quarto/intro/intro.qmd
+    - .setup/quarto/references/references.qmd
+  appendices:
+    - .setup/quarto/session/session.qmd
+bibliography: .setup/quarto/bib/quarto.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+
+format:
+  html:
+    theme:
+      - flatly
+      - .setup/quarto/scss/custom.scss
+    number-sections: false

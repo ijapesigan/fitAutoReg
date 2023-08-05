@@ -1,0 +1,30 @@
+destination: pkgdown
+url: https://github.com/ijapesigan/fitAutoReg/
+
+template:
+  bootstrap: 5
+  bslib:
+    base_font: {google: "Roboto"}
+    heading_font: {google: "Roboto Slab"}
+    code_font: {google: "JetBrains Mono"}
+
+reference:
+- title: Simulation Functions
+  contents:
+  - has_keyword("sim")
+- title: Model Fitting Functions
+  contents:
+  - has_keyword("fit")
+- title: Parametric Bootstrap Functions
+  contents:
+  - has_keyword("pb")
+- title: Utility Functions
+  contents:
+  - has_keyword("utils")
+- title: Data
+  contents:
+  - has_keyword("data")
+- title: All
+  contents:
+  - has_keyword("simAutoReg")
+  - has_keyword("fitAutoReg")
