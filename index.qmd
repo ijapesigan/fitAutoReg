@@ -1,9 +1,0 @@
----
-title: Preface
-nocite: |
-  @*
----
-
-## Wiki
-
-This website contains resources related to the R [@RCoreTeam-2023] package [fitAutoReg](https://github.com/ijapesigan/fitAutoReg) outside the [pkgdown](https://ijapesigan.github.io/fitAutoReg) documentation.
