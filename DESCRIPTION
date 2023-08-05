@@ -25,6 +25,5 @@ Imports:
 Suggests:
     knitr,
     rmarkdown,
-    testthat,
-    simAutoReg
+    testthat
 RoxygenNote: 7.2.3
