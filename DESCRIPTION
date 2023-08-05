@@ -27,3 +27,4 @@ Suggests:
     rmarkdown,
     testthat,
     simAutoReg
+RoxygenNote: 7.2.3
