@@ -1,6 +1,7 @@
 #' Data from the Vector Autoregressive Model with Exogenous Variables
 #'
-#' @format A matrix with 1000 rows (time points) and k = 3 (autoregressive variables)
+#' @format A matrix with 1000 rows (time points) and
+#'   k = 3 (autoregressive variables)
 #'   plus m = 3 columns (exogenous variables)
 #'   generated from the p = 2 vector autoregressive model given by
 #'   \deqn{
