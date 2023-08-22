@@ -6,7 +6,8 @@ output: github_document
 bibliography: "vignettes.bib"
 csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
 nocite: |
-  @*
+  @RCoreTeam-2023
+  @Eddelbuettel-Sanderson-2014
 ---
 
 <!-- README.md is generated from .setup/readme/README.Rmd. Please edit that file -->
@@ -25,13 +26,12 @@ knitr::opts_chunk$set(
 [![test-coverage](https://github.com/ijapesigan/fitAutoReg/actions/workflows/test-coverage.yml/badge.svg)](https://github.com/ijapesigan/fitAutoReg/actions/workflows/test-coverage.yml)
 [![lint](https://github.com/ijapesigan/fitAutoReg/actions/workflows/lint.yml/badge.svg)](https://github.com/ijapesigan/fitAutoReg/actions/workflows/lint.yml)
 [![pkgdown](https://github.com/ijapesigan/fitAutoReg/actions/workflows/pkgdown-gh-pages.yml/badge.svg)](https://github.com/ijapesigan/fitAutoReg/actions/workflows/pkgdown-gh-pages.yml)
-[![quarto (Quarto Pub)](https://github.com/ijapesigan/fitAutoReg/actions/workflows/quarto-quarto-pub.yml/badge.svg)](https://github.com/ijapesigan/fitAutoReg/actions/workflows/quarto-quarto-pub.yml)
 [![codecov](https://codecov.io/gh/ijapesigan/fitAutoReg/branch/main/graph/badge.svg)](https://codecov.io/gh/ijapesigan/fitAutoReg)
 <!-- badges: end -->
 
 ## Description
 
-Fit autoregressive models.
+Fit autoregressive models using `RcppArmadillo`.
 
 ## Installation
 

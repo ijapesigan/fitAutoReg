@@ -51,7 +51,7 @@
 //'   autoregressive and cross-regression coefficients of the VAR model.
 //'
 //' @seealso
-//' The `qr` function from the Armadillo library for QR decomposition.
+//' The `qr_econ` function from the Armadillo library for QR decomposition.
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg fit
@@ -60,7 +60,7 @@
 arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
   // Estimate VAR model parameters using QR decomposition
   arma::mat Q, R;
-  arma::qr(Q, R, X);
+  arma::qr_econ(Q, R, X);
 
   // Solve the linear system R * coef = Q.t() * Y
   arma::mat coef = arma::solve(R, Q.t() * Y);
