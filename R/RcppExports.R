@@ -37,7 +37,7 @@
 #' @keywords fitAutoReg fit
 #' @export
 FitVARLassoSearch <- function(Ystd, Xstd, lambdas, crit, max_iter, tol) {
-    .Call(`_fitAutoReg_FitVARLassoSearch`, Ystd, Xstd, lambdas, crit, max_iter, tol)
+    .Call('_fitAutoReg_FitVARLassoSearch', PACKAGE = 'fitAutoReg', Ystd, Xstd, lambdas, crit, max_iter, tol)
 }
 
 #' Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
@@ -123,7 +123,7 @@ FitVARLassoSearch <- function(Ystd, Xstd, lambdas, crit, max_iter, tol) {
 #' @keywords fitAutoReg fit
 #' @export
 FitVARLasso <- function(Ystd, Xstd, lambda, max_iter, tol) {
-    .Call(`_fitAutoReg_FitVARLasso`, Ystd, Xstd, lambda, max_iter, tol)
+    .Call('_fitAutoReg_FitVARLasso', PACKAGE = 'fitAutoReg', Ystd, Xstd, lambda, max_iter, tol)
 }
 
 #' Fit Vector Autoregressive (VAR) Model Parameters using OLS
@@ -178,7 +178,7 @@ FitVARLasso <- function(Ystd, Xstd, lambda, max_iter, tol) {
 #' @keywords fitAutoReg fit
 #' @export
 FitVAROLS <- function(Y, X) {
-    .Call(`_fitAutoReg_FitVAROLS`, Y, X)
+    .Call('_fitAutoReg_FitVAROLS', PACKAGE = 'fitAutoReg', Y, X)
 }
 
 #' Function to generate the sequence of lambdas
@@ -203,7 +203,7 @@ FitVAROLS <- function(Y, X) {
 #' @keywords fitAutoReg fit
 #' @export
 LambdaSeq <- function(Y, X, n_lambdas) {
-    .Call(`_fitAutoReg_LambdaSeq`, Y, X, n_lambdas)
+    .Call('_fitAutoReg_LambdaSeq', PACKAGE = 'fitAutoReg', Y, X, n_lambdas)
 }
 
 #' Return Standardized Estimates to the Original Scale
@@ -231,7 +231,7 @@ LambdaSeq <- function(Y, X, n_lambdas) {
 #' @keywords fitAutoReg utils
 #' @export
 OrigScale <- function(coef_std, Y, X) {
-    .Call(`_fitAutoReg_OrigScale`, coef_std, Y, X)
+    .Call('_fitAutoReg_OrigScale', PACKAGE = 'fitAutoReg', coef_std, Y, X)
 }
 
 #' Parametric Bootstrap for the Vector Autoregressive Model
@@ -274,7 +274,7 @@ OrigScale <- function(coef_std, Y, X) {
 #' @keywords fitAutoReg pb
 #' @export
 PBootVARLasso <- function(data, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
-    .Call(`_fitAutoReg_PBootVARLasso`, data, p, B, burn_in, n_lambdas, crit, max_iter, tol)
+    .Call('_fitAutoReg_PBootVARLasso', PACKAGE = 'fitAutoReg', data, p, B, burn_in, n_lambdas, crit, max_iter, tol)
 }
 
 #' Parametric Bootstrap for the Vector Autoregressive Model
@@ -305,7 +305,7 @@ PBootVARLasso <- function(data, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
 #' @keywords fitAutoReg pb
 #' @export
 PBootVAROLS <- function(data, p, B, burn_in) {
-    .Call(`_fitAutoReg_PBootVAROLS`, data, p, B, burn_in)
+    .Call('_fitAutoReg_PBootVAROLS', PACKAGE = 'fitAutoReg', data, p, B, burn_in)
 }
 
 #' Compute AIC, BIC, and EBIC for Lasso Regularization
@@ -352,7 +352,7 @@ PBootVAROLS <- function(data, p, B, burn_in) {
 #' @keywords fitAutoReg fit
 #' @export
 SearchVARLasso <- function(Ystd, Xstd, lambdas, max_iter, tol) {
-    .Call(`_fitAutoReg_SearchVARLasso`, Ystd, Xstd, lambdas, max_iter, tol)
+    .Call('_fitAutoReg_SearchVARLasso', PACKAGE = 'fitAutoReg', Ystd, Xstd, lambdas, max_iter, tol)
 }
 
 #' Standardize Matrix
@@ -376,7 +376,7 @@ SearchVARLasso <- function(Ystd, Xstd, lambdas, max_iter, tol) {
 #' @keywords fitAutoReg utils
 #' @export
 StdMat <- function(X) {
-    .Call(`_fitAutoReg_StdMat`, X)
+    .Call('_fitAutoReg_StdMat', PACKAGE = 'fitAutoReg', X)
 }
 
 #' Simulate Data from a Vector Autoregressive (VAR) Model
@@ -479,7 +479,7 @@ StdMat <- function(X) {
 #' @keywords simAutoReg sim
 #' @export
 SimVAR <- function(time, burn_in, constant, coef, chol_cov) {
-    .Call(`_fitAutoReg_SimVAR`, time, burn_in, constant, coef, chol_cov)
+    .Call('_fitAutoReg_SimVAR', PACKAGE = 'fitAutoReg', time, burn_in, constant, coef, chol_cov)
 }
 
 #' Create Y and X Matrices
@@ -559,6 +559,6 @@ SimVAR <- function(time, burn_in, constant, coef, chol_cov) {
 #' @keywords simAutoReg utils
 #' @export
 YX <- function(data, p) {
-    .Call(`_fitAutoReg_YX`, data, p)
+    .Call('_fitAutoReg_YX', PACKAGE = 'fitAutoReg', data, p)
 }
 
