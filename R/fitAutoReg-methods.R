@@ -2,19 +2,9 @@
 #'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
-#' @return Returns a matrix of
-#'   standardized regression slopes,
-#'   standard errors,
-#'   test statistics,
-#'   degrees of freedom,
-#'   p-values,
-#'   and
-#'   confidence intervals.
-#'
 #' @param x Object of class `dynr_model`.
 #' @param ... additional arguments.
 #'
-#' @examples
 #' @examples
 #' model <- ModelVARP2Dynr(data = dat_demo)
 #' print(model)
@@ -22,6 +12,26 @@
 #' @keywords methods
 #' @export
 print.dynr_model <- function(x,
+                             ...) {
+  dynr:::printRecipeOrModel(
+    x$model
+  )
+}
+
+#' Plot Method for an Object of Class `dynr_model`
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @param x Object of class `dynr_model`.
+#' @param ... additional arguments.
+#'
+#' @examples
+#' model <- ModelVARP2Dynr(data = dat_demo)
+#' plot(model)
+#'
+#' @keywords methods
+#' @export
+plot.dynr_model <- function(x,
                              ...) {
   dynr::plotFormula(
     dynrModel = x$model,
