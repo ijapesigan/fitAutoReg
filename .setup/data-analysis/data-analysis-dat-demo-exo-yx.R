@@ -31,7 +31,7 @@ DataAnalysisDatDemoExoYX <- function() {
     location = c(0, 0, 0),
     chol_scale = chol(diag(3))
   )
-  exo_coef = matrix(
+  exo_coef <- matrix(
     data = c(
       0.5, 0.0, 0.0,
       0.0, 0.5, 0.0,
