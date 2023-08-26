@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Ivan Jacob Agaloos Pesigan \email{ijapesigan@gmail.com} (\href{https://orcid.org/0000-0003-4818-8420}{ORCID}) [copyright holder]
+\strong{Maintainer}: Ivan Jacob Agaloos Pesigan \email{r.ijapesigan@gmail.com} (\href{https://orcid.org/0000-0003-4818-8420}{ORCID}) [copyright holder]
 
 }
 \keyword{internal}

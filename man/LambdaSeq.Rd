@@ -30,9 +30,13 @@ LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
 }
 \seealso{
 Other Fitting Autoregressive Model Functions: 
+\code{\link{FitMLVARDynr}()},
+\code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
 \code{\link{FitVAROLS}()},
+\code{\link{ModelVARP1Dynr}()},
+\code{\link{ModelVARP2Dynr}()},
 \code{\link{OrigScale}()},
 \code{\link{PBootVARLasso}()},
 \code{\link{PBootVAROLS}()},
