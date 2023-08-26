@@ -28,6 +28,7 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
+    <a class="dropdown-item" href="../articles/var.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -94,7 +95,7 @@ Output of <code><a href="PBootVAROLS.html">PBootVAROLS()</a></code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">pb</span> <span class="op">&lt;-</span> <span class="fu"><a href="PBootVAROLS.html">PBootVAROLS</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo</span>, p <span class="op">=</span> <span class="fl">2</span>, B <span class="op">=</span> <span class="fl">10</span>, burn_in <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.023   0.008   0.016 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.023   0.005   0.014 </span>
 <span class="r-in"><span><span class="va">pb</span><span class="op">$</span><span class="va">est</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]        [,2]        [,3]        [,4]        [,5]         [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726  0.36836768 0.008539283  0.02231498  0.11338780  0.024505442</span>
@@ -118,7 +119,7 @@ Output of <code><a href="PBootVAROLS.html">PBootVAROLS()</a></code>.</p></dd>
 <span class="r-in"><span>  n_lambdas <span class="op">=</span> <span class="fl">100</span>, crit <span class="op">=</span> <span class="st">"ebic"</span>, max_iter <span class="op">=</span> <span class="fl">1000</span>, tol <span class="op">=</span> <span class="fl">1e-5</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  24.227   5.829  15.133 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  23.657   5.548  14.738 </span>
 <span class="r-in"><span><span class="va">pb</span><span class="op">$</span><span class="va">est</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726 0.3421906 0.0000000 0.0000000 0.08468105 0.0000000 0.0000000</span>
