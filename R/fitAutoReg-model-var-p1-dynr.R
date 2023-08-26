@@ -150,7 +150,6 @@ ModelVARP1Dynr <- function(data,
   rownames(params_inicov) <- colnames(params_inicov) <- state_names
   initial_mu <- c(
     mu_names
-    # paste0(mu_names, "l1")
   )
   dynr_initial <- dynr::prep.initial(
     values.inistate = rep(x = 0, times = q),
