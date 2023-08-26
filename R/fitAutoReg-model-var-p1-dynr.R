@@ -1,7 +1,7 @@
 #' Specify Vector Autoregressive (VAR(p = 1)) Model using dynr
 #'
 #' This function specifies a VAR(p = 1) model
-#' using the [dynr::dynr.model()] package. 
+#' using the [dynr::dynr.model()] package.
 #'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
@@ -126,8 +126,8 @@ ModelVARP1Dynr <- function(data,
     }
   }
   values_latent <- diag(k)
-  values_observed = diag(x = 0, nrow = k)
-  params_observed = matrix(
+  values_observed <- diag(x = 0, nrow = k)
+  params_observed <- matrix(
     data = "fixed",
     nrow = k,
     ncol = k

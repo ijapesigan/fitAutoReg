@@ -1,7 +1,7 @@
 #' Fit Vector Autoregressive (VAR(p = 2)) Model using dynr
 #'
 #' This function estimates the parameters of a VAR(p = 2) model
-#' using the `dynr` package. 
+#' using the `dynr` package.
 #'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
