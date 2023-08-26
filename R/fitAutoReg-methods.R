@@ -13,9 +13,7 @@
 #' @export
 print.dynr_model <- function(x,
                              ...) {
-  dynr:::printRecipeOrModel(
-    x$model
-  )
+  print(x$model)
 }
 
 #' Plot Method for an Object of Class `dynr_model`
@@ -32,7 +30,7 @@ print.dynr_model <- function(x,
 #' @keywords methods
 #' @export
 plot.dynr_model <- function(x,
-                             ...) {
+                            ...) {
   dynr::plotFormula(
     dynrModel = x$model,
     ParameterAs = x$model$param.names,
