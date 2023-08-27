@@ -23,8 +23,8 @@
 //' and cross-regression coefficients.
 //'
 //' @examples
-//' Y <- dat_demo_yx$Y
-//' X <- dat_demo_yx$X
+//' Y <- dat_p2_yx$Y
+//' X <- dat_p2_yx$X
 //' FitVAROLS(Y = Y, X = X)
 //'
 //' @details

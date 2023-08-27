@@ -26,7 +26,7 @@
 //' and bootstrap estimates (`boot`).
 //'
 //' @examples
-//' pb <- PBootVAROLS(data = dat_demo, p = 2, B = 10, burn_in = 20)
+//' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
 //' str(pb)
 //'
 //' @family Fitting Autoregressive Model Functions

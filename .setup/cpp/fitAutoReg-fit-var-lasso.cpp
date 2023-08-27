@@ -32,8 +32,8 @@
 //' cross-regression coefficients.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' lambda <- 73.90722
 //' FitVARLasso(Ystd = Ystd, Xstd = Xstd, lambda = lambda,
 //'   max_iter = 10000, tol = 1e-5)

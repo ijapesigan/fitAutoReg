@@ -31,8 +31,8 @@
 //' and cross-regression coefficients.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' lambdas <- LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
 //' FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
 //'   crit = "ebic", max_iter = 1000, tol = 1e-5)

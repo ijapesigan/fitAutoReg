@@ -8,6 +8,8 @@ csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa
 nocite: |
   @RCoreTeam-2023
   @Eddelbuettel-Sanderson-2014
+  @Muthen-Muthen-2017
+  @Ou-Hunter-Chow-2019
 ---
 
 <!-- README.md is generated from .setup/readme/README.Rmd. Please edit that file -->
@@ -31,7 +33,7 @@ knitr::opts_chunk$set(
 
 ## Description
 
-Fit autoregressive models using `RcppArmadillo`.
+Fit autoregressive models using 'RcppArmadillo', `dynr`, and `Mplus`.
 
 ## Installation
 

@@ -19,8 +19,8 @@
 //' @return Returns a vector of lambdas.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
 //'
 //' @family Fitting Autoregressive Model Functions

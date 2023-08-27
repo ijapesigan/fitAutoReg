@@ -1,6 +1,6 @@
-#' Fit Vector Autoregressive (VAR(p = 2)) Model using dynr
+#' Fit Vector Autoregressive Model using dynr
 #'
-#' This function estimates the parameters of a VAR(p = 2) model
+#' This function estimates the parameters of a VAR model
 #' using the `dynr` package.
 #'
 #' @author Ivan Jacob Agaloos Pesigan
@@ -15,7 +15,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' FitVARDynr(model = ModelVARP2Dynr(data = dat_demo))
+#' FitVARDynr(model = ModelVARP1Dynr(data = dat_p1))
+#' FitVARDynr(model = ModelVARP2Dynr(data = dat_p2))
 #' }
 #'
 #' @family Fitting Autoregressive Model Functions
@@ -24,7 +25,7 @@
 FitVARDynr <- function(model,
                        conf_level = 0.95,
                        optimization_flag = TRUE,
-                       hessian_flag = TRUE,
+                       hessian_flag = FALSE,
                        verbose = FALSE,
                        weight_flag = FALSE,
                        debug_flag = FALSE,
@@ -43,19 +44,18 @@ FitVARDynr <- function(model,
       )
     )
   } else {
-    return(
-      utils::capture.output(
-        dynr::dynr.cook(
-          dynrModel = model[["model"]],
-          conf.level = conf_level,
-          optimization_flag = optimization_flag,
-          hessian_flag = hessian_flag,
-          verbose = verbose,
-          weight_flag = weight_flag,
-          debug_flag = debug_flag,
-          perturb_flag = perturb_flag
-        )
+    utils::capture.output(
+      output <- dynr::dynr.cook(
+        dynrModel = model[["model"]],
+        conf.level = conf_level,
+        optimization_flag = optimization_flag,
+        hessian_flag = hessian_flag,
+        verbose = verbose,
+        weight_flag = weight_flag,
+        debug_flag = debug_flag,
+        perturb_flag = perturb_flag
       )
     )
+    return(output)
   }
 }

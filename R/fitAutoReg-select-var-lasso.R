@@ -11,8 +11,8 @@
 #' of autoregression and cross regression coefficients.
 #'
 #' @examples
-#' Ystd <- StdMat(dat_demo_yx$Y)
-#' Xstd <- StdMat(dat_demo_yx$X[, -1])
+#' Ystd <- StdMat(dat_p2_yx$Y)
+#' Xstd <- StdMat(dat_p2_yx$X[, -1])
 #' lambdas <- 10^seq(-5, 5, length.out = 100)
 #' search <- SearchVARLasso(
 #'   Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,

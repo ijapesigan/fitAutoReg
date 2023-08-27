@@ -18,8 +18,8 @@
 //'   Matrix of predictors (X).
 //'
 //' @examples
-//' Y <- dat_demo_yx$Y
-//' X <- dat_demo_yx$X[, -1]
+//' Y <- dat_p2_yx$Y
+//' X <- dat_p2_yx$X[, -1]
 //' Ystd <- StdMat(Y)
 //' Xstd <- StdMat(X)
 //' coef_std <- FitVAROLS(Y = Ystd, X = Xstd)

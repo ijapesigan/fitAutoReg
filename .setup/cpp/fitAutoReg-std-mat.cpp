@@ -18,7 +18,7 @@
 //' @return Numeric matrix with standardized values.
 //'
 //' @examples
-//' std <- StdMat(dat_demo)
+//' std <- StdMat(dat_p2)
 //' colMeans(std)
 //' var(std)
 //'

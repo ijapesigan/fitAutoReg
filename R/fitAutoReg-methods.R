@@ -6,7 +6,7 @@
 #' @param ... additional arguments.
 #'
 #' @examples
-#' model <- ModelVARP2Dynr(data = dat_demo)
+#' model <- ModelVARP2Dynr(data = dat_p2)
 #' print(model)
 #'
 #' @keywords methods
@@ -24,7 +24,7 @@ print.dynr_model <- function(x,
 #' @param ... additional arguments.
 #'
 #' @examples
-#' model <- ModelVARP2Dynr(data = dat_demo)
+#' model <- ModelVARP2Dynr(data = dat_p2)
 #' plot(model)
 #'
 #' @keywords methods
@@ -60,7 +60,7 @@ plot.dynr_model <- function(x,
 #'
 #' @examples
 #' \dontrun{
-#' dynr_model <- ModelVARP2Dynr(data = dat_demo)
+#' dynr_model <- ModelVARP2Dynr(data = dat_p2)
 #' dynr_cook <- FitVARP2Dynr(model = dynr_model)
 #' coef(object = dynr_model, dynr_cook = dynr_cook)
 #' }
