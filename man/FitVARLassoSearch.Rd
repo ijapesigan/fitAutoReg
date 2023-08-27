@@ -12,7 +12,8 @@ FitVARLassoSearch(Ystd, Xstd, lambdas, crit, max_iter, tol)
 Matrix of standardized dependent variables (Y).}
 
 \item{Xstd}{Numeric matrix.
-Matrix of standardized predictors (X).}
+Matrix of standardized predictors (X).
+\code{Xstd} should not include a vector of ones in column one.}
 
 \item{lambdas}{Numeric vector.
 Vector of lambda hyperparameters for Lasso regularization.}

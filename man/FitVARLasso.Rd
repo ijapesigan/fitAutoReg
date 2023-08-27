@@ -11,7 +11,8 @@ FitVARLasso(Ystd, Xstd, lambda, max_iter, tol)
 Matrix of standardized dependent variables (Y).}
 
 \item{Xstd}{Numeric matrix.
-Matrix of standardized predictors (X).}
+Matrix of standardized predictors (X).
+\code{Xstd} should not include a vector of ones in column one.}
 
 \item{lambda}{Lasso hyperparameter.
 The regularization strength controlling the sparsity.}

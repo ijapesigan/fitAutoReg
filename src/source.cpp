@@ -63,6 +63,7 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in);
 //'   Matrix of standardized dependent variables (Y).
 //' @param Xstd Numeric matrix.
 //'   Matrix of standardized predictors (X).
+//'   `Xstd` should not include a vector of ones in column one.
 //' @param lambdas Numeric vector.
 //'   Vector of lambda hyperparameters for Lasso regularization.
 //' @param max_iter Integer.
@@ -159,6 +160,7 @@ arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
 //'   Matrix of standardized dependent variables (Y).
 //' @param Xstd Numeric matrix.
 //'   Matrix of standardized predictors (X).
+//'   `Xstd` should not include a vector of ones in column one.
 //' @param lambda Lasso hyperparameter.
 //'   The regularization strength controlling the sparsity.
 //' @param max_iter Integer.
