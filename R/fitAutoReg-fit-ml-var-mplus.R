@@ -29,7 +29,7 @@
 FitMLVARMplus <- function(data,
                           p = 1,
                           mplus_bin,
-			               iter = 5000L) {
+                          iter = 5000L) {
   # get dims
   dims_y <- dim(data[[1]])
   n <- length(data)
@@ -39,19 +39,19 @@ FitMLVARMplus <- function(data,
   wd <- getwd()
   on.exit(
     expr = setwd(dir = wd),
-	add = TRUE
+    add = TRUE
   )
   tmpdir <- tempdir()
   on.exit(
     expr = unlink(
-	  x = tmpdir
-	),
-	add = TRUE
+      x = tmpdir
+    ),
+    add = TRUE
   )
   setwd(dir = tmpdir)
   tempfile <- tempfile(
     pattern = "mplus_",
-	tmpdir = tmpdir
+    tmpdir = tmpdir
   )
   fn_inp <- paste0(basename(tempfile), ".inp")
   fn_out <- paste0(basename(tempfile), ".out")
@@ -93,13 +93,13 @@ FitMLVARMplus <- function(data,
   dat <- paste0("DATA:\n\tFILE = ", fn_data, ";\n")
   var_names <- paste0(
     "\tNAMES = ",
-     paste0(y_names, collapse = " "),
+    paste0(y_names, collapse = " "),
     " TIME ID",
     ";\n"
   )
   var_usevar <- paste0(
     "\tUSEVARIABLES = ",
-     paste0(y_names, collapse = " "),
+    paste0(y_names, collapse = " "),
     ";\n"
   )
   var_cluster <- "\tCLUSTER = ID;\n"
@@ -116,11 +116,11 @@ FitMLVARMplus <- function(data,
   variable <- paste0(
     "VARIABLE:\n",
     var_names,
-	var_usevar,
+    var_usevar,
     var_cluster,
-	var_lagged,
-	var_tinterval,
-	var_missing
+    var_lagged,
+    var_tinterval,
+    var_missing
   )
   analysis_type <- "\tTYPE = TWOLEVEL RANDOM;\n"
   analysis_estimator <- "\tESTIMATOR = BAYES;\n"
@@ -128,8 +128,8 @@ FitMLVARMplus <- function(data,
   analysis <- paste0(
     "ANALYSIS:\n",
     analysis_type,
-	analysis_estimator,
-	analysis_biterations
+    analysis_estimator,
+    analysis_biterations
   )
   model_within <- do.call(
     what = "rbind",
@@ -160,7 +160,7 @@ FitMLVARMplus <- function(data,
     FUN = function(beta,
                    model_within) {
       return(
-        paste0("\t\t", beta , " | ", model_within)
+        paste0("\t\t", beta, " | ", model_within)
       )
     },
     beta = beta,
@@ -222,15 +222,15 @@ FitMLVARMplus <- function(data,
   savedata <- paste0(
     "SAVEDATA:\n",
     "\tRESULTS = ", fn_res, ";\n"
-  ) 
+  )
   input <- paste0(
     title,
-	dat,
-	variable,
-	analysis,
-	model,
-	output,
-	savedata
+    dat,
+    variable,
+    analysis,
+    model,
+    output,
+    savedata
   )
   writeLines(
     text = input,
