@@ -39,8 +39,8 @@ Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
 with Lambda Search
 }
 \examples{
-Ystd <- StdMat(dat_demo_yx$Y)
-Xstd <- StdMat(dat_demo_yx$X[, -1])
+Ystd <- StdMat(dat_p2_yx$Y)
+Xstd <- StdMat(dat_p2_yx$X[, -1])
 lambdas <- LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
 FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
   crit = "ebic", max_iter = 1000, tol = 1e-5)
@@ -49,8 +49,10 @@ FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

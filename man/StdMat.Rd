@@ -18,7 +18,7 @@ This function standardizes the given matrix by centering the columns
 and scaling them to have unit variance.
 }
 \examples{
-std <- StdMat(dat_demo)
+std <- StdMat(dat_p2)
 colMeans(std)
 var(std)
 
@@ -26,9 +26,11 @@ var(std)
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

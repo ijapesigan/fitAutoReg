@@ -43,8 +43,8 @@ for a given matrix of predictors \code{X}, a matrix of outcomes \code{Y},
 and a vector of lambda hyperparameters for Lasso regularization.
 }
 \examples{
-Ystd <- StdMat(dat_demo_yx$Y)
-Xstd <- StdMat(dat_demo_yx$X[, -1])
+Ystd <- StdMat(dat_p2_yx$Y)
+Xstd <- StdMat(dat_p2_yx$X[, -1])
 lambdas <- 10^seq(-5, 5, length.out = 100)
 search <- SearchVARLasso(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
   max_iter = 10000, tol = 1e-5)
@@ -55,9 +55,11 @@ plot(x = 1:nrow(search$criteria), y = search$criteria[, 4],
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

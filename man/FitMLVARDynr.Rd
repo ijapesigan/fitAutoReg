@@ -11,7 +11,7 @@ FitMLVARDynr(
   ncores = 1,
   conf_level = 0.95,
   optimization_flag = TRUE,
-  hessian_flag = TRUE,
+  hessian_flag = FALSE,
   verbose = FALSE,
   weight_flag = FALSE,
   debug_flag = FALSE,
@@ -63,9 +63,11 @@ for each of the data matrix in a list.
 }
 \seealso{
 Other Fitting Autoregressive Model Functions: 
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

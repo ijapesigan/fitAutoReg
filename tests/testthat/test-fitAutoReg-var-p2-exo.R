@@ -1,4 +1,4 @@
-## ---- test-fitAutoReg-var
+## ---- test-fitAutoReg-var-p2-exo
 lapply(
   X = 1,
   FUN = function(i,
@@ -16,10 +16,19 @@ lapply(
       nrow = 3,
       byrow = TRUE
     )
-    Y <- dat_demo_yx$Y
-    X <- dat_demo_yx$X
+    exo_coef <- matrix(
+      data = c(
+        0.5, 0.0, 0.0,
+        0.0, 0.5, 0.0,
+        0.0, 0.0, 0.5
+      ),
+      nrow = 3
+    )
+    Y <- dat_p2_exo_yx$Y
+    X <- dat_p2_exo_yx$X
     coef_est <- FitVAROLS(Y = Y, X = X)
     coef_est[, 1] <- round(coef_est[, 1], digits = 0)
+    coef_est[, -1] <- round(coef_est[, -1], digits = 2)
     testthat::test_that(
       paste(text, "constant and coef"),
       {
@@ -28,7 +37,8 @@ lapply(
             abs(
               cbind(
                 constant,
-                coef
+                coef,
+                exo_coef
               ) - coef_est
             ) <= tol
           )
@@ -36,6 +46,6 @@ lapply(
       }
     )
   },
-  tol = 0.05,
-  text = "test-fitAutoReg-var"
+  tol = 0.10,
+  text = "test-fitAutoReg-var-p2-exo"
 )

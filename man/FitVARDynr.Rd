@@ -2,13 +2,13 @@
 % Please edit documentation in R/fitAutoReg-fit-var-dynr.R
 \name{FitVARDynr}
 \alias{FitVARDynr}
-\title{Fit Vector Autoregressive (VAR(p = 2)) Model using dynr}
+\title{Fit Vector Autoregressive Model using dynr}
 \usage{
 FitVARDynr(
   model,
   conf_level = 0.95,
   optimization_flag = TRUE,
-  hessian_flag = TRUE,
+  hessian_flag = FALSE,
   verbose = FALSE,
   weight_flag = FALSE,
   debug_flag = FALSE,
@@ -41,20 +41,23 @@ be used for diagnostic purposes}
 Object of class \code{dynrCook}.
 }
 \description{
-This function estimates the parameters of a VAR(p = 2) model
+This function estimates the parameters of a VAR model
 using the \code{dynr} package.
 }
 \examples{
 \dontrun{
-FitVARDynr(model = ModelVARP2Dynr(data = dat_demo))
+FitVARDynr(model = ModelVARP1Dynr(data = dat_p1))
+FitVARDynr(model = ModelVARP2Dynr(data = dat_p2))
 }
 
 }
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

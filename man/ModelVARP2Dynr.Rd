@@ -20,15 +20,17 @@ This function specifies a VAR(p = 2) model
 using the \code{\link[dynr:dynr.model]{dynr::dynr.model()}} package.
 }
 \examples{
-ModelVARP2Dynr(data = dat_demo)
+ModelVARP2Dynr(data = dat_p2)
 
 }
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

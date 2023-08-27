@@ -12,7 +12,7 @@
 #' @inheritParams dynr::dynr.model
 #'
 #' @examples
-#' ModelVARP2Dynr(data = dat_demo)
+#' ModelVARP2Dynr(data = dat_p2)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg fit

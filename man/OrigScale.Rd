@@ -21,8 +21,8 @@ Matrix of predictors (X).}
 Return Standardized Estimates to the Original Scale
 }
 \examples{
-Y <- dat_demo_yx$Y
-X <- dat_demo_yx$X[, -1]
+Y <- dat_p2_yx$Y
+X <- dat_p2_yx$X[, -1]
 Ystd <- StdMat(Y)
 Xstd <- StdMat(X)
 coef_std <- FitVAROLS(Y = Ystd, X = Xstd)
@@ -33,9 +33,11 @@ OrigScale(coef_std = coef_std, Y = Y, X = X)
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

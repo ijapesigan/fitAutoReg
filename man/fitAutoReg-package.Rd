@@ -6,7 +6,7 @@
 \alias{_PACKAGE}
 \title{fitAutoReg: Fit Autoregressive Models}
 \description{
-Fit autoregressive models using 'RcppArmadillo'.
+Fit autoregressive models using 'RcppArmadillo', `dynr`, and `Mplus`.
 }
 \seealso{
 Useful links:

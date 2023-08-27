@@ -79,8 +79,8 @@ the algorithm is considered converged, and the loop exits.
 }
 }
 \examples{
-Ystd <- StdMat(dat_demo_yx$Y)
-Xstd <- StdMat(dat_demo_yx$X[, -1])
+Ystd <- StdMat(dat_p2_yx$Y)
+Xstd <- StdMat(dat_p2_yx$X[, -1])
 lambda <- 73.90722
 FitVARLasso(Ystd = Ystd, Xstd = Xstd, lambda = lambda,
   max_iter = 10000, tol = 1e-5)
@@ -92,8 +92,10 @@ using OLS.
 
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

@@ -48,8 +48,8 @@ autoregressive and cross-regression coefficients of the VAR model.
 }
 }
 \examples{
-Y <- dat_demo_yx$Y
-X <- dat_demo_yx$X
+Y <- dat_p2_yx$Y
+X <- dat_p2_yx$X
 FitVAROLS(Y = Y, X = X)
 
 }
@@ -58,9 +58,11 @@ The \code{qr_econ} function from the Armadillo library for QR decomposition.
 
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},
 \code{\link{ModelVARP2Dynr}()},

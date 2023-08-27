@@ -32,7 +32,7 @@ Auto and Cross Regression Coeffcients
 }
 \examples{
 \dontrun{
-dynr_model <- ModelVARP2Dynr(data = dat_demo)
+dynr_model <- ModelVARP2Dynr(data = dat_p2)
 dynr_cook <- FitVARP2Dynr(model = dynr_model)
 coef(object = dynr_model, dynr_cook = dynr_cook)
 }

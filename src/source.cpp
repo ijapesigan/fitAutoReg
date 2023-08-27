@@ -80,8 +80,8 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in);
 //' and cross-regression coefficients.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' lambdas <- LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
 //' FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
 //'   crit = "ebic", max_iter = 1000, tol = 1e-5)
@@ -173,8 +173,8 @@ arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
 //' cross-regression coefficients.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' lambda <- 73.90722
 //' FitVARLasso(Ystd = Ystd, Xstd = Xstd, lambda = lambda,
 //'   max_iter = 10000, tol = 1e-5)
@@ -317,8 +317,8 @@ arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
 //' and cross-regression coefficients.
 //'
 //' @examples
-//' Y <- dat_demo_yx$Y
-//' X <- dat_demo_yx$X
+//' Y <- dat_p2_yx$Y
+//' X <- dat_p2_yx$X
 //' FitVAROLS(Y = Y, X = X)
 //'
 //' @details
@@ -382,8 +382,8 @@ arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
 //' @return Returns a vector of lambdas.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
 //'
 //' @family Fitting Autoregressive Model Functions
@@ -429,8 +429,8 @@ arma::vec LambdaSeq(const arma::mat& Y, const arma::mat& X, int n_lambdas) {
 //'   Matrix of predictors (X).
 //'
 //' @examples
-//' Y <- dat_demo_yx$Y
-//' X <- dat_demo_yx$X[, -1]
+//' Y <- dat_p2_yx$Y
+//' X <- dat_p2_yx$X[, -1]
 //' Ystd <- StdMat(Y)
 //' Xstd <- StdMat(X)
 //' coef_std <- FitVAROLS(Y = Ystd, X = Xstd)
@@ -579,7 +579,7 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
 //' and bootstrap estimates (`boot`).
 //'
 //' @examples
-//' pb <- PBootVARLasso(data = dat_demo, p = 2, B = 10, burn_in = 20,
+//' pb <- PBootVARLasso(data = dat_p2, p = 2, B = 10, burn_in = 20,
 //'   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
 //' str(pb)
 //'
@@ -721,7 +721,7 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
 //' and bootstrap estimates (`boot`).
 //'
 //' @examples
-//' pb <- PBootVAROLS(data = dat_demo, p = 2, B = 10, burn_in = 20)
+//' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
 //' str(pb)
 //'
 //' @family Fitting Autoregressive Model Functions
@@ -805,8 +805,8 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
 //'     and cross-regression coefficients for each lambda.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_demo_yx$Y)
-//' Xstd <- StdMat(dat_demo_yx$X[, -1])
+//' Ystd <- StdMat(dat_p2_yx$Y)
+//' Xstd <- StdMat(dat_p2_yx$X[, -1])
 //' lambdas <- 10^seq(-5, 5, length.out = 100)
 //' search <- SearchVARLasso(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
 //'   max_iter = 10000, tol = 1e-5)
@@ -882,7 +882,7 @@ Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
 //' @return Numeric matrix with standardized values.
 //'
 //' @examples
-//' std <- StdMat(dat_demo)
+//' std <- StdMat(dat_p2)
 //' colMeans(std)
 //' var(std)
 //'

@@ -1,4 +1,5 @@
 #' Data from the Vector Autoregressive Model with Exogenous Variables
+#' (p = 2)
 #'
 #' @format A matrix with 1000 rows (time points) and
 #'   k = 3 (autoregressive variables)
@@ -46,4 +47,4 @@
 #'   }
 #'   The covariance matrix of process noise is an identity matrix.
 #' @keywords fitAutoReg data
-"dat_demo_exo"
+"dat_p2_exo"

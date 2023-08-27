@@ -48,7 +48,7 @@ Parametric Bootstrap for the Vector Autoregressive Model
 Using Lasso Regularization
 }
 \examples{
-pb <- PBootVARLasso(data = dat_demo, p = 2, B = 10, burn_in = 20,
+pb <- PBootVARLasso(data = dat_p2, p = 2, B = 10, burn_in = 20,
   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
 str(pb)
 
@@ -56,9 +56,11 @@ str(pb)
 \seealso{
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
+\code{\link{FitMLVARMplus}()},
 \code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
+\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
 \code{\link{ModelVARP1Dynr}()},

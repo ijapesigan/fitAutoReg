@@ -15,7 +15,7 @@
 Plot Method for an Object of Class \code{dynr_model}
 }
 \examples{
-model <- ModelVARP2Dynr(data = dat_demo)
+model <- ModelVARP2Dynr(data = dat_p2)
 plot(model)
 
 }

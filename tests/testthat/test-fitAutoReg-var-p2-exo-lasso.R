@@ -1,4 +1,4 @@
-## ---- test-fitAutoReg-var-exo-lasso
+## ---- test-fitAutoReg-var-p2-exo-lasso
 lapply(
   X = 1,
   FUN = function(i,
@@ -24,8 +24,8 @@ lapply(
       ),
       nrow = 3
     )
-    Y <- dat_demo_exo_yx$Y
-    X <- dat_demo_exo_yx$X
+    Y <- dat_p2_exo_yx$Y
+    X <- dat_p2_exo_yx$X
     Ystd <- StdMat(Y)
     Xstd <- StdMat(X[, -1])
     lambdas <- 10^seq(-5, 5, length.out = 100)
@@ -87,5 +87,5 @@ lapply(
     SelectVARLasso(search, crit = "bic")
   },
   tol = 0.19, # allow for some bias
-  text = "test-fitAutoReg-var-exo-lasso"
+  text = "test-fitAutoReg-var-p2-exo-lasso"
 )

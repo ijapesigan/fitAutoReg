@@ -1,4 +1,4 @@
-#' Data from the Vector Autoregressive Model
+#' Data from the Vector Autoregressive Model (p = 2)
 #'
 #' @format A matrix with 1000 rows (time points) and k = 3 columns (variables)
 #'   generated from the p = 2 vector autoregressive model given by
@@ -41,4 +41,4 @@
 #'   }
 #'   The covariance matrix of process noise is an identity matrix.
 #' @keywords fitAutoReg data
-"dat_demo"
+"dat_p2"
