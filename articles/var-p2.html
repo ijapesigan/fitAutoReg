@@ -48,7 +48,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
-    <a class="dropdown-item" href="../articles/var.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
+    <a class="dropdown-item" href="../articles/var-p1.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 1)</a>
+    <a class="dropdown-item" href="../articles/var-p2.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -83,27 +84,22 @@
 Agaloos Pesigan</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/ijapesigan/fitAutoReg/blob/HEAD/vignettes/var.Rmd"><code>vignettes/var.Rmd</code></a></small>
-      <div class="d-none name"><code>var.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/ijapesigan/fitAutoReg/blob/HEAD/vignettes/var-p2.Rmd"><code>vignettes/var-p2.Rmd</code></a></small>
+      <div class="d-none name"><code>var-p2.Rmd</code></div>
     </div>
 
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ijapesigan/simAutoReg" class="external-link">simAutoReg</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ijapesigan/fitAutoReg">fitAutoReg</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Attaching package: 'fitAutoReg'</span></span>
-<span><span class="co">#&gt; The following objects are masked from 'package:simAutoReg':</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     SimVAR, YX</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ijapesigan/fitAutoReg">fitAutoReg</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="generate-data">Generate data<a class="anchor" aria-label="anchor" href="#generate-data"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
 <span><span class="va">time</span> <span class="op">&lt;-</span> <span class="fl">1000L</span></span>
-<span><span class="va">burn_in</span> <span class="op">&lt;-</span> <span class="fl">200</span></span>
+<span><span class="va">burn_in</span> <span class="op">&lt;-</span> <span class="fl">200L</span></span>
 <span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
 <span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
 <span><span class="va">constant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span></span>
@@ -117,7 +113,7 @@ Agaloos Pesigan</h4>
 <span>  byrow <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">chol_cov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/chol.html" class="external-link">chol</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">dat_demo</span> <span class="op">&lt;-</span> <span class="fu">simAutoReg</span><span class="fu">::</span><span class="fu"><a href="https://github.com/ijapesigan/simAutoReg/reference/SimVAR.html" class="external-link">SimVAR</a></span><span class="op">(</span></span>
+<span><span class="va">dat_p2</span> <span class="op">&lt;-</span> <span class="fu">simAutoReg</span><span class="fu">::</span><span class="fu"><a href="https://github.com/ijapesigan/simAutoReg/reference/SimVAR.html" class="external-link">SimVAR</a></span><span class="op">(</span></span>
 <span>  time <span class="op">=</span> <span class="va">time</span>,</span>
 <span>  burn_in <span class="op">=</span> <span class="va">burn_in</span>,</span>
 <span>  constant <span class="op">=</span> <span class="va">constant</span>,</span>
@@ -129,8 +125,8 @@ Agaloos Pesigan</h4>
 <h2 id="ordinary-least-squares">Ordinary Least Squares<a class="anchor" aria-label="anchor" href="#ordinary-least-squares"></a>
 </h2>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">dat_demo_yx</span><span class="op">$</span><span class="va">Y</span></span>
-<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">dat_demo_yx</span><span class="op">$</span><span class="va">X</span></span>
+<code class="sourceCode R"><span><span class="va">Y</span> <span class="op">&lt;-</span> <span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span></span>
+<span><span class="va">X</span> <span class="op">&lt;-</span> <span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span></span>
 <span><span class="fu"><a href="../reference/FitVAROLS.html">FitVAROLS</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Y</span>, X <span class="op">=</span> <span class="va">X</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           [,1]        [,2]        [,3]        [,4]        [,5]         [,6]</span></span>
 <span><span class="co">#&gt; [1,] 0.7899726  0.36836768 0.008539283  0.02231498  0.11338780  0.024505442</span></span>
@@ -145,8 +141,8 @@ Agaloos Pesigan</h4>
 <h2 id="lasso-regularization">Lasso Regularization<a class="anchor" aria-label="anchor" href="#lasso-regularization"></a>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Ystd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_demo_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="va">Xstd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_demo_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">Ystd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
+<span><span class="va">Xstd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="va">lambdas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LambdaSeq.html">LambdaSeq</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Ystd</span>, X <span class="op">=</span> <span class="va">Xstd</span>, n_lambdas <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/FitVARLassoSearch.html">FitVARLassoSearch</a></span><span class="op">(</span>Ystd <span class="op">=</span> <span class="va">Ystd</span>, Xstd <span class="op">=</span> <span class="va">Xstd</span>, lambdas <span class="op">=</span> <span class="va">lambdas</span>,</span>
 <span>  crit <span class="op">=</span> <span class="st">"ebic"</span>, max_iter <span class="op">=</span> <span class="fl">1000</span>, tol <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span>
@@ -159,18 +155,31 @@ Agaloos Pesigan</h4>
 <h2 id="dynr">Dynr<a class="anchor" aria-label="anchor" href="#dynr"></a>
 </h2>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span></span>
 <span>  object <span class="op">=</span> <span class="va">dynr_model</span>,</span>
 <span>  dynr_cook <span class="op">=</span> <span class="fu"><a href="../reference/FitVARDynr.html">FitVARDynr</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">dynr_model</span>, hessian_flag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in dynr_cook@transformed.parameters: no applicable method for `@` applied to an object of class "character"</span></span></code></pre></div>
+<span><span class="co">#&gt; $constant</span></span>
+<span><span class="co">#&gt; [1] 0.8108203 1.0385953 1.0830291</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $coef</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]        [,3]         [,4]         [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.36766728 0.007391896  0.01983247  0.114497325  0.024832351 -0.01065118</span></span>
+<span><span class="co">#&gt; [2,]  0.01376537 0.480781804 -0.01962650 -0.038003569  0.233819340  0.01853446</span></span>
+<span><span class="co">#&gt; [3,] -0.03337367 0.013277403  0.60707078 -0.009727031 -0.004752739  0.29460604</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $cov</span></span>
+<span><span class="co">#&gt;              [,1]         [,2]         [,3]</span></span>
+<span><span class="co">#&gt; [1,]  0.986841754 -0.054124215 -0.004444707</span></span>
+<span><span class="co">#&gt; [2,] -0.054124215  1.007742802  0.008107844</span></span>
+<span><span class="co">#&gt; [3,] -0.004444707  0.008107844  0.987783462</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="multiple-individuals">Multiple individuals<a class="anchor" aria-label="anchor" href="#multiple-individuals"></a>
 </h3>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">10</span> <span class="co"># n individuals</span></span>
-<span><span class="va">dat_demo_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
+<span><span class="va">dat_p2_mult</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
 <span>  X <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">n</span><span class="op">)</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span></span>
@@ -186,17 +195,34 @@ Agaloos Pesigan</h4>
 <span><span class="op">)</span></span></code></pre></div>
 <p>Single VAR model on the entire data set.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo_mult</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span></span>
 <span>  object <span class="op">=</span> <span class="va">dynr_model</span>,</span>
 <span>  dynr_cook <span class="op">=</span> <span class="fu"><a href="../reference/FitVARDynr.html">FitVARDynr</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">dynr_model</span>, hessian_flag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in dynr_cook@transformed.parameters: no applicable method for `@` applied to an object of class "character"</span></span></code></pre></div>
+<span><span class="co">#&gt; $constant</span></span>
+<span><span class="co">#&gt; [1] 1.0448029 0.9746017 1.0014669</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $coef</span></span>
+<span><span class="co">#&gt;             [,1]         [,2]         [,3]         [,4]         [,5]</span></span>
+<span><span class="co">#&gt; [1,]  0.40121116 -0.009609459 -0.003694735  0.104843203 -0.006740511</span></span>
+<span><span class="co">#&gt; [2,] -0.00886161  0.504827496 -0.007677505  0.002317086  0.208803378</span></span>
+<span><span class="co">#&gt; [3,] -0.01568661  0.004431672  0.584943385 -0.001003501  0.014681107</span></span>
+<span><span class="co">#&gt;             [,6]</span></span>
+<span><span class="co">#&gt; [1,] 0.004724077</span></span>
+<span><span class="co">#&gt; [2,] 0.006492386</span></span>
+<span><span class="co">#&gt; [3,] 0.312771409</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]         [,3]</span></span>
+<span><span class="co">#&gt; [1,]  0.99995757 0.017928481 -0.016324570</span></span>
+<span><span class="co">#&gt; [2,]  0.01792848 0.982177366  0.004719771</span></span>
+<span><span class="co">#&gt; [3,] -0.01632457 0.004719771  0.998661138</span></span></code></pre></div>
 <p>Multiple VAR models on each individual.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">dynr_cook</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FitMLVARDynr.html">FitMLVARDynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo_mult</span>, p <span class="op">=</span> <span class="fl">2</span>, hessian_flag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">dynr_cook</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FitMLVARDynr.html">FitMLVARDynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span>, p <span class="op">=</span> <span class="fl">2</span>, hessian_flag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in FUN(X[[i]], ...): unused argument (conf.level = 0.95)</span></span>
-<span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo_mult</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
 <span>  X <span class="op">=</span> <span class="va">dynr_cook</span>,</span>
 <span>  FUN <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">dynr_cook</span>,</span>
@@ -206,7 +232,7 @@ Agaloos Pesigan</h4>
 <span>      dynr_cook <span class="op">=</span> <span class="va">dynr_cook</span></span>
 <span>    <span class="op">)</span></span>
 <span>  <span class="op">}</span>,</span>
-<span>  dynr_model <span class="op">=</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo_mult</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
+<span>  dynr_model <span class="op">=</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'dynr_cook' not found</span></span></code></pre></div>
 </div>

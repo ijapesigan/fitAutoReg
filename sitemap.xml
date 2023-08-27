@@ -16,7 +16,10 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/articles/session/session.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/articles/var.html</loc>
+    <loc>https://github.com/ijapesigan/fitAutoReg/articles/var-p1.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/articles/var-p2.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/authors.html</loc>
@@ -31,6 +34,9 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitMLVARDynr.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitMLVARMplus.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARDynr.html</loc>
   </url>
   <url>
@@ -38,6 +44,9 @@
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARLassoSearch.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARMplus.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVAROLS.html</loc>
@@ -85,16 +94,28 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/coef.dynr_model.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_demo.html</loc>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_ml_p1.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_demo_exo.html</loc>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_ml_p2.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_demo_exo_yx.html</loc>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_p1.html</loc>
   </url>
   <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_demo_yx.html</loc>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_p1_yx.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_p2.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_p2_exo.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_p2_exo_yx.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_p2_yx.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/fitAutoReg-package.html</loc>

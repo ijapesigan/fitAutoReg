@@ -32,7 +32,8 @@ Using Ordinary Least Squares"><!-- mathjax --><script src="https://cdnjs.cloudfl
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
-    <a class="dropdown-item" href="../articles/var.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
+    <a class="dropdown-item" href="../articles/var-p1.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 1)</a>
+    <a class="dropdown-item" href="../articles/var-p2.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -106,9 +107,11 @@ and bootstrap estimates (<code>boot</code>).</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other Fitting Autoregressive Model Functions: 
 <code><a href="FitMLVARDynr.html">FitMLVARDynr</a>()</code>,
+<code><a href="FitMLVARMplus.html">FitMLVARMplus</a>()</code>,
 <code><a href="FitVARDynr.html">FitVARDynr</a>()</code>,
 <code><a href="FitVARLassoSearch.html">FitVARLassoSearch</a>()</code>,
 <code><a href="FitVARLasso.html">FitVARLasso</a>()</code>,
+<code><a href="FitVARMplus.html">FitVARMplus</a>()</code>,
 <code><a href="FitVAROLS.html">FitVAROLS</a>()</code>,
 <code><a href="LambdaSeq.html">LambdaSeq</a>()</code>,
 <code><a href="ModelVARP1Dynr.html">ModelVARP1Dynr</a>()</code>,
@@ -125,7 +128,7 @@ and bootstrap estimates (<code>boot</code>).</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pb</span> <span class="op">&lt;-</span> <span class="fu">PBootVAROLS</span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo</span>, p <span class="op">=</span> <span class="fl">2</span>, B <span class="op">=</span> <span class="fl">10</span>, burn_in <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pb</span> <span class="op">&lt;-</span> <span class="fu">PBootVAROLS</span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2</span>, p <span class="op">=</span> <span class="fl">2</span>, B <span class="op">=</span> <span class="fl">10</span>, burn_in <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">pb</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ est : num [1:3, 1:7] 0.79 1.0002 1.0667 0.3684 0.0133 ...</span>

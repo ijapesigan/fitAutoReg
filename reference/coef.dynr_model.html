@@ -28,7 +28,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
-    <a class="dropdown-item" href="../articles/var.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
+    <a class="dropdown-item" href="../articles/var-p1.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 1)</a>
+    <a class="dropdown-item" href="../articles/var-p2.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -101,7 +102,7 @@ The <code>k</code> by <code>k</code> covariance matrix of the noise.</p></li>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_demo</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dynr_cook</span> <span class="op">&lt;-</span> <span class="fu">FitVARP2Dynr</span><span class="op">(</span>model <span class="op">=</span> <span class="va">dynr_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">dynr_model</span>, dynr_cook <span class="op">=</span> <span class="va">dynr_cook</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>

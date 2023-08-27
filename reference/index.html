@@ -28,7 +28,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
-    <a class="dropdown-item" href="../articles/var.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
+    <a class="dropdown-item" href="../articles/var-p1.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 1)</a>
+    <a class="dropdown-item" href="../articles/var-p2.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -88,9 +89,14 @@
 on Each of the Data Matrix in a List</dd>
       </dl><dl><dt>
           
+          <code><a href="FitMLVARMplus.html">FitMLVARMplus()</a></code> 
+        </dt>
+        <dd>Fit Multilevel Vector Autoregressive Model using Mplus</dd>
+      </dl><dl><dt>
+          
           <code><a href="FitVARDynr.html">FitVARDynr()</a></code> 
         </dt>
-        <dd>Fit Vector Autoregressive (VAR(p = 2)) Model using dynr</dd>
+        <dd>Fit Vector Autoregressive Model using dynr</dd>
       </dl><dl><dt>
           
           <code><a href="FitVARLasso.html">FitVARLasso()</a></code> 
@@ -102,6 +108,11 @@ on Each of the Data Matrix in a List</dd>
         </dt>
         <dd>Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
 with Lambda Search</dd>
+      </dl><dl><dt>
+          
+          <code><a href="FitVARMplus.html">FitVARMplus()</a></code> 
+        </dt>
+        <dd>Fit Vector Autoregressive Model using Mplus</dd>
       </dl><dl><dt>
           
           <code><a href="FitVAROLS.html">FitVAROLS()</a></code> 
@@ -230,25 +241,48 @@ Using Ordinary Least Squares</dd>
 
       <dl><dt>
           
-          <code><a href="dat_demo.html">dat_demo</a></code> 
+          <code><a href="dat_ml_p1.html">dat_ml_p1</a></code> 
         </dt>
-        <dd>Data from the Vector Autoregressive Model</dd>
+        <dd>Data from the Multilevel Vector Autoregressive Model (p = 1)</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo_exo.html">dat_demo_exo</a></code> 
+          <code><a href="dat_ml_p2.html">dat_ml_p2</a></code> 
         </dt>
-        <dd>Data from the Vector Autoregressive Model with Exogenous Variables</dd>
+        <dd>Data from the Multilevel Vector Autoregressive Model (p = 2)</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo_exo_yx.html">dat_demo_exo_yx</a></code> 
+          <code><a href="dat_p1.html">dat_p1</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model (p = 1)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p1_yx.html">dat_p1_yx</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors (X)
+(p = 1)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p2.html">dat_p2</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model (p = 2)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p2_exo.html">dat_p2_exo</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model with Exogenous Variables
+(p = 2)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p2_exo_yx.html">dat_p2_exo_yx</a></code> 
         </dt>
         <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors
-and Exogenous Variables (X)</dd>
+and Exogenous Variables (X)  (p = 2)</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo_yx.html">dat_demo_yx</a></code> 
+          <code><a href="dat_p2_yx.html">dat_p2_yx</a></code> 
         </dt>
-        <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors (X)</dd>
+        <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors (X)
+(p = 2)</dd>
       </dl></div><div class="section level2">
       <h2 id="all">All<a class="anchor" aria-label="anchor" href="#all"></a></h2>
       
@@ -278,9 +312,14 @@ and Exogenous Variables (X)</dd>
 on Each of the Data Matrix in a List</dd>
       </dl><dl><dt>
           
+          <code><a href="FitMLVARMplus.html">FitMLVARMplus()</a></code> 
+        </dt>
+        <dd>Fit Multilevel Vector Autoregressive Model using Mplus</dd>
+      </dl><dl><dt>
+          
           <code><a href="FitVARDynr.html">FitVARDynr()</a></code> 
         </dt>
-        <dd>Fit Vector Autoregressive (VAR(p = 2)) Model using dynr</dd>
+        <dd>Fit Vector Autoregressive Model using dynr</dd>
       </dl><dl><dt>
           
           <code><a href="FitVARLasso.html">FitVARLasso()</a></code> 
@@ -292,6 +331,11 @@ on Each of the Data Matrix in a List</dd>
         </dt>
         <dd>Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
 with Lambda Search</dd>
+      </dl><dl><dt>
+          
+          <code><a href="FitVARMplus.html">FitVARMplus()</a></code> 
+        </dt>
+        <dd>Fit Vector Autoregressive Model using Mplus</dd>
       </dl><dl><dt>
           
           <code><a href="FitVAROLS.html">FitVAROLS()</a></code> 
@@ -356,25 +400,48 @@ Using Ordinary Least Squares</dd>
         <dd>Standardize Matrix</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo.html">dat_demo</a></code> 
+          <code><a href="dat_ml_p1.html">dat_ml_p1</a></code> 
         </dt>
-        <dd>Data from the Vector Autoregressive Model</dd>
+        <dd>Data from the Multilevel Vector Autoregressive Model (p = 1)</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo_exo.html">dat_demo_exo</a></code> 
+          <code><a href="dat_ml_p2.html">dat_ml_p2</a></code> 
         </dt>
-        <dd>Data from the Vector Autoregressive Model with Exogenous Variables</dd>
+        <dd>Data from the Multilevel Vector Autoregressive Model (p = 2)</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo_exo_yx.html">dat_demo_exo_yx</a></code> 
+          <code><a href="dat_p1.html">dat_p1</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model (p = 1)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p1_yx.html">dat_p1_yx</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors (X)
+(p = 1)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p2.html">dat_p2</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model (p = 2)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p2_exo.html">dat_p2_exo</a></code> 
+        </dt>
+        <dd>Data from the Vector Autoregressive Model with Exogenous Variables
+(p = 2)</dd>
+      </dl><dl><dt>
+          
+          <code><a href="dat_p2_exo_yx.html">dat_p2_exo_yx</a></code> 
         </dt>
         <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors
-and Exogenous Variables (X)</dd>
+and Exogenous Variables (X)  (p = 2)</dd>
       </dl><dl><dt>
           
-          <code><a href="dat_demo_yx.html">dat_demo_yx</a></code> 
+          <code><a href="dat_p2_yx.html">dat_p2_yx</a></code> 
         </dt>
-        <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors (X)</dd>
+        <dd>Data from the Vector Autoregressive Model (Y) and Lagged Predictors (X)
+(p = 2)</dd>
       </dl></div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside></div>

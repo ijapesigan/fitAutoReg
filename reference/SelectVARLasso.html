@@ -28,7 +28,8 @@
   <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
-    <a class="dropdown-item" href="../articles/var.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
+    <a class="dropdown-item" href="../articles/var-p1.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 1)</a>
+    <a class="dropdown-item" href="../articles/var-p2.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
   </div>
 </li>
 <li class="nav-item">
@@ -99,8 +100,8 @@ of autoregression and cross regression coefficients.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">Ystd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_demo_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">Xstd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_demo_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">Ystd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">Xstd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">lambdas</span> <span class="op">&lt;-</span> <span class="fl">10</span><span class="op">^</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">5</span>, <span class="fl">5</span>, length.out <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">search</span> <span class="op">&lt;-</span> <span class="fu"><a href="SearchVARLasso.html">SearchVARLasso</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  Ystd <span class="op">=</span> <span class="va">Ystd</span>, Xstd <span class="op">=</span> <span class="va">Xstd</span>, lambdas <span class="op">=</span> <span class="va">lambdas</span>,</span></span>
