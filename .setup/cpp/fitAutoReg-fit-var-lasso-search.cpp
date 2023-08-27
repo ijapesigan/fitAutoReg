@@ -14,6 +14,7 @@
 //'   Matrix of standardized dependent variables (Y).
 //' @param Xstd Numeric matrix.
 //'   Matrix of standardized predictors (X).
+//'   `Xstd` should not include a vector of ones in column one.
 //' @param lambdas Numeric vector.
 //'   Vector of lambda hyperparameters for Lasso regularization.
 //' @param max_iter Integer.

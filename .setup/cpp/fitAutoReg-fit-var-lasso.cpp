@@ -18,6 +18,7 @@
 //'   Matrix of standardized dependent variables (Y).
 //' @param Xstd Numeric matrix.
 //'   Matrix of standardized predictors (X).
+//'   `Xstd` should not include a vector of ones in column one.
 //' @param lambda Lasso hyperparameter.
 //'   The regularization strength controlling the sparsity.
 //' @param max_iter Integer.
