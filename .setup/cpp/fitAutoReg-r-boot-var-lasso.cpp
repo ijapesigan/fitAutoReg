@@ -45,9 +45,8 @@
 //' @keywords fitAutoReg pb
 //' @export
 // [[Rcpp::export]]
-Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B,
-                         int n_lambdas, const std::string& crit, int max_iter,
-                         double tol) {
+Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
+                         const std::string& crit, int max_iter, double tol) {
   // YX
   Rcpp::List yx = YX(data, p);
   arma::mat X = yx["X"];
@@ -68,8 +67,9 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B,
   arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
 
   // Lasso
-  arma::mat coef_std = FitVARLassoSearch(Ystd, Xstd, lambdas, "ebic", 1000, 1e-5);
-  arma::vec const_vec = ols.col(0);                        // OLS constant vector
+  arma::mat coef_std =
+      FitVARLassoSearch(Ystd, Xstd, lambdas, "ebic", 1000, 1e-5);
+  arma::vec const_vec = ols.col(0);  // OLS constant vector
   arma::mat coef_mat = OrigScale(coef_std, Y, X_removed);  // Lasso coefficients
   arma::mat coef =
       arma::join_horiz(const_vec, coef_mat);  // OLS and Lasso combined
@@ -82,7 +82,7 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B,
 
   // Create a list of bootstrap Y
   Rcpp::List Y_list(B);
-  
+
   for (int b = 0; b < B; ++b) {
     // Residual resampling
     arma::mat residuals_b = residuals.rows(
@@ -95,26 +95,25 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B,
     // Fit VAR model using bootstrapped data
     arma::mat ols_b = FitVAROLS(Y_b, X);
     arma::mat Ystd_b = StdMat(Y);
-    arma::mat coef_std_b = FitVARLassoSearch(Ystd_b, Xstd, lambdas, "ebic", 1000, 1e-5);
+    arma::mat coef_std_b =
+        FitVARLassoSearch(Ystd_b, Xstd, lambdas, "ebic", 1000, 1e-5);
 
     // Original scale
     arma::vec const_vec_b = ols_b.col(0);
     arma::mat coef_mat_b = OrigScale(coef_std_b, Y_b, X_removed);
-    arma::mat coef_b =
-      arma::join_horiz(const_vec_b, coef_mat_b);
+    arma::mat coef_b = arma::join_horiz(const_vec_b, coef_mat_b);
 
     // Store the bootstrapped parameter estimates in the list
     coef_list[b] = Rcpp::wrap(coef_b);
 
     // Store the bootstrapped Y in the list
     Y_list[b] = Rcpp::wrap(Y_b);
-
   }
 
   // Create a list to store the results
   Rcpp::List result;
 
-  // Store bootstrap coefficients 
+  // Store bootstrap coefficients
   result["coef"] = coef_list;
 
   // Store regressors
@@ -122,7 +121,6 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B,
 
   // Store bootstrap Y
   result["Y"] = Y_list;
-  
-  return result;
 
+  return result;
 }

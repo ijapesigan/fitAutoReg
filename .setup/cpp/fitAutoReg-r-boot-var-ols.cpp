@@ -33,7 +33,6 @@
 //' @export
 // [[Rcpp::export]]
 Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
-
   // YX
   Rcpp::List yx = YX(data, p);
   arma::mat X = yx["X"];
@@ -41,13 +40,13 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
 
   // Indices
   int time = Y.n_rows;  // Number of observations
-  
+
   // OLS
   arma::mat coef = FitVAROLS(Y, X);
 
   // Residuals
   arma::mat residuals = Y - X * coef.t();
-  
+
   // Create a list to store bootstrap parameter estimates
   Rcpp::List coef_list(B);
 
@@ -76,7 +75,7 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
   // Create a list to store the results
   Rcpp::List result;
 
-  // Store bootstrap coefficients 
+  // Store bootstrap coefficients
   result["coef"] = coef_list;
 
   // Store regressors
@@ -84,6 +83,6 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
 
   // Store bootstrap Y
   result["Y"] = Y_list;
-  
+
   return result;
 }
