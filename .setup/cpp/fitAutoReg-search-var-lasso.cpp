@@ -15,32 +15,20 @@
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param Ystd Numeric matrix.
-//'   Matrix of standardized dependent variables (Y).
-//' @param Xstd Numeric matrix.
-//'   Matrix of standardized predictors (X).
-//' @param lambdas Numeric vector.
-//'   Vector of lambda hyperparameters for Lasso regularization.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
+//' @inheritParams FitVARLassoSearch
 //'
-//' @return List containing two elements:
-//'   - Element 1: Matrix with columns for
+//' @return List with the following elements:
+//'   - **criteria**: Matrix with columns for
 //'     lambda, AIC, BIC, and EBIC values.
-//'   - Element 2: List of matrices containing
+//'   - **fit**: List of matrices containing
 //'     the estimated autoregressive
 //'     and cross-regression coefficients for each lambda.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_p2_yx$Y)
-//' Xstd <- StdMat(dat_p2_yx$X[, -1])
+//' YStd <- StdMat(dat_p2_yx$Y)
+//' XStd <- StdMat(dat_p2_yx$X[, -1])
 //' lambdas <- 10^seq(-5, 5, length.out = 100)
-//' search <- SearchVARLasso(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
+//' search <- SearchVARLasso(YStd = YStd, XStd = XStd, lambdas = lambdas,
 //'   max_iter = 10000, tol = 1e-5)
 //' plot(x = 1:nrow(search$criteria), y = search$criteria[, 4],
 //'   type = "b", xlab = "lambda", ylab = "EBIC")
@@ -49,10 +37,10 @@
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
+Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
                           const arma::vec& lambdas, int max_iter, double tol) {
-  int n = Xstd.n_rows;  // Number of observations (rows in X)
-  int q = Xstd.n_cols;  // Number of columns in X (predictors)
+  int n = XStd.n_rows;  // Number of observations (rows in X)
+  int q = XStd.n_cols;  // Number of columns in X (predictors)
 
   // Armadillo matrix to store the lambda, AIC, BIC, and EBIC values
   arma::mat results(lambdas.n_elem, 4, arma::fill::zeros);
@@ -64,10 +52,10 @@ Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
     double lambda = lambdas(i);
 
     // Fit the VAR model using Lasso regularization
-    arma::mat beta = FitVARLasso(Ystd, Xstd, lambda, max_iter, tol);
+    arma::mat beta = FitVARLasso(YStd, XStd, lambda, max_iter, tol);
 
     // Calculate the residuals
-    arma::mat residuals = Ystd - Xstd * beta.t();
+    arma::mat residuals = YStd - XStd * beta.t();
 
     // Compute the residual sum of squares (RSS)
     double rss = arma::accu(residuals % residuals);

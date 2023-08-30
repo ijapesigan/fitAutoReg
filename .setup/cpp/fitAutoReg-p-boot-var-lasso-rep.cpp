@@ -10,10 +10,8 @@ arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
                            const arma::mat& coef, const arma::mat& chol_cov,
                            int n_lambdas, const std::string& crit, int max_iter,
                            double tol) {
-  // Indices
-  int k = constant.n_elem;  // Number of variables
-  int q = coef.n_cols;      // Dimension of the coefficient matrix
-  int p = q / k;            // Order of the VAR model (number of lags)
+  // Order of the VAR model (number of lags)
+  int p = coef.n_cols / constant.n_elem;
 
   // Simulate data
   arma::mat data = SimVAR(time, burn_in, constant, coef, chol_cov);
@@ -26,24 +24,24 @@ arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
 
   // OLS
   arma::mat ols = FitVAROLS(Y, X);
-  arma::vec pb_const = ols.col(0);  // OLS constant vector
+  arma::vec const_b = ols.col(0);  // OLS constant vector
 
   // Standardize
-  arma::mat Xstd = StdMat(X_removed);
-  arma::mat Ystd = StdMat(Y);
+  arma::mat XStd = StdMat(X_removed);
+  arma::mat YStd = StdMat(Y);
 
   // lambdas
-  arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Lasso
-  arma::mat pb_std =
-      FitVARLassoSearch(Ystd, Xstd, lambdas, crit, max_iter, tol);
+  arma::mat coef_std_b =
+      FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol);
 
   // Original scale
-  arma::mat pb_orig = OrigScale(pb_std, Y, X_removed);
+  arma::mat coef_orig = OrigScale(coef_std_b, Y, X_removed);
 
   // OLS constant and Lasso coefficient matrix
-  arma::mat pb_coef = arma::join_horiz(pb_const, pb_orig);
+  arma::mat coef_b = arma::join_horiz(const_b, coef_orig);
 
-  return arma::vectorise(pb_coef);
+  return arma::vectorise(coef_b);
 }

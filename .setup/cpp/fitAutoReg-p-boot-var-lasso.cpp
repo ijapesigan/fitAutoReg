@@ -10,37 +10,27 @@
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
-//' @param burn_in Integer.
-//'   Number of burn-in observations to exclude before returning the results
-//'   in the simulation step.
-//' @param n_lambdas Integer.
-//'   Number of lambdas to generate.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
-//' @param crit Character string.
-//'   Information criteria to use.
-//'   Valid values include `"aic"`, `"bic"`, and `"ebic"`.
+//' @inheritParams PBootVAROLS
+//' @inheritParams LambdaSeq
+//' @inheritParams FitVARLassoSearch
 //'
-//' @return List containing the estimates (`est`)
-//' and bootstrap estimates (`boot`).
+//' @return List with the following elements:
+//'   - **est**: Numeric matrix.
+//'     Original Lasso estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' pb <- PBootVARLasso(data = dat_p2, p = 2, B = 10, burn_in = 20,
-//'   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
-//' str(pb)
+//' PBootVARLasso(
+//'   data = dat_p2,
+//'   p = 2,
+//'   B = 10,
+//'   burn_in = 20,
+//'   n_lambdas = 100,
+//'   crit = "ebic",
+//'   max_iter = 1000,
+//'   tol = 1e-5
+//' )
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
@@ -49,8 +39,8 @@
 Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
                          int n_lambdas, const std::string& crit, int max_iter,
                          double tol) {
-  // Indices
-  int t = data.n_rows;  // Number of observations
+  // Number of observations
+  int t = data.n_rows;
 
   // YX
   Rcpp::List yx = YX(data, p);
@@ -62,14 +52,14 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
   arma::mat ols = FitVAROLS(Y, X);
 
   // Standardize
-  arma::mat Xstd = StdMat(X_removed);
-  arma::mat Ystd = StdMat(Y);
+  arma::mat XStd = StdMat(X_removed);
+  arma::mat YStd = StdMat(Y);
 
   // lambdas
-  arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Lasso
-  arma::mat pb_std = FitVARLassoSearch(Ystd, Xstd, lambdas, "ebic", 1000, 1e-5);
+  arma::mat pb_std = FitVARLassoSearch(YStd, XStd, lambdas, "ebic", 1000, 1e-5);
 
   // Set parameters
   arma::vec const_vec = ols.col(0);                      // OLS constant vector

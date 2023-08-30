@@ -66,10 +66,10 @@ FitVAROLS(Y = Y, X = X)
 ## Lasso Regularization
 
 ```{r}
-Ystd <- StdMat(dat_p2_yx$Y)
-Xstd <- StdMat(dat_p2_yx$X[, -1])
-lambdas <- LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
-FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
+YStd <- StdMat(dat_p2_yx$Y)
+XStd <- StdMat(dat_p2_yx$X[, -1])
+lambdas <- LambdaSeq(YStd = YStd, XStd = XStd, n_lambdas = 100)
+FitVARLassoSearch(YStd = YStd, XStd = XStd, lambdas = lambdas,
   crit = "ebic", max_iter = 1000, tol = 1e-5)
 ```
 

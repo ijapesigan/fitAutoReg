@@ -10,39 +10,31 @@
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
-//' @param n_lambdas Integer.
-//'   Number of lambdas to generate.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
-//' @param crit Character string.
-//'   Information criteria to use.
-//'   Valid values include `"aic"`, `"bic"`, and `"ebic"`.
+//' @inheritParams PBootVARLasso
 //'
 //' @return List with the following elements:
-//'   - List of bootstrap estimates
-//'   - original `X`
-//'   - List of bootstrapped `Y`
+//'   - **est**: Numeric matrix.
+//'     Original Lasso estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+//'   - **X**: Numeric matrix.
+//'     Original `X`
+//'   - **Y**: List of numeric matrices.
+//'     Bootstrapped `Y`
 //'
 //' @examples
-//' pb <- RBootVARLasso(data = dat_p2, p = 2, B = 10,
-//'   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
-//' str(pb)
+//' RBootVARLasso(
+//'   data = dat_p2,
+//'   p = 2,
+//'   B = 10,
+//'   n_lambdas = 100,
+//'   crit = "ebic",
+//'   max_iter = 1000,
+//'   tol = 1e-5
+//' )
 //'
 //' @family Fitting Autoregressive Model Functions
-//' @keywords fitAutoReg pb
+//' @keywords fitAutoReg rb
 //' @export
 // [[Rcpp::export]]
 Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
@@ -60,15 +52,15 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
   arma::mat ols = FitVAROLS(Y, X);
 
   // Standardize
-  arma::mat Xstd = StdMat(X_removed);
-  arma::mat Ystd = StdMat(Y);
+  arma::mat XStd = StdMat(X_removed);
+  arma::mat YStd = StdMat(Y);
 
   // lambdas
-  arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Lasso
   arma::mat coef_std =
-      FitVARLassoSearch(Ystd, Xstd, lambdas, "ebic", 1000, 1e-5);
+      FitVARLassoSearch(YStd, XStd, lambdas, "ebic", 1000, 1e-5);
   arma::vec const_vec = ols.col(0);  // OLS constant vector
   arma::mat coef_mat = OrigScale(coef_std, Y, X_removed);  // Lasso coefficients
   arma::mat coef =
@@ -77,8 +69,8 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
   // Calculate the residuals
   arma::mat residuals = Y - X * coef.t();
 
-  // Create a list to store bootstrap parameter estimates
-  Rcpp::List coef_list(B);
+  // Create a matrix to store bootstrap parameter estimates
+  arma::mat coef_b_mat(coef.n_rows * coef.n_cols, B);
 
   // Create a list of bootstrap Y
   Rcpp::List Y_list(B);
@@ -94,17 +86,19 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 
     // Fit VAR model using bootstrapped data
     arma::mat ols_b = FitVAROLS(Y_b, X);
-    arma::mat Ystd_b = StdMat(Y);
+    arma::mat YStd_b = StdMat(Y);
     arma::mat coef_std_b =
-        FitVARLassoSearch(Ystd_b, Xstd, lambdas, "ebic", 1000, 1e-5);
+        FitVARLassoSearch(YStd_b, XStd, lambdas, "ebic", 1000, 1e-5);
 
     // Original scale
     arma::vec const_vec_b = ols_b.col(0);
     arma::mat coef_mat_b = OrigScale(coef_std_b, Y_b, X_removed);
-    arma::mat coef_b = arma::join_horiz(const_vec_b, coef_mat_b);
+    arma::mat coef_lasso_b = arma::join_horiz(const_vec_b, coef_mat_b);
+
+    arma::vec coef_b = arma::vectorise(coef_lasso_b);
 
     // Store the bootstrapped parameter estimates in the list
-    coef_list[b] = Rcpp::wrap(coef_b);
+    coef_b_mat.col(b) = coef_b;
 
     // Store the bootstrapped Y in the list
     Y_list[b] = Rcpp::wrap(Y_b);
@@ -113,8 +107,11 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
   // Create a list to store the results
   Rcpp::List result;
 
+  // Add coef as the first element
+  result["est"] = coef;
+
   // Store bootstrap coefficients
-  result["coef"] = coef_list;
+  result["boot"] = coef_b_mat.t();
 
   // Store regressors
   result["X"] = X;

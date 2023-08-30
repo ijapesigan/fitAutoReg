@@ -10,23 +10,20 @@
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
+//' @inheritParams PBootVAROLS
 //'
 //' @return List with the following elements:
-//'   - List of bootstrap estimates
-//'   - original `X`
-//'   - List of bootstrapped `Y`
+//'   - **est**: Numeric matrix.
+//'     Original OLS estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+//'   - **X**: Numeric matrix.
+//'     Original `X`
+//'   - **Y**: List of numeric matrices.
+//'     Bootstrapped `Y`
 //'
 //' @examples
-//' rb <- RBootVAROLS(data = dat_p2, p = 2, B = 10)
-//' str(rb)
+//' RBootVAROLS(data = dat_p2, p = 2, B = 10)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg rb
@@ -47,11 +44,11 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
   // Residuals
   arma::mat residuals = Y - X * coef.t();
 
-  // Create a list to store bootstrap parameter estimates
-  Rcpp::List coef_list(B);
+  // Create a matrix to store bootstrap parameter estimates
+  arma::mat coef_b_mat(coef.n_rows * coef.n_cols, B);
 
   // Create a list of bootstrap Y
-  Rcpp::List Y_list(B);
+  Rcpp::List Y_b_list(B);
 
   for (int b = 0; b < B; ++b) {
     // Residual resampling
@@ -63,26 +60,30 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
     arma::mat Y_b = X * coef.t() + residuals_b;
 
     // Fit VAR model using bootstrapped data
-    arma::mat coef_b = FitVAROLS(Y_b, X);
+    arma::mat coef_ols_b = FitVAROLS(Y_b, X);
+    arma::vec coef_b = arma::vectorise(coef_ols_b);
 
     // Store the bootstrapped parameter estimates in the list
-    coef_list[b] = Rcpp::wrap(coef_b);
+    coef_b_mat.col(b) = coef_b;
 
     // Store the bootstrapped Y in the list
-    Y_list[b] = Rcpp::wrap(Y_b);
+    Y_b_list[b] = Rcpp::wrap(Y_b);
   }
 
   // Create a list to store the results
   Rcpp::List result;
 
+  // Add coef as the first element
+  result["est"] = coef;
+
   // Store bootstrap coefficients
-  result["coef"] = coef_list;
+  result["boot"] = coef_b_mat.t();
 
   // Store regressors
   result["X"] = X;
 
   // Store bootstrap Y
-  result["Y"] = Y_list;
+  result["Y"] = Y_b_list;
 
   return result;
 }

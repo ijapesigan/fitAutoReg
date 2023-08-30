@@ -14,10 +14,9 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
   arma::mat result(B, num_coef, arma::fill::zeros);
 
   for (int i = 0; i < B; i++) {
-    arma::vec coef_est =
-        PBootVARLassoRep(time, burn_in, constant, coef, chol_cov, n_lambdas,
-                         crit, max_iter, tol);
-    result.row(i) = arma::trans(coef_est);
+    arma::vec coef_b = PBootVARLassoRep(time, burn_in, constant, coef, chol_cov,
+                                        n_lambdas, crit, max_iter, tol);
+    result.row(i) = arma::trans(coef_b);
   }
 
   return result;

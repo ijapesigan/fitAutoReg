@@ -22,20 +22,22 @@
 //'   Number of burn-in observations to exclude before returning the results
 //'   in the simulation step.
 //'
-//' @return List containing the estimates (`est`)
-//' and bootstrap estimates (`boot`).
+//' @return List with the following elements:
+//'   - **est**: Numeric matrix.
+//'     Original OLS estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
-//' str(pb)
+//' PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
 //' @export
 // [[Rcpp::export]]
 Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
-  // Indices
-  int t = data.n_rows;  // Number of observations
+  // Number of observations
+  int t = data.n_rows;
 
   // YX
   Rcpp::List yx = YX(data, p);

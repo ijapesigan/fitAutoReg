@@ -19,10 +19,10 @@
 //'
 //' @examples
 //' Y <- dat_p2_yx$Y
-//' X <- dat_p2_yx$X[, -1]
-//' Ystd <- StdMat(Y)
-//' Xstd <- StdMat(X)
-//' coef_std <- FitVAROLS(Y = Ystd, X = Xstd)
+//' X <- dat_p2_yx$X[, -1] # remove the constant column
+//' YStd <- StdMat(Y)
+//' XStd <- StdMat(X)
+//' coef_std <- FitVAROLS(Y = YStd, X = XStd)
 //' FitVAROLS(Y = Y, X = X)
 //' OrigScale(coef_std = coef_std, Y = Y, X = X)
 //'
@@ -46,13 +46,13 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
     sd_X(j) = arma::as_scalar(arma::stddev(X.col(j), 0, 0));
   }
 
-  arma::mat coef_orig(k, q);
+  arma::mat orig(k, q);
   for (int l = 0; l < k; l++) {
     for (int j = 0; j < q; j++) {
-      double orig_coeff = coef_std(l, j) * sd_Y(l) / sd_X(j);
-      coef_orig(l, j) = orig_coeff;
+      double orig_coef = coef_std(l, j) * sd_Y(l) / sd_X(j);
+      orig(l, j) = orig_coef;
     }
   }
 
-  return coef_orig;
+  return orig;
 }
