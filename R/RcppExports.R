@@ -238,6 +238,7 @@ OrigScale <- function(coef_std, Y, X) {
 
 #' Parametric Bootstrap for the Vector Autoregressive Model
 #' Using Lasso Regularization
+#'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
 #' @param data Numeric matrix.
@@ -308,6 +309,79 @@ PBootVARLasso <- function(data, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
 #' @export
 PBootVAROLS <- function(data, p, B, burn_in) {
     .Call(`_fitAutoReg_PBootVAROLS`, data, p, B, burn_in)
+}
+
+#' Residual Bootstrap for the Vector Autoregressive Model
+#' Using Lasso Regularization
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @param data Numeric matrix.
+#'   The time series data with dimensions `t` by `k`,
+#'   where `t` is the number of observations
+#'   and `k` is the number of variables.
+#' @param p Integer.
+#'   The order of the VAR model (number of lags).
+#' @param B Integer.
+#'   Number of bootstrap samples to generate.
+#' @param n_lambdas Integer.
+#'   Number of lambdas to generate.
+#' @param max_iter Integer.
+#'   The maximum number of iterations for the coordinate descent algorithm
+#'   (e.g., `max_iter = 10000`).
+#' @param tol Numeric.
+#'   Convergence tolerance. The algorithm stops when the change in coefficients
+#'   between iterations is below this tolerance
+#'   (e.g., `tol = 1e-5`).
+#' @param crit Character string.
+#'   Information criteria to use.
+#'   Valid values include `"aic"`, `"bic"`, and `"ebic"`.
+#'
+#' @return List with the following elements:
+#'   - List of bootstrap estimates
+#'   - original `X`
+#'   - List of bootstrapped `Y`
+#'
+#' @examples
+#' pb <- RBootVARLasso(data = dat_p2, p = 2, B = 10,
+#'   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
+#' str(pb)
+#'
+#' @family Fitting Autoregressive Model Functions
+#' @keywords fitAutoReg pb
+#' @export
+RBootVARLasso <- function(data, p, B, n_lambdas, crit, max_iter, tol) {
+    .Call(`_fitAutoReg_RBootVARLasso`, data, p, B, n_lambdas, crit, max_iter, tol)
+}
+
+#' Residual Bootstrap for the Vector Autoregressive Model
+#' Using Ordinary Least Squares
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @param data Numeric matrix.
+#'   The time series data with dimensions `t` by `k`,
+#'   where `t` is the number of observations
+#'   and `k` is the number of variables.
+#' @param p Integer.
+#'   The order of the VAR model (number of lags).
+#' @param B Integer.
+#'   Number of bootstrap samples to generate.
+#'
+#' @return List with the following elements:
+#'   - List of bootstrap estimates
+#'   - original `X`
+#'   - List of bootstrapped `Y`
+#'
+#' @examples
+#' rb <- RBootVAROLS(data = dat_p2, p = 2, B = 10)
+#' str(rb)
+#'
+#' @family Fitting Autoregressive Model Functions
+#' @keywords fitAutoReg rb
+#' @export
+RBootVAROLS <- function(data, p, B) {
+    .Call(`_fitAutoReg_RBootVAROLS`, data, p, B)
 }
 
 #' Compute AIC, BIC, and EBIC for Lasso Regularization

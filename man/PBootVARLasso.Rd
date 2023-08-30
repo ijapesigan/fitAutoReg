@@ -67,6 +67,8 @@ Other Fitting Autoregressive Model Functions:
 \code{\link{ModelVARP2Dynr}()},
 \code{\link{OrigScale}()},
 \code{\link{PBootVAROLS}()},
+\code{\link{RBootVARLasso}()},
+\code{\link{RBootVAROLS}()},
 \code{\link{SearchVARLasso}()},
 \code{\link{StdMat}()}
 }

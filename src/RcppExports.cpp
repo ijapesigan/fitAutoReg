@@ -112,6 +112,36 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RBootVARLasso
+Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas, const std::string& crit, int max_iter, double tol);
+RcppExport SEXP _fitAutoReg_RBootVARLasso(SEXP dataSEXP, SEXP pSEXP, SEXP BSEXP, SEXP n_lambdasSEXP, SEXP critSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type B(BSEXP);
+    Rcpp::traits::input_parameter< int >::type n_lambdas(n_lambdasSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type crit(critSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(RBootVARLasso(data, p, B, n_lambdas, crit, max_iter, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// RBootVAROLS
+Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B);
+RcppExport SEXP _fitAutoReg_RBootVAROLS(SEXP dataSEXP, SEXP pSEXP, SEXP BSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(RBootVAROLS(data, p, B));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SearchVARLasso
 Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd, const arma::vec& lambdas, int max_iter, double tol);
 RcppExport SEXP _fitAutoReg_SearchVARLasso(SEXP YstdSEXP, SEXP XstdSEXP, SEXP lambdasSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
@@ -174,6 +204,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fitAutoReg_OrigScale", (DL_FUNC) &_fitAutoReg_OrigScale, 3},
     {"_fitAutoReg_PBootVARLasso", (DL_FUNC) &_fitAutoReg_PBootVARLasso, 8},
     {"_fitAutoReg_PBootVAROLS", (DL_FUNC) &_fitAutoReg_PBootVAROLS, 4},
+    {"_fitAutoReg_RBootVARLasso", (DL_FUNC) &_fitAutoReg_RBootVARLasso, 7},
+    {"_fitAutoReg_RBootVAROLS", (DL_FUNC) &_fitAutoReg_RBootVAROLS, 3},
     {"_fitAutoReg_SearchVARLasso", (DL_FUNC) &_fitAutoReg_SearchVARLasso, 5},
     {"_fitAutoReg_StdMat", (DL_FUNC) &_fitAutoReg_StdMat, 1},
     {"_fitAutoReg_SimVAR", (DL_FUNC) &_fitAutoReg_SimVAR, 5},
