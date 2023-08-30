@@ -141,10 +141,10 @@ Agaloos Pesigan</h4>
 <h2 id="lasso-regularization">Lasso Regularization<a class="anchor" aria-label="anchor" href="#lasso-regularization"></a>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Ystd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
-<span><span class="va">Xstd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="va">lambdas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LambdaSeq.html">LambdaSeq</a></span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Ystd</span>, X <span class="op">=</span> <span class="va">Xstd</span>, n_lambdas <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/FitVARLassoSearch.html">FitVARLassoSearch</a></span><span class="op">(</span>Ystd <span class="op">=</span> <span class="va">Ystd</span>, Xstd <span class="op">=</span> <span class="va">Xstd</span>, lambdas <span class="op">=</span> <span class="va">lambdas</span>,</span>
+<code class="sourceCode R"><span><span class="va">YStd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span>
+<span><span class="va">XStd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">lambdas</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/LambdaSeq.html">LambdaSeq</a></span><span class="op">(</span>YStd <span class="op">=</span> <span class="va">YStd</span>, XStd <span class="op">=</span> <span class="va">XStd</span>, n_lambdas <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/FitVARLassoSearch.html">FitVARLassoSearch</a></span><span class="op">(</span>YStd <span class="op">=</span> <span class="va">YStd</span>, XStd <span class="op">=</span> <span class="va">XStd</span>, lambdas <span class="op">=</span> <span class="va">lambdas</span>,</span>
 <span>  crit <span class="op">=</span> <span class="st">"ebic"</span>, max_iter <span class="op">=</span> <span class="fl">1000</span>, tol <span class="op">=</span> <span class="fl">1e-5</span><span class="op">)</span></span>
 <span><span class="co">#&gt;           [,1]     [,2]     [,3]       [,4]      [,5]      [,6]</span></span>
 <span><span class="co">#&gt; [1,] 0.3429428 0.000000 0.000000 0.08487819 0.0000000 0.0000000</span></span>
@@ -221,7 +221,6 @@ Agaloos Pesigan</h4>
 <p>Multiple VAR models on each individual.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">dynr_cook</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/FitMLVARDynr.html">FitMLVARDynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span>, p <span class="op">=</span> <span class="fl">2</span>, hessian_flag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in FUN(X[[i]], ...): unused argument (conf.level = 0.95)</span></span>
 <span><span class="va">dynr_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span></span>
 <span>  X <span class="op">=</span> <span class="va">dynr_cook</span>,</span>
@@ -234,7 +233,174 @@ Agaloos Pesigan</h4>
 <span>  <span class="op">}</span>,</span>
 <span>  dynr_model <span class="op">=</span> <span class="fu"><a href="../reference/ModelVARP2Dynr.html">ModelVARP2Dynr</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2_mult</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'dynr_cook' not found</span></span></code></pre></div>
+<span><span class="co">#&gt; [[1]]</span></span>
+<span><span class="co">#&gt; [[1]]$constant</span></span>
+<span><span class="co">#&gt; [1] 1.1016118 0.6220082 1.0310433</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$coef</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]        [,3]         [,4]        [,5]       [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.36008223 -0.01306639 -0.03304167  0.105455322 0.019978368 0.02973365</span></span>
+<span><span class="co">#&gt; [2,] -0.02699569  0.51145557 -0.01623585  0.043102336 0.213956729 0.04299584</span></span>
+<span><span class="co">#&gt; [3,] -0.02700385  0.05105222  0.56744250 -0.008307423 0.001164322 0.31699644</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[1]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]       [,3]</span></span>
+<span><span class="co">#&gt; [1,]  1.01177031  0.02705833 -0.0356887</span></span>
+<span><span class="co">#&gt; [2,]  0.02705833  0.98613899 -0.0510453</span></span>
+<span><span class="co">#&gt; [3,] -0.03568870 -0.05104530  0.9728425</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]</span></span>
+<span><span class="co">#&gt; [[2]]$constant</span></span>
+<span><span class="co">#&gt; [1] 0.9087098 1.2997561 0.9708976</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$coef</span></span>
+<span><span class="co">#&gt;              [,1]        [,2]       [,3]        [,4]         [,5]         [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.421808224 -0.02868872 0.01113127  0.10547763 -0.028134757  0.007448539</span></span>
+<span><span class="co">#&gt; [2,] -0.010725884  0.49607261 0.05155614 -0.01204139  0.203919613 -0.079327421</span></span>
+<span><span class="co">#&gt; [3,]  0.008929565  0.02792460 0.59290782 -0.01900508  0.005532939  0.303290248</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[2]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]       [,3]</span></span>
+<span><span class="co">#&gt; [1,]  0.98586014 -0.01532868 0.02167002</span></span>
+<span><span class="co">#&gt; [2,] -0.01532868  1.04271399 0.01693319</span></span>
+<span><span class="co">#&gt; [3,]  0.02167002  0.01693319 0.98675364</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]</span></span>
+<span><span class="co">#&gt; [[3]]$constant</span></span>
+<span><span class="co">#&gt; [1] 0.9625255 1.1617802 0.8160145</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]$coef</span></span>
+<span><span class="co">#&gt;              [,1]        [,2]         [,3]        [,4]         [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.387314489  0.03398277  0.034217985  0.10781723 -0.046571965 -0.02299568</span></span>
+<span><span class="co">#&gt; [2,]  0.001779301  0.48054979 -0.001741598  0.02865702  0.205492403 -0.01080436</span></span>
+<span><span class="co">#&gt; [3,] -0.017245793 -0.00786880  0.585949598 -0.00371550 -0.001581034  0.34076521</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[3]]$cov</span></span>
+<span><span class="co">#&gt;            [,1]        [,2]        [,3]</span></span>
+<span><span class="co">#&gt; [1,] 1.00731999  0.03633079  0.04965056</span></span>
+<span><span class="co">#&gt; [2,] 0.03633079  0.89353130 -0.02701402</span></span>
+<span><span class="co">#&gt; [3,] 0.04965056 -0.02701402  1.01764574</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]</span></span>
+<span><span class="co">#&gt; [[4]]$constant</span></span>
+<span><span class="co">#&gt; [1] 1.0072154 0.7881492 1.3793954</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]$coef</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]        [,3]         [,4]        [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.36758525 -0.03591149 -0.03675947 0.1448151430 0.019685886 0.039052584</span></span>
+<span><span class="co">#&gt; [2,] -0.01164483  0.55576980  0.01356325 0.0009545091 0.172674735 0.001263999</span></span>
+<span><span class="co">#&gt; [3,] -0.05748517  0.01461848  0.63786131 0.0062837028 0.009153765 0.221367633</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[4]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
+<span><span class="co">#&gt; [1,]  0.99428428 -0.03969732 -0.01109314</span></span>
+<span><span class="co">#&gt; [2,] -0.03969732  1.00684355  0.02687373</span></span>
+<span><span class="co">#&gt; [3,] -0.01109314  0.02687373  0.98994616</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[5]]</span></span>
+<span><span class="co">#&gt; [[5]]$constant</span></span>
+<span><span class="co">#&gt; [1] 1.1563747 0.6489412 1.0588652</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[5]]$coef</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]       [,3]       [,4]          [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.34769124 -0.01774602 0.02370469 0.12287694 -0.0008137301 -0.02862023</span></span>
+<span><span class="co">#&gt; [2,] -0.04701790  0.49252858 0.05574341 0.02032942  0.2489501465 -0.03315115</span></span>
+<span><span class="co">#&gt; [3,] -0.02927806 -0.02989915 0.59606680 0.03774691  0.0264441791  0.30269867</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[5]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]         [,3]</span></span>
+<span><span class="co">#&gt; [1,] 0.967004145  0.02661108  0.007126847</span></span>
+<span><span class="co">#&gt; [2,] 0.026611081  0.95755262 -0.011130767</span></span>
+<span><span class="co">#&gt; [3,] 0.007126847 -0.01113077  1.017224670</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[6]]</span></span>
+<span><span class="co">#&gt; [[6]]$constant</span></span>
+<span><span class="co">#&gt; [1] 1.0122311 0.9821801 1.0640212</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[6]]$coef</span></span>
+<span><span class="co">#&gt;              [,1]        [,2]        [,3]         [,4]         [,5]       [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.422294792 -0.02173318 -0.04781544  0.102915806 0.0069815446 0.04742816</span></span>
+<span><span class="co">#&gt; [2,] -0.007030334  0.50703672 -0.06449920 -0.049537626 0.2043790301 0.07221843</span></span>
+<span><span class="co">#&gt; [3,]  0.026390818  0.01110491  0.56364536 -0.009568856 0.0001919468 0.32417544</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[6]]$cov</span></span>
+<span><span class="co">#&gt;               [,1]       [,2]          [,3]</span></span>
+<span><span class="co">#&gt; [1,]  1.0111198563 0.04610627 -0.0008635716</span></span>
+<span><span class="co">#&gt; [2,]  0.0461062711 0.99542463  0.0538673257</span></span>
+<span><span class="co">#&gt; [3,] -0.0008635716 0.05386733  0.9261752104</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[7]]</span></span>
+<span><span class="co">#&gt; [[7]]$constant</span></span>
+<span><span class="co">#&gt; [1] 1.2390079 0.9772929 0.9997870</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[7]]$coef</span></span>
+<span><span class="co">#&gt;             [,1]          [,2]        [,3]        [,4]       [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.44903817 -0.0601045100 -0.01546071  0.05524027 0.01796034 0.005724359</span></span>
+<span><span class="co">#&gt; [2,] -0.04670476  0.5299439782 -0.05048147  0.02884935 0.15330528 0.054024206</span></span>
+<span><span class="co">#&gt; [3,]  0.03481530  0.0008994912  0.55615647 -0.03407587 0.03315500 0.333956146</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[7]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]        [,3]</span></span>
+<span><span class="co">#&gt; [1,]  1.02236705  0.01536160 -0.07710838</span></span>
+<span><span class="co">#&gt; [2,]  0.01536160  0.92596621 -0.04101406</span></span>
+<span><span class="co">#&gt; [3,] -0.07710838 -0.04101406  1.06871132</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[8]]</span></span>
+<span><span class="co">#&gt; [[8]]$constant</span></span>
+<span><span class="co">#&gt; [1] 1.431899 1.292935 1.012757</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[8]]$coef</span></span>
+<span><span class="co">#&gt;             [,1]          [,2]         [,3]        [,4]        [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.40713790 -0.0007877583 -0.009534469 0.078319650 -0.05136826 -0.01198658</span></span>
+<span><span class="co">#&gt; [2,] -0.02284324  0.4869293147  0.003511874 0.025897582  0.20356846 -0.02499286</span></span>
+<span><span class="co">#&gt; [3,] -0.06726107  0.0198557174  0.569060654 0.005417727  0.01228816  0.33028598</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[8]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]       [,2]        [,3]</span></span>
+<span><span class="co">#&gt; [1,]  1.01846132 0.04556160 -0.05487458</span></span>
+<span><span class="co">#&gt; [2,]  0.04556160 0.92826043  0.06792138</span></span>
+<span><span class="co">#&gt; [3,] -0.05487458 0.06792138  1.06185577</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[9]]</span></span>
+<span><span class="co">#&gt; [[9]]$constant</span></span>
+<span><span class="co">#&gt; [1] 0.7906723 0.9371424 1.0302616</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[9]]$coef</span></span>
+<span><span class="co">#&gt;            [,1]        [,2]       [,3]         [,4]       [,5]         [,6]</span></span>
+<span><span class="co">#&gt; [1,] 0.44248349  0.03633455 0.03452381  0.080468237 0.01352517 -0.026384462</span></span>
+<span><span class="co">#&gt; [2,] 0.03957075  0.47697059 0.00204900 -0.001293086 0.21604839  0.001096854</span></span>
+<span><span class="co">#&gt; [3,] 0.04026347 -0.04818074 0.56119133 -0.009810479 0.06034822  0.324471289</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[9]]$cov</span></span>
+<span><span class="co">#&gt;              [,1]         [,2]         [,3]</span></span>
+<span><span class="co">#&gt; [1,]  0.911376281  0.001190159 -0.019759492</span></span>
+<span><span class="co">#&gt; [2,]  0.001190159  0.997640210 -0.002934869</span></span>
+<span><span class="co">#&gt; [3,] -0.019759492 -0.002934869  0.937569755</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[10]]</span></span>
+<span><span class="co">#&gt; [[10]]$constant</span></span>
+<span><span class="co">#&gt; [1] 0.9170386 1.0921253 1.1220770</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[10]]$coef</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]        [,3]         [,4]        [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,]  0.38922120 0.005973010  0.01038857  0.094160748 -0.02232555 0.008267599</span></span>
+<span><span class="co">#&gt; [2,]  0.04004084 0.480036149 -0.06276185 -0.062625067  0.21461737 0.057985062</span></span>
+<span><span class="co">#&gt; [3,] -0.05361224 0.005343913  0.60051783  0.003481464  0.01078946 0.297470371</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; [[10]]$cov</span></span>
+<span><span class="co">#&gt;             [,1]        [,2]         [,3]</span></span>
+<span><span class="co">#&gt; [1,]  1.00247113 0.001030410 -0.053567210</span></span>
+<span><span class="co">#&gt; [2,]  0.00103041 0.997905516  0.007351553</span></span>
+<span><span class="co">#&gt; [3,] -0.05356721 0.007351553  0.954848521</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

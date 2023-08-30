@@ -62,19 +62,20 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">LambdaSeq</span><span class="op">(</span><span class="va">Y</span>, <span class="va">X</span>, <span class="va">n_lambdas</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">LambdaSeq</span><span class="op">(</span><span class="va">YStd</span>, <span class="va">XStd</span>, <span class="va">n_lambdas</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>Y</dt>
+    <dl><dt>YStd</dt>
 <dd><p>Numeric matrix.
-Matrix of dependent variables (Y).</p></dd>
+Matrix of standardized dependent variables (Y).</p></dd>
 
 
-<dt>X</dt>
+<dt>XStd</dt>
 <dd><p>Numeric matrix.
-Matrix of predictors (X).</p></dd>
+Matrix of standardized predictors (X).
+<code>XStd</code> should not include a vector of ones in column one.</p></dd>
 
 
 <dt>n_lambdas</dt>
@@ -115,9 +116,9 @@ Number of lambdas to generate.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">Ystd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">Xstd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">LambdaSeq</span><span class="op">(</span>Y <span class="op">=</span> <span class="va">Ystd</span>, X <span class="op">=</span> <span class="va">Xstd</span>, n_lambdas <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">YStd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">Y</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">XStd</span> <span class="op">&lt;-</span> <span class="fu"><a href="StdMat.html">StdMat</a></span><span class="op">(</span><span class="va">dat_p2_yx</span><span class="op">$</span><span class="va">X</span><span class="op">[</span>, <span class="op">-</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span> <span class="co"># remove the constant column</span></span></span>
+<span class="r-in"><span><span class="fu">LambdaSeq</span><span class="op">(</span>YStd <span class="op">=</span> <span class="va">YStd</span>, XStd <span class="op">=</span> <span class="va">XStd</span>, n_lambdas <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>               [,1]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1,] 166.1666667</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2,] 154.9675895</span>

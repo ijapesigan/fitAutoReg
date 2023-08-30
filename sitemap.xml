@@ -31,6 +31,12 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/news/index.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/BootCI.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/BootSE.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitMLVARDynr.html</loc>
   </url>
   <url>
@@ -62,12 +68,6 @@
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/OrigScale.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootCI.html</loc>
-  </url>
-  <url>
-    <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootSE.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootVARLasso.html</loc>
