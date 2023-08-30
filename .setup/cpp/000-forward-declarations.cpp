@@ -47,3 +47,9 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
                          const arma::mat& chol_cov);
 
 Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in);
+
+Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B);
+
+Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B,
+                         int n_lambdas, const std::string& crit, int max_iter,
+                         double tol);

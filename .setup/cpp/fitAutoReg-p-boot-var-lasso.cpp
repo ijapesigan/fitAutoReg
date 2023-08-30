@@ -7,6 +7,7 @@
 
 //' Parametric Bootstrap for the Vector Autoregressive Model
 //' Using Lasso Regularization
+//'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
 //' @param data Numeric matrix.
