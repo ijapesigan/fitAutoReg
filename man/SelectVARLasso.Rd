@@ -22,11 +22,11 @@ of autoregression and cross regression coefficients.
 Select the Lasso Estimates from the Grid Search
 }
 \examples{
-Ystd <- StdMat(dat_p2_yx$Y)
-Xstd <- StdMat(dat_p2_yx$X[, -1])
+YStd <- StdMat(dat_p2_yx$Y)
+XStd <- StdMat(dat_p2_yx$X[, -1])
 lambdas <- 10^seq(-5, 5, length.out = 100)
 search <- SearchVARLasso(
-  Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
+  YStd = YStd, XStd = XStd, lambdas = lambdas,
   max_iter = 10000, tol = 1e-5
 )
 SelectVARLasso(search, crit = "ebic")
@@ -34,8 +34,8 @@ SelectVARLasso(search, crit = "ebic")
 }
 \seealso{
 Other Simulation of Autoregressive Data Functions: 
-\code{\link{PBootCI}()},
-\code{\link{PBootSE}()},
+\code{\link{BootCI}()},
+\code{\link{BootSE}()},
 \code{\link{SimVAR}()},
 \code{\link{YX}()}
 }

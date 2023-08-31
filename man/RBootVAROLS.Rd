@@ -22,9 +22,14 @@ Number of bootstrap samples to generate.}
 \value{
 List with the following elements:
 \itemize{
-\item List of bootstrap estimates
-\item original \code{X}
-\item List of bootstrapped \code{Y}
+\item \strong{est}: Numeric matrix.
+Original OLS estimate of the coefficient matrix.
+\item \strong{boot}: Numeric matrix.
+Matrix of vectorized bootstrap estimates of the coefficient matrix.
+\item \strong{X}: Numeric matrix.
+Original \code{X}
+\item \strong{Y}: List of numeric matrices.
+Bootstrapped \code{Y}
 }
 }
 \description{
@@ -32,8 +37,7 @@ Residual Bootstrap for the Vector Autoregressive Model
 Using Ordinary Least Squares
 }
 \examples{
-rb <- RBootVAROLS(data = dat_p2, p = 2, B = 10)
-str(rb)
+RBootVAROLS(data = dat_p2, p = 2, B = 10)
 
 }
 \seealso{

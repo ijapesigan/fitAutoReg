@@ -2,7 +2,8 @@
 % Please edit documentation in R/RcppExports.R
 \name{FitVAROLS}
 \alias{FitVAROLS}
-\title{Fit Vector Autoregressive (VAR) Model Parameters using OLS}
+\title{Fit Vector Autoregressive (VAR) Model Parameters
+using Ordinary Least Squares (OLS)}
 \usage{
 FitVAROLS(Y, X)
 }
@@ -30,8 +31,8 @@ using the Ordinary Least Squares (OLS) method.
 Given the input matrices \code{Y} and \code{X},
 where \code{Y} is the matrix of dependent variables,
 and \code{X} is the matrix of predictors,
-the function computes the autoregressive and cross-regression coefficients
-of the VAR model.
+the function computes the autoregressive
+and cross-regression coefficients of the VAR model.
 Note that if the first column of \code{X} is a vector of ones,
 the constant vector is also estimated.
 
@@ -39,7 +40,7 @@ The steps involved in estimating the VAR model parameters
 using OLS are as follows:
 \itemize{
 \item Compute the QR decomposition of the lagged predictor matrix \code{X}
-using the \code{qr} function from the Armadillo library.
+using the \code{qr_econ} function from the Armadillo library.
 \item Extract the \code{Q} and \code{R} matrices from the QR decomposition.
 \item Solve the linear system \code{R * coef = Q.t() * Y}
 to estimate the VAR model coefficients \code{coef}.
@@ -54,8 +55,6 @@ FitVAROLS(Y = Y, X = X)
 
 }
 \seealso{
-The \code{qr_econ} function from the Armadillo library for QR decomposition.
-
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
 \code{\link{FitMLVARMplus}()},

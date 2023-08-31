@@ -24,16 +24,20 @@ Number of burn-in observations to exclude before returning the results
 in the simulation step.}
 }
 \value{
-List containing the estimates (\code{est})
-and bootstrap estimates (\code{boot}).
+List with the following elements:
+\itemize{
+\item \strong{est}: Numeric matrix.
+Original OLS estimate of the coefficient matrix.
+\item \strong{boot}: Numeric matrix.
+Matrix of vectorized bootstrap estimates of the coefficient matrix.
+}
 }
 \description{
 Parametric Bootstrap for the Vector Autoregressive Model
 Using Ordinary Least Squares
 }
 \examples{
-pb <- PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
-str(pb)
+PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
 
 }
 \seealso{

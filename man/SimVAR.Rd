@@ -111,8 +111,8 @@ head(y)
 }
 \seealso{
 Other Simulation of Autoregressive Data Functions: 
-\code{\link{PBootCI}()},
-\code{\link{PBootSE}()},
+\code{\link{BootCI}()},
+\code{\link{BootSE}()},
 \code{\link{SelectVARLasso}()},
 \code{\link{YX}()}
 }

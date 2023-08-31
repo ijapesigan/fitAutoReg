@@ -18,11 +18,11 @@ lapply(
     )
     Y <- dat_p2_yx$Y
     X <- dat_p2_yx$X
-    Ystd <- StdMat(Y)
-    Xstd <- StdMat(X[, -1])
+    YStd <- StdMat(Y)
+    XStd <- StdMat(X[, -1])
     lambdas <- 10^seq(-5, 5, length.out = 100)
     search <- SearchVARLasso(
-      Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
+      YStd = YStd, XStd = XStd, lambdas = lambdas,
       max_iter = 10000, tol = 1e-5
     )
     lasso <- OrigScale(

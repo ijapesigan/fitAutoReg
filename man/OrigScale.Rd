@@ -22,10 +22,10 @@ Return Standardized Estimates to the Original Scale
 }
 \examples{
 Y <- dat_p2_yx$Y
-X <- dat_p2_yx$X[, -1]
-Ystd <- StdMat(Y)
-Xstd <- StdMat(X)
-coef_std <- FitVAROLS(Y = Ystd, X = Xstd)
+X <- dat_p2_yx$X[, -1] # remove the constant column
+YStd <- StdMat(Y)
+XStd <- StdMat(X)
+coef_std <- FitVAROLS(Y = YStd, X = XStd)
 FitVAROLS(Y = Y, X = X)
 OrigScale(coef_std = coef_std, Y = Y, X = X)
 

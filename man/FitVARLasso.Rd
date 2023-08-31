@@ -2,37 +2,42 @@
 % Please edit documentation in R/RcppExports.R
 \name{FitVARLasso}
 \alias{FitVARLasso}
-\title{Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization}
+\title{Fit Vector Autoregressive (VAR) Model Parameters
+using Lasso Regularization}
 \usage{
-FitVARLasso(Ystd, Xstd, lambda, max_iter, tol)
+FitVARLasso(YStd, XStd, lambda, max_iter, tol)
 }
 \arguments{
-\item{Ystd}{Numeric matrix.
+\item{YStd}{Numeric matrix.
 Matrix of standardized dependent variables (Y).}
 
-\item{Xstd}{Numeric matrix.
+\item{XStd}{Numeric matrix.
 Matrix of standardized predictors (X).
-\code{Xstd} should not include a vector of ones in column one.}
+\code{XStd} should not include a vector of ones in column one.}
 
-\item{lambda}{Lasso hyperparameter.
+\item{lambda}{Numeric.
+Lasso hyperparameter.
 The regularization strength controlling the sparsity.}
 
 \item{max_iter}{Integer.
-The maximum number of iterations for the coordinate descent algorithm
+The maximum number of iterations
+for the coordinate descent algorithm
 (e.g., \code{max_iter = 10000}).}
 
 \item{tol}{Numeric.
-Convergence tolerance. The algorithm stops when the change in coefficients
+Convergence tolerance.
+The algorithm stops when the change in coefficients
 between iterations is below this tolerance
 (e.g., \code{tol = 1e-5}).}
 }
 \value{
-Matrix of estimated autoregressive and
-cross-regression coefficients.
+Matrix of estimated autoregressive
+and cross-regression coefficients.
 }
 \description{
 This function estimates the parameters of a VAR model
-using the Lasso regularization method with cyclical coordinate descent.
+using the Lasso regularization method
+with cyclical coordinate descent.
 The Lasso method is used to estimate the autoregressive
 and cross-regression coefficients with sparsity.
 }
@@ -40,9 +45,9 @@ and cross-regression coefficients with sparsity.
 The \code{\link[=FitVARLasso]{FitVARLasso()}} function estimates the parameters
 of a Vector Autoregressive (VAR) model
 using the Lasso regularization method.
-Given the input matrices \code{Ystd} and \code{Xstd},
-where \code{Ystd} is the matrix of standardized dependent variables,
-and \code{Xstd} is the matrix of standardized predictors,
+Given the input matrices \code{YStd} and \code{XStd},
+where \code{YStd} is the matrix of standardized dependent variables,
+and \code{XStd} is the matrix of standardized predictors,
 the function computes the autoregressive and cross-regression coefficients
 of the VAR model with sparsity induced by the Lasso regularization.
 
@@ -59,10 +64,10 @@ to estimate the coefficients iteratively.
 The loop iterates \code{max_iter} times,
 or until convergence is achieved.
 The outer loop iterates over the predictor variables
-(columns of \code{Xstd}),
+(columns of \code{XStd}),
 while the inner loop iterates over the outcome variables
-(columns of \code{Ystd}).
-\item \strong{Coefficient Update}: For each predictor variable (column of \code{Xstd}),
+(columns of \code{YStd}).
+\item \strong{Coefficient Update}: For each predictor variable (column of \code{XStd}),
 the function iteratively updates the corresponding column of \code{beta}
 using the coordinate descent algorithm with L1 norm regularization
 (Lasso).
@@ -80,17 +85,19 @@ the algorithm is considered converged, and the loop exits.
 }
 }
 \examples{
-Ystd <- StdMat(dat_p2_yx$Y)
-Xstd <- StdMat(dat_p2_yx$X[, -1])
+YStd <- StdMat(dat_p2_yx$Y)
+XStd <- StdMat(dat_p2_yx$X[, -1]) # remove the constant column
 lambda <- 73.90722
-FitVARLasso(Ystd = Ystd, Xstd = Xstd, lambda = lambda,
-  max_iter = 10000, tol = 1e-5)
+FitVARLasso(
+  YStd = YStd,
+  XStd = XStd,
+  lambda = lambda,
+  max_iter = 10000,
+  tol = 1e-5
+)
 
 }
 \seealso{
-The \code{\link[=FitVAROLS]{FitVAROLS()}} function for estimating VAR model parameters
-using OLS.
-
 Other Fitting Autoregressive Model Functions: 
 \code{\link{FitMLVARDynr}()},
 \code{\link{FitMLVARMplus}()},

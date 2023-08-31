@@ -12,33 +12,33 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // FitVARLassoSearch
-arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd, const arma::vec& lambdas, const std::string& crit, int max_iter, double tol);
-RcppExport SEXP _fitAutoReg_FitVARLassoSearch(SEXP YstdSEXP, SEXP XstdSEXP, SEXP lambdasSEXP, SEXP critSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd, const arma::vec& lambdas, const std::string& crit, int max_iter, double tol);
+RcppExport SEXP _fitAutoReg_FitVARLassoSearch(SEXP YStdSEXP, SEXP XStdSEXP, SEXP lambdasSEXP, SEXP critSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type Ystd(YstdSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type Xstd(XstdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type YStd(YStdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type XStd(XStdSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type lambdas(lambdasSEXP);
     Rcpp::traits::input_parameter< const std::string& >::type crit(critSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(FitVARLassoSearch(Ystd, Xstd, lambdas, crit, max_iter, tol));
+    rcpp_result_gen = Rcpp::wrap(FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol));
     return rcpp_result_gen;
 END_RCPP
 }
 // FitVARLasso
-arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd, const double& lambda, int max_iter, double tol);
-RcppExport SEXP _fitAutoReg_FitVARLasso(SEXP YstdSEXP, SEXP XstdSEXP, SEXP lambdaSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double& lambda, int max_iter, double tol);
+RcppExport SEXP _fitAutoReg_FitVARLasso(SEXP YStdSEXP, SEXP XStdSEXP, SEXP lambdaSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type Ystd(YstdSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type Xstd(XstdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type YStd(YStdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type XStd(XStdSEXP);
     Rcpp::traits::input_parameter< const double& >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(FitVARLasso(Ystd, Xstd, lambda, max_iter, tol));
+    rcpp_result_gen = Rcpp::wrap(FitVARLasso(YStd, XStd, lambda, max_iter, tol));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -55,15 +55,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // LambdaSeq
-arma::vec LambdaSeq(const arma::mat& Y, const arma::mat& X, int n_lambdas);
-RcppExport SEXP _fitAutoReg_LambdaSeq(SEXP YSEXP, SEXP XSEXP, SEXP n_lambdasSEXP) {
+arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd, int n_lambdas);
+RcppExport SEXP _fitAutoReg_LambdaSeq(SEXP YStdSEXP, SEXP XStdSEXP, SEXP n_lambdasSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type YStd(YStdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type XStd(XStdSEXP);
     Rcpp::traits::input_parameter< int >::type n_lambdas(n_lambdasSEXP);
-    rcpp_result_gen = Rcpp::wrap(LambdaSeq(Y, X, n_lambdas));
+    rcpp_result_gen = Rcpp::wrap(LambdaSeq(YStd, XStd, n_lambdas));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -143,17 +143,17 @@ BEGIN_RCPP
 END_RCPP
 }
 // SearchVARLasso
-Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd, const arma::vec& lambdas, int max_iter, double tol);
-RcppExport SEXP _fitAutoReg_SearchVARLasso(SEXP YstdSEXP, SEXP XstdSEXP, SEXP lambdasSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd, const arma::vec& lambdas, int max_iter, double tol);
+RcppExport SEXP _fitAutoReg_SearchVARLasso(SEXP YStdSEXP, SEXP XStdSEXP, SEXP lambdasSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type Ystd(YstdSEXP);
-    Rcpp::traits::input_parameter< const arma::mat& >::type Xstd(XstdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type YStd(YStdSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type XStd(XStdSEXP);
     Rcpp::traits::input_parameter< const arma::vec& >::type lambdas(lambdasSEXP);
     Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
     Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
-    rcpp_result_gen = Rcpp::wrap(SearchVARLasso(Ystd, Xstd, lambdas, max_iter, tol));
+    rcpp_result_gen = Rcpp::wrap(SearchVARLasso(YStd, XStd, lambdas, max_iter, tol));
     return rcpp_result_gen;
 END_RCPP
 }

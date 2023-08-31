@@ -82,8 +82,8 @@ The \code{\link[=SimVAR]{SimVAR()}} function for simulating time series data
 from a VAR model.
 
 Other Simulation of Autoregressive Data Functions: 
-\code{\link{PBootCI}()},
-\code{\link{PBootSE}()},
+\code{\link{BootCI}()},
+\code{\link{BootSE}()},
 \code{\link{SelectVARLasso}()},
 \code{\link{SimVAR}()}
 }

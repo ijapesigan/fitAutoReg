@@ -2,32 +2,35 @@
 % Please edit documentation in R/RcppExports.R
 \name{FitVARLassoSearch}
 \alias{FitVARLassoSearch}
-\title{Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
-with Lambda Search}
+\title{Fit Vector Autoregressive (VAR) Model Parameters
+using Lasso Regularization with Lambda Search}
 \usage{
-FitVARLassoSearch(Ystd, Xstd, lambdas, crit, max_iter, tol)
+FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol)
 }
 \arguments{
-\item{Ystd}{Numeric matrix.
+\item{YStd}{Numeric matrix.
 Matrix of standardized dependent variables (Y).}
 
-\item{Xstd}{Numeric matrix.
+\item{XStd}{Numeric matrix.
 Matrix of standardized predictors (X).
-\code{Xstd} should not include a vector of ones in column one.}
+\code{XStd} should not include a vector of ones in column one.}
 
 \item{lambdas}{Numeric vector.
-Vector of lambda hyperparameters for Lasso regularization.}
+Lasso hyperparameter.
+The regularization strength controlling the sparsity.}
 
 \item{crit}{Character string.
 Information criteria to use.
 Valid values include \code{"aic"}, \code{"bic"}, and \code{"ebic"}.}
 
 \item{max_iter}{Integer.
-The maximum number of iterations for the coordinate descent algorithm
+The maximum number of iterations
+for the coordinate descent algorithm
 (e.g., \code{max_iter = 10000}).}
 
 \item{tol}{Numeric.
-Convergence tolerance. The algorithm stops when the change in coefficients
+Convergence tolerance.
+The algorithm stops when the change in coefficients
 between iterations is below this tolerance
 (e.g., \code{tol = 1e-5}).}
 }
@@ -36,15 +39,25 @@ Matrix of estimated autoregressive
 and cross-regression coefficients.
 }
 \description{
-Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
-with Lambda Search
+Fit Vector Autoregressive (VAR) Model Parameters
+using Lasso Regularization with Lambda Search
 }
 \examples{
-Ystd <- StdMat(dat_p2_yx$Y)
-Xstd <- StdMat(dat_p2_yx$X[, -1])
-lambdas <- LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
-FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
-  crit = "ebic", max_iter = 1000, tol = 1e-5)
+YStd <- StdMat(dat_p2_yx$Y)
+XStd <- StdMat(dat_p2_yx$X[, -1]) # remove the constant column
+lambdas <- LambdaSeq(
+  YStd = YStd,
+  XStd = XStd,
+  n_lambdas = 100
+)
+FitVARLassoSearch(
+  YStd = YStd,
+  XStd = XStd,
+  lambdas = lambdas,
+  crit = "ebic",
+  max_iter = 1000,
+  tol = 1e-5
+)
 
 }
 \seealso{

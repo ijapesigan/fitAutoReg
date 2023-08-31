@@ -4,14 +4,15 @@
 \alias{LambdaSeq}
 \title{Function to generate the sequence of lambdas}
 \usage{
-LambdaSeq(Y, X, n_lambdas)
+LambdaSeq(YStd, XStd, n_lambdas)
 }
 \arguments{
-\item{Y}{Numeric matrix.
-Matrix of dependent variables (Y).}
+\item{YStd}{Numeric matrix.
+Matrix of standardized dependent variables (Y).}
 
-\item{X}{Numeric matrix.
-Matrix of predictors (X).}
+\item{XStd}{Numeric matrix.
+Matrix of standardized predictors (X).
+\code{XStd} should not include a vector of ones in column one.}
 
 \item{n_lambdas}{Integer.
 Number of lambdas to generate.}
@@ -23,9 +24,9 @@ Returns a vector of lambdas.
 Function to generate the sequence of lambdas
 }
 \examples{
-Ystd <- StdMat(dat_p2_yx$Y)
-Xstd <- StdMat(dat_p2_yx$X[, -1])
-LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
+YStd <- StdMat(dat_p2_yx$Y)
+XStd <- StdMat(dat_p2_yx$X[, -1]) # remove the constant column
+LambdaSeq(YStd = YStd, XStd = XStd, n_lambdas = 100)
 
 }
 \seealso{

@@ -31,26 +31,40 @@ Information criteria to use.
 Valid values include \code{"aic"}, \code{"bic"}, and \code{"ebic"}.}
 
 \item{max_iter}{Integer.
-The maximum number of iterations for the coordinate descent algorithm
+The maximum number of iterations
+for the coordinate descent algorithm
 (e.g., \code{max_iter = 10000}).}
 
 \item{tol}{Numeric.
-Convergence tolerance. The algorithm stops when the change in coefficients
+Convergence tolerance.
+The algorithm stops when the change in coefficients
 between iterations is below this tolerance
 (e.g., \code{tol = 1e-5}).}
 }
 \value{
-List containing the estimates (\code{est})
-and bootstrap estimates (\code{boot}).
+List with the following elements:
+\itemize{
+\item \strong{est}: Numeric matrix.
+Original Lasso estimate of the coefficient matrix.
+\item \strong{boot}: Numeric matrix.
+Matrix of vectorized bootstrap estimates of the coefficient matrix.
+}
 }
 \description{
 Parametric Bootstrap for the Vector Autoregressive Model
 Using Lasso Regularization
 }
 \examples{
-pb <- PBootVARLasso(data = dat_p2, p = 2, B = 10, burn_in = 20,
-  n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
-str(pb)
+PBootVARLasso(
+  data = dat_p2,
+  p = 2,
+  B = 10,
+  burn_in = 20,
+  n_lambdas = 100,
+  crit = "ebic",
+  max_iter = 1000,
+  tol = 1e-5
+)
 
 }
 \seealso{

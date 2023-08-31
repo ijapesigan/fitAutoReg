@@ -1,3 +1,7 @@
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/000-forward-declarations.cpp
+// -----------------------------------------------------------------------------
+
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
@@ -13,17 +17,27 @@ arma::mat StdMat(const arma::mat& X);
 
 arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X);
 
-arma::vec LambdaSeq(const arma::mat& Y, const arma::mat& X, int n_lambdas);
+arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
+                    int n_lambdas);
 
-arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
+arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
                       const double& lambda, int max_iter, double tol);
 
-arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
+arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
                             const arma::vec& lambdas, const std::string& crit,
                             int max_iter, double tol);
 
-Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
+Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
                           const arma::vec& lambdas, int max_iter, double tol);
+
+arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant,
+                         const arma::mat& coef, const arma::mat& chol_cov);
+
+arma::mat PBootVAROLSSim(int B, int time, int burn_in,
+                         const arma::vec& constant, const arma::mat& coef,
+                         const arma::mat& chol_cov);
+
+Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in);
 
 arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
                            const arma::mat& coef, const arma::mat& chol_cov,
@@ -39,15 +53,6 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
                          int n_lambdas, const std::string& crit, int max_iter,
                          double tol);
 
-arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant,
-                         const arma::mat& coef, const arma::mat& chol_cov);
-
-arma::mat PBootVAROLSSim(int B, int time, int burn_in,
-                         const arma::vec& constant, const arma::mat& coef,
-                         const arma::mat& chol_cov);
-
-Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in);
-
 Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B);
 
 Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
@@ -59,61 +64,61 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//' Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
-//' with Lambda Search
+//' Fit Vector Autoregressive (VAR) Model Parameters
+//' using Lasso Regularization with Lambda Search
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param Ystd Numeric matrix.
-//'   Matrix of standardized dependent variables (Y).
-//' @param Xstd Numeric matrix.
-//'   Matrix of standardized predictors (X).
-//'   `Xstd` should not include a vector of ones in column one.
 //' @param lambdas Numeric vector.
-//'   Vector of lambda hyperparameters for Lasso regularization.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
+//'   Lasso hyperparameter.
+//'   The regularization strength controlling the sparsity.
 //' @param crit Character string.
 //'   Information criteria to use.
 //'   Valid values include `"aic"`, `"bic"`, and `"ebic"`.
+//' @inheritParams FitVARLasso
 //'
 //' @return Matrix of estimated autoregressive
-//' and cross-regression coefficients.
+//'   and cross-regression coefficients.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_p2_yx$Y)
-//' Xstd <- StdMat(dat_p2_yx$X[, -1])
-//' lambdas <- LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
-//' FitVARLassoSearch(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
-//'   crit = "ebic", max_iter = 1000, tol = 1e-5)
+//' YStd <- StdMat(dat_p2_yx$Y)
+//' XStd <- StdMat(dat_p2_yx$X[, -1]) # remove the constant column
+//' lambdas <- LambdaSeq(
+//'   YStd = YStd,
+//'   XStd = XStd,
+//'   n_lambdas = 100
+//' )
+//' FitVARLassoSearch(
+//'   YStd = YStd,
+//'   XStd = XStd,
+//'   lambdas = lambdas,
+//'   crit = "ebic",
+//'   max_iter = 1000,
+//'   tol = 1e-5
+//' )
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
+arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
                             const arma::vec& lambdas, const std::string& crit,
                             int max_iter, double tol) {
-  int n = Xstd.n_rows;  // Number of observations (rows in X)
-  int q = Xstd.n_cols;  // Number of columns in X (predictors)
+  int n = XStd.n_rows;  // Number of observations (rows in X)
+  int q = XStd.n_cols;  // Number of columns in X (predictors)
 
   // Variables to track the minimum criterion value
   double min_criterion = std::numeric_limits<double>::infinity();
-  arma::mat beta_min_criterion;
+  arma::mat beta_min_crit;
 
   for (arma::uword i = 0; i < lambdas.n_elem; ++i) {
     double lambda = lambdas(i);
 
     // Fit the VAR model using Lasso regularization
-    arma::mat beta = FitVARLasso(Ystd, Xstd, lambda, max_iter, tol);
+    arma::mat beta = FitVARLasso(YStd, XStd, lambda, max_iter, tol);
 
     // Calculate the residuals
-    arma::mat residuals = Ystd - Xstd * beta.t();
+    arma::mat residuals = YStd - XStd * beta.t();
 
     // Compute the residual sum of squares (RSS)
     double rss = arma::accu(residuals % residuals);
@@ -139,11 +144,11 @@ arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
 
     if (current_criterion < min_criterion) {
       min_criterion = current_criterion;
-      beta_min_criterion = beta;
+      beta_min_crit = beta;
     }
   }
 
-  return beta_min_criterion;
+  return beta_min_crit;
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-fit-var-lasso.cpp
@@ -152,47 +157,57 @@ arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//' Fit Vector Autoregressive (VAR) Model Parameters using Lasso Regularization
+//' Fit Vector Autoregressive (VAR) Model Parameters
+//' using Lasso Regularization
 //'
 //' This function estimates the parameters of a VAR model
-//' using the Lasso regularization method with cyclical coordinate descent.
+//' using the Lasso regularization method
+//' with cyclical coordinate descent.
 //' The Lasso method is used to estimate the autoregressive
 //' and cross-regression coefficients with sparsity.
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param Ystd Numeric matrix.
+//' @param YStd Numeric matrix.
 //'   Matrix of standardized dependent variables (Y).
-//' @param Xstd Numeric matrix.
+//' @param XStd Numeric matrix.
 //'   Matrix of standardized predictors (X).
-//'   `Xstd` should not include a vector of ones in column one.
-//' @param lambda Lasso hyperparameter.
+//'   `XStd` should not include a vector of ones in column one.
+//' @param lambda Numeric.
+//'   Lasso hyperparameter.
 //'   The regularization strength controlling the sparsity.
 //' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
+//'   The maximum number of iterations
+//'   for the coordinate descent algorithm
 //'   (e.g., `max_iter = 10000`).
 //' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
+//'   Convergence tolerance.
+//'   The algorithm stops when the change in coefficients
 //'   between iterations is below this tolerance
 //'   (e.g., `tol = 1e-5`).
 //'
-//' @return Matrix of estimated autoregressive and
-//' cross-regression coefficients.
+//' @return Matrix of estimated autoregressive
+//'   and cross-regression coefficients.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_p2_yx$Y)
-//' Xstd <- StdMat(dat_p2_yx$X[, -1])
+//' YStd <- StdMat(dat_p2_yx$Y)
+//' XStd <- StdMat(dat_p2_yx$X[, -1]) # remove the constant column
 //' lambda <- 73.90722
-//' FitVARLasso(Ystd = Ystd, Xstd = Xstd, lambda = lambda,
-//'   max_iter = 10000, tol = 1e-5)
+//' FitVARLasso(
+//'   YStd = YStd,
+//'   XStd = XStd,
+//'   lambda = lambda,
+//'   max_iter = 10000,
+//'   tol = 1e-5
+//' )
 //'
 //' @details
 //' The [fitAutoReg::FitVARLasso()] function estimates the parameters
 //' of a Vector Autoregressive (VAR) model
 //' using the Lasso regularization method.
-//' Given the input matrices `Ystd` and `Xstd`,
-//' where `Ystd` is the matrix of standardized dependent variables,
-//' and `Xstd` is the matrix of standardized predictors,
+//' Given the input matrices `YStd` and `XStd`,
+//' where `YStd` is the matrix of standardized dependent variables,
+//' and `XStd` is the matrix of standardized predictors,
 //' the function computes the autoregressive and cross-regression coefficients
 //' of the VAR model with sparsity induced by the Lasso regularization.
 //'
@@ -209,10 +224,10 @@ arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
 //'   The loop iterates `max_iter` times,
 //'   or until convergence is achieved.
 //'   The outer loop iterates over the predictor variables
-//'   (columns of `Xstd`),
+//'   (columns of `XStd`),
 //'   while the inner loop iterates over the outcome variables
-//'   (columns of `Ystd`).
-//' - **Coefficient Update**: For each predictor variable (column of `Xstd`),
+//'   (columns of `YStd`).
+//' - **Coefficient Update**: For each predictor variable (column of `XStd`),
 //'   the function iteratively updates the corresponding column of `beta`
 //'   using the coordinate descent algorithm with L1 norm regularization
 //'   (Lasso).
@@ -228,41 +243,35 @@ arma::mat FitVARLassoSearch(const arma::mat& Ystd, const arma::mat& Xstd,
 //'   is below the tolerance `tol`,
 //'   the algorithm is considered converged, and the loop exits.
 //'
-//' @seealso
-//' The [fitAutoReg::FitVAROLS()] function for estimating VAR model parameters
-//' using OLS.
-//'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
+arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
                       const double& lambda, int max_iter, double tol) {
-  int q = Xstd.n_cols;  // Number of predictors (excluding the intercept column)
-  int k = Ystd.n_cols;  // Number of outcomes
+  int q = XStd.n_cols;  // Number of predictors (excluding the intercept column)
+  int k = YStd.n_cols;  // Number of outcomes
 
-  // OLS starting values
-  // Estimate VAR model parameters using QR decomposition
+  // OLS estimates as starting values
   arma::mat Q, R;
-  arma::qr(Q, R, Xstd);
-  // Solve the linear system R * beta = Q.t() * Ystd
-  arma::mat beta = arma::solve(R, Q.t() * Ystd);
+  arma::qr(Q, R, XStd);
+  arma::mat beta = arma::solve(R, Q.t() * YStd);
 
   // Coordinate Descent Loop
   for (int iter = 0; iter < max_iter; iter++) {
-    arma::mat beta_old = beta;  // Initialize beta_old
-                                // with the current value of beta
+    // Initialize beta_old with the current value of beta
+    arma::mat beta_old = beta;
 
-    // Create a copy of Ystd to use for updating Y_l
-    arma::mat Y_copy = Ystd;
+    // Create a copy of YStd to use for updating Y_l
+    arma::mat Y_copy = YStd;
 
     // Update each coefficient for each predictor
     // using cyclical coordinate descent
     for (int j = 0; j < q; j++) {
-      arma::vec Xj = Xstd.col(j);
+      arma::vec Xj = XStd.col(j);
       for (int l = 0; l < k; l++) {
         arma::vec Y_l = Y_copy.col(l);
-        double rho = dot(Xj, Y_l - Xstd * beta.col(l) + beta(j, l) * Xj);
+        double rho = dot(Xj, Y_l - XStd * beta.col(l) + beta(j, l) * Xj);
         double z = dot(Xj, Xj);
         double c = 0;
 
@@ -306,7 +315,8 @@ arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
 #include <RcppArmadillo.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//' Fit Vector Autoregressive (VAR) Model Parameters using OLS
+//' Fit Vector Autoregressive (VAR) Model Parameters
+//' using Ordinary Least Squares (OLS)
 //'
 //' This function estimates the parameters of a VAR model
 //' using the Ordinary Least Squares (OLS) method.
@@ -321,7 +331,7 @@ arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
 //'   Matrix of predictors (X).
 //'
 //' @return Matrix of estimated autoregressive
-//' and cross-regression coefficients.
+//'   and cross-regression coefficients.
 //'
 //' @examples
 //' Y <- dat_p2_yx$Y
@@ -335,8 +345,8 @@ arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
 //' Given the input matrices `Y` and `X`,
 //' where `Y` is the matrix of dependent variables,
 //' and `X` is the matrix of predictors,
-//' the function computes the autoregressive and cross-regression coefficients
-//' of the VAR model.
+//' the function computes the autoregressive
+//' and cross-regression coefficients of the VAR model.
 //' Note that if the first column of `X` is a vector of ones,
 //' the constant vector is also estimated.
 //'
@@ -344,15 +354,12 @@ arma::mat FitVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
 //' using OLS are as follows:
 //'
 //' - Compute the QR decomposition of the lagged predictor matrix `X`
-//'   using the `qr` function from the Armadillo library.
+//'   using the `qr_econ` function from the Armadillo library.
 //' - Extract the `Q` and `R` matrices from the QR decomposition.
 //' - Solve the linear system `R * coef = Q.t() * Y`
 //'   to estimate the VAR model coefficients `coef`.
 //' - The function returns a matrix containing the estimated
 //'   autoregressive and cross-regression coefficients of the VAR model.
-//'
-//' @seealso
-//' The `qr_econ` function from the Armadillo library for QR decomposition.
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg fit
@@ -379,28 +386,26 @@ arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param Y Numeric matrix.
-//'   Matrix of dependent variables (Y).
-//' @param X Numeric matrix.
-//'   Matrix of predictors (X).
+//' @inheritParams FitVARLasso
 //' @param n_lambdas Integer.
 //'   Number of lambdas to generate.
 //'
 //' @return Returns a vector of lambdas.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_p2_yx$Y)
-//' Xstd <- StdMat(dat_p2_yx$X[, -1])
-//' LambdaSeq(Y = Ystd, X = Xstd, n_lambdas = 100)
+//' YStd <- StdMat(dat_p2_yx$Y)
+//' XStd <- StdMat(dat_p2_yx$X[, -1]) # remove the constant column
+//' LambdaSeq(YStd = YStd, XStd = XStd, n_lambdas = 100)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::vec LambdaSeq(const arma::mat& Y, const arma::mat& X, int n_lambdas) {
-  int k = Y.n_cols;  // Number of variables
+arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
+                    int n_lambdas) {
+  int k = YStd.n_cols;  // Number of variables
 
-  arma::mat XtX = trans(X) * X;
+  arma::mat XtX = trans(XStd) * XStd;
   double lambda_max = arma::max(diagvec(XtX)) / (k * 2);
 
   // Generate the sequence of lambdas
@@ -437,10 +442,10 @@ arma::vec LambdaSeq(const arma::mat& Y, const arma::mat& X, int n_lambdas) {
 //'
 //' @examples
 //' Y <- dat_p2_yx$Y
-//' X <- dat_p2_yx$X[, -1]
-//' Ystd <- StdMat(Y)
-//' Xstd <- StdMat(X)
-//' coef_std <- FitVAROLS(Y = Ystd, X = Xstd)
+//' X <- dat_p2_yx$X[, -1] # remove the constant column
+//' YStd <- StdMat(Y)
+//' XStd <- StdMat(X)
+//' coef_std <- FitVAROLS(Y = YStd, X = XStd)
 //' FitVAROLS(Y = Y, X = X)
 //' OrigScale(coef_std = coef_std, Y = Y, X = X)
 //'
@@ -464,15 +469,15 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
     sd_X(j) = arma::as_scalar(arma::stddev(X.col(j), 0, 0));
   }
 
-  arma::mat coef_orig(k, q);
+  arma::mat orig(k, q);
   for (int l = 0; l < k; l++) {
     for (int j = 0; j < q; j++) {
-      double orig_coeff = coef_std(l, j) * sd_Y(l) / sd_X(j);
-      coef_orig(l, j) = orig_coeff;
+      double orig_coef = coef_std(l, j) * sd_Y(l) / sd_X(j);
+      orig(l, j) = orig_coef;
     }
   }
 
-  return coef_orig;
+  return orig;
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-rep.cpp
@@ -486,10 +491,8 @@ arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
                            const arma::mat& coef, const arma::mat& chol_cov,
                            int n_lambdas, const std::string& crit, int max_iter,
                            double tol) {
-  // Indices
-  int k = constant.n_elem;  // Number of variables
-  int q = coef.n_cols;      // Dimension of the coefficient matrix
-  int p = q / k;            // Order of the VAR model (number of lags)
+  // Order of the VAR model (number of lags)
+  int p = coef.n_cols / constant.n_elem;
 
   // Simulate data
   arma::mat data = SimVAR(time, burn_in, constant, coef, chol_cov);
@@ -502,26 +505,26 @@ arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
 
   // OLS
   arma::mat ols = FitVAROLS(Y, X);
-  arma::vec pb_const = ols.col(0);  // OLS constant vector
+  arma::vec const_b = ols.col(0);  // OLS constant vector
 
   // Standardize
-  arma::mat Xstd = StdMat(X_removed);
-  arma::mat Ystd = StdMat(Y);
+  arma::mat XStd = StdMat(X_removed);
+  arma::mat YStd = StdMat(Y);
 
   // lambdas
-  arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Lasso
-  arma::mat pb_std =
-      FitVARLassoSearch(Ystd, Xstd, lambdas, crit, max_iter, tol);
+  arma::mat coef_std_b =
+      FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol);
 
   // Original scale
-  arma::mat pb_orig = OrigScale(pb_std, Y, X_removed);
+  arma::mat coef_orig = OrigScale(coef_std_b, Y, X_removed);
 
   // OLS constant and Lasso coefficient matrix
-  arma::mat pb_coef = arma::join_horiz(pb_const, pb_orig);
+  arma::mat coef_b = arma::join_horiz(const_b, coef_orig);
 
-  return arma::vectorise(pb_coef);
+  return arma::vectorise(coef_b);
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-sim.cpp
@@ -539,10 +542,9 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
   arma::mat result(B, num_coef, arma::fill::zeros);
 
   for (int i = 0; i < B; i++) {
-    arma::vec coef_est =
-        PBootVARLassoRep(time, burn_in, constant, coef, chol_cov, n_lambdas,
-                         crit, max_iter, tol);
-    result.row(i) = arma::trans(coef_est);
+    arma::vec coef_b = PBootVARLassoRep(time, burn_in, constant, coef, chol_cov,
+                                        n_lambdas, crit, max_iter, tol);
+    result.row(i) = arma::trans(coef_b);
   }
 
   return result;
@@ -559,37 +561,27 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
-//' @param burn_in Integer.
-//'   Number of burn-in observations to exclude before returning the results
-//'   in the simulation step.
-//' @param n_lambdas Integer.
-//'   Number of lambdas to generate.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
-//' @param crit Character string.
-//'   Information criteria to use.
-//'   Valid values include `"aic"`, `"bic"`, and `"ebic"`.
+//' @inheritParams PBootVAROLS
+//' @inheritParams LambdaSeq
+//' @inheritParams FitVARLassoSearch
 //'
-//' @return List containing the estimates (`est`)
-//' and bootstrap estimates (`boot`).
+//' @return List with the following elements:
+//'   - **est**: Numeric matrix.
+//'     Original Lasso estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' pb <- PBootVARLasso(data = dat_p2, p = 2, B = 10, burn_in = 20,
-//'   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
-//' str(pb)
+//' PBootVARLasso(
+//'   data = dat_p2,
+//'   p = 2,
+//'   B = 10,
+//'   burn_in = 20,
+//'   n_lambdas = 100,
+//'   crit = "ebic",
+//'   max_iter = 1000,
+//'   tol = 1e-5
+//' )
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
@@ -598,8 +590,8 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
 Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
                          int n_lambdas, const std::string& crit, int max_iter,
                          double tol) {
-  // Indices
-  int t = data.n_rows;  // Number of observations
+  // Number of observations
+  int t = data.n_rows;
 
   // YX
   Rcpp::List yx = YX(data, p);
@@ -611,14 +603,14 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
   arma::mat ols = FitVAROLS(Y, X);
 
   // Standardize
-  arma::mat Xstd = StdMat(X_removed);
-  arma::mat Ystd = StdMat(Y);
+  arma::mat XStd = StdMat(X_removed);
+  arma::mat YStd = StdMat(Y);
 
   // lambdas
-  arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Lasso
-  arma::mat pb_std = FitVARLassoSearch(Ystd, Xstd, lambdas, "ebic", 1000, 1e-5);
+  arma::mat pb_std = FitVARLassoSearch(YStd, XStd, lambdas, "ebic", 1000, 1e-5);
 
   // Set parameters
   arma::vec const_vec = ols.col(0);                      // OLS constant vector
@@ -661,10 +653,8 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
 // Generate Data and Fit Model
 arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant,
                          const arma::mat& coef, const arma::mat& chol_cov) {
-  // Indices
-  int k = constant.n_elem;  // Number of variables
-  int q = coef.n_cols;      // Dimension of the coefficient matrix
-  int p = q / k;            // Order of the VAR model (number of lags)
+  // Order of the VAR model (number of lags)
+  int p = coef.n_cols / constant.n_elem;
 
   // Simulate data
   arma::mat data = SimVAR(time, burn_in, constant, coef, chol_cov);
@@ -675,9 +665,9 @@ arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant,
   arma::mat Y = yx["Y"];
 
   // OLS
-  arma::mat pb_coef = FitVAROLS(Y, X);
+  arma::mat coef_b = FitVAROLS(Y, X);
 
-  return arma::vectorise(pb_coef);
+  return arma::vectorise(coef_b);
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-ols-sim.cpp
@@ -725,20 +715,22 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
 //'   Number of burn-in observations to exclude before returning the results
 //'   in the simulation step.
 //'
-//' @return List containing the estimates (`est`)
-//' and bootstrap estimates (`boot`).
+//' @return List with the following elements:
+//'   - **est**: Numeric matrix.
+//'     Original OLS estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
-//' str(pb)
+//' PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
 //' @export
 // [[Rcpp::export]]
 Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
-  // Indices
-  int t = data.n_rows;  // Number of observations
+  // Number of observations
+  int t = data.n_rows;
 
   // YX
   Rcpp::List yx = YX(data, p);
@@ -786,39 +778,31 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
-//' @param n_lambdas Integer.
-//'   Number of lambdas to generate.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
-//' @param crit Character string.
-//'   Information criteria to use.
-//'   Valid values include `"aic"`, `"bic"`, and `"ebic"`.
+//' @inheritParams PBootVARLasso
 //'
 //' @return List with the following elements:
-//'   - List of bootstrap estimates
-//'   - original `X`
-//'   - List of bootstrapped `Y`
+//'   - **est**: Numeric matrix.
+//'     Original Lasso estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+//'   - **X**: Numeric matrix.
+//'     Original `X`
+//'   - **Y**: List of numeric matrices.
+//'     Bootstrapped `Y`
 //'
 //' @examples
-//' pb <- RBootVARLasso(data = dat_p2, p = 2, B = 10,
-//'   n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
-//' str(pb)
+//' RBootVARLasso(
+//'   data = dat_p2,
+//'   p = 2,
+//'   B = 10,
+//'   n_lambdas = 100,
+//'   crit = "ebic",
+//'   max_iter = 1000,
+//'   tol = 1e-5
+//' )
 //'
 //' @family Fitting Autoregressive Model Functions
-//' @keywords fitAutoReg pb
+//' @keywords fitAutoReg rb
 //' @export
 // [[Rcpp::export]]
 Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
@@ -836,15 +820,15 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
   arma::mat ols = FitVAROLS(Y, X);
 
   // Standardize
-  arma::mat Xstd = StdMat(X_removed);
-  arma::mat Ystd = StdMat(Y);
+  arma::mat XStd = StdMat(X_removed);
+  arma::mat YStd = StdMat(Y);
 
   // lambdas
-  arma::vec lambdas = LambdaSeq(Ystd, Xstd, n_lambdas);
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Lasso
   arma::mat coef_std =
-      FitVARLassoSearch(Ystd, Xstd, lambdas, "ebic", 1000, 1e-5);
+      FitVARLassoSearch(YStd, XStd, lambdas, "ebic", 1000, 1e-5);
   arma::vec const_vec = ols.col(0);  // OLS constant vector
   arma::mat coef_mat = OrigScale(coef_std, Y, X_removed);  // Lasso coefficients
   arma::mat coef =
@@ -853,8 +837,8 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
   // Calculate the residuals
   arma::mat residuals = Y - X * coef.t();
 
-  // Create a list to store bootstrap parameter estimates
-  Rcpp::List coef_list(B);
+  // Create a matrix to store bootstrap parameter estimates
+  arma::mat coef_b_mat(coef.n_rows * coef.n_cols, B);
 
   // Create a list of bootstrap Y
   Rcpp::List Y_list(B);
@@ -870,17 +854,19 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 
     // Fit VAR model using bootstrapped data
     arma::mat ols_b = FitVAROLS(Y_b, X);
-    arma::mat Ystd_b = StdMat(Y);
+    arma::mat YStd_b = StdMat(Y);
     arma::mat coef_std_b =
-        FitVARLassoSearch(Ystd_b, Xstd, lambdas, "ebic", 1000, 1e-5);
+        FitVARLassoSearch(YStd_b, XStd, lambdas, "ebic", 1000, 1e-5);
 
     // Original scale
     arma::vec const_vec_b = ols_b.col(0);
     arma::mat coef_mat_b = OrigScale(coef_std_b, Y_b, X_removed);
-    arma::mat coef_b = arma::join_horiz(const_vec_b, coef_mat_b);
+    arma::mat coef_lasso_b = arma::join_horiz(const_vec_b, coef_mat_b);
+
+    arma::vec coef_b = arma::vectorise(coef_lasso_b);
 
     // Store the bootstrapped parameter estimates in the list
-    coef_list[b] = Rcpp::wrap(coef_b);
+    coef_b_mat.col(b) = coef_b;
 
     // Store the bootstrapped Y in the list
     Y_list[b] = Rcpp::wrap(Y_b);
@@ -889,8 +875,11 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
   // Create a list to store the results
   Rcpp::List result;
 
+  // Add coef as the first element
+  result["est"] = coef;
+
   // Store bootstrap coefficients
-  result["coef"] = coef_list;
+  result["boot"] = coef_b_mat.t();
 
   // Store regressors
   result["X"] = X;
@@ -912,23 +901,20 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
+//' @inheritParams PBootVAROLS
 //'
 //' @return List with the following elements:
-//'   - List of bootstrap estimates
-//'   - original `X`
-//'   - List of bootstrapped `Y`
+//'   - **est**: Numeric matrix.
+//'     Original OLS estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+//'   - **X**: Numeric matrix.
+//'     Original `X`
+//'   - **Y**: List of numeric matrices.
+//'     Bootstrapped `Y`
 //'
 //' @examples
-//' rb <- RBootVAROLS(data = dat_p2, p = 2, B = 10)
-//' str(rb)
+//' RBootVAROLS(data = dat_p2, p = 2, B = 10)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg rb
@@ -949,11 +935,11 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
   // Residuals
   arma::mat residuals = Y - X * coef.t();
 
-  // Create a list to store bootstrap parameter estimates
-  Rcpp::List coef_list(B);
+  // Create a matrix to store bootstrap parameter estimates
+  arma::mat coef_b_mat(coef.n_rows * coef.n_cols, B);
 
   // Create a list of bootstrap Y
-  Rcpp::List Y_list(B);
+  Rcpp::List Y_b_list(B);
 
   for (int b = 0; b < B; ++b) {
     // Residual resampling
@@ -965,26 +951,30 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
     arma::mat Y_b = X * coef.t() + residuals_b;
 
     // Fit VAR model using bootstrapped data
-    arma::mat coef_b = FitVAROLS(Y_b, X);
+    arma::mat coef_ols_b = FitVAROLS(Y_b, X);
+    arma::vec coef_b = arma::vectorise(coef_ols_b);
 
     // Store the bootstrapped parameter estimates in the list
-    coef_list[b] = Rcpp::wrap(coef_b);
+    coef_b_mat.col(b) = coef_b;
 
     // Store the bootstrapped Y in the list
-    Y_list[b] = Rcpp::wrap(Y_b);
+    Y_b_list[b] = Rcpp::wrap(Y_b);
   }
 
   // Create a list to store the results
   Rcpp::List result;
 
+  // Add coef as the first element
+  result["est"] = coef;
+
   // Store bootstrap coefficients
-  result["coef"] = coef_list;
+  result["boot"] = coef_b_mat.t();
 
   // Store regressors
   result["X"] = X;
 
   // Store bootstrap Y
-  result["Y"] = Y_list;
+  result["Y"] = Y_b_list;
 
   return result;
 }
@@ -1005,32 +995,20 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param Ystd Numeric matrix.
-//'   Matrix of standardized dependent variables (Y).
-//' @param Xstd Numeric matrix.
-//'   Matrix of standardized predictors (X).
-//' @param lambdas Numeric vector.
-//'   Vector of lambda hyperparameters for Lasso regularization.
-//' @param max_iter Integer.
-//'   The maximum number of iterations for the coordinate descent algorithm
-//'   (e.g., `max_iter = 10000`).
-//' @param tol Numeric.
-//'   Convergence tolerance. The algorithm stops when the change in coefficients
-//'   between iterations is below this tolerance
-//'   (e.g., `tol = 1e-5`).
+//' @inheritParams FitVARLassoSearch
 //'
-//' @return List containing two elements:
-//'   - Element 1: Matrix with columns for
+//' @return List with the following elements:
+//'   - **criteria**: Matrix with columns for
 //'     lambda, AIC, BIC, and EBIC values.
-//'   - Element 2: List of matrices containing
+//'   - **fit**: List of matrices containing
 //'     the estimated autoregressive
 //'     and cross-regression coefficients for each lambda.
 //'
 //' @examples
-//' Ystd <- StdMat(dat_p2_yx$Y)
-//' Xstd <- StdMat(dat_p2_yx$X[, -1])
+//' YStd <- StdMat(dat_p2_yx$Y)
+//' XStd <- StdMat(dat_p2_yx$X[, -1])
 //' lambdas <- 10^seq(-5, 5, length.out = 100)
-//' search <- SearchVARLasso(Ystd = Ystd, Xstd = Xstd, lambdas = lambdas,
+//' search <- SearchVARLasso(YStd = YStd, XStd = XStd, lambdas = lambdas,
 //'   max_iter = 10000, tol = 1e-5)
 //' plot(x = 1:nrow(search$criteria), y = search$criteria[, 4],
 //'   type = "b", xlab = "lambda", ylab = "EBIC")
@@ -1039,10 +1017,10 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
+Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
                           const arma::vec& lambdas, int max_iter, double tol) {
-  int n = Xstd.n_rows;  // Number of observations (rows in X)
-  int q = Xstd.n_cols;  // Number of columns in X (predictors)
+  int n = XStd.n_rows;  // Number of observations (rows in X)
+  int q = XStd.n_cols;  // Number of columns in X (predictors)
 
   // Armadillo matrix to store the lambda, AIC, BIC, and EBIC values
   arma::mat results(lambdas.n_elem, 4, arma::fill::zeros);
@@ -1054,10 +1032,10 @@ Rcpp::List SearchVARLasso(const arma::mat& Ystd, const arma::mat& Xstd,
     double lambda = lambdas(i);
 
     // Fit the VAR model using Lasso regularization
-    arma::mat beta = FitVARLasso(Ystd, Xstd, lambda, max_iter, tol);
+    arma::mat beta = FitVARLasso(YStd, XStd, lambda, max_iter, tol);
 
     // Calculate the residuals
-    arma::mat residuals = Ystd - Xstd * beta.t();
+    arma::mat residuals = YStd - XStd * beta.t();
 
     // Compute the residual sum of squares (RSS)
     double rss = arma::accu(residuals % residuals);
@@ -1116,8 +1094,8 @@ arma::mat StdMat(const arma::mat& X) {
   int q = X.n_cols;  // Number of predictors
   int n = X.n_rows;  // Number of observations
 
-  arma::mat X_std(n, q, arma::fill::zeros);  // Initialize the standardized
-                                             // matrix
+  // Initialize the standardized matrix
+  arma::mat XStd(n, q, arma::fill::zeros);
 
   // Calculate column means
   arma::vec col_means(q, arma::fill::zeros);
@@ -1129,22 +1107,22 @@ arma::mat StdMat(const arma::mat& X) {
   }
 
   // Calculate column standard deviations
-  arma::vec col_stddevs(q, arma::fill::zeros);
+  arma::vec col_sds(q, arma::fill::zeros);
   for (int j = 0; j < q; j++) {
     for (int i = 0; i < n; i++) {
-      col_stddevs(j) += std::pow(X(i, j) - col_means(j), 2);
+      col_sds(j) += std::pow(X(i, j) - col_means(j), 2);
     }
-    col_stddevs(j) = std::sqrt(col_stddevs(j) / (n - 1));
+    col_sds(j) = std::sqrt(col_sds(j) / (n - 1));
   }
 
   // Standardize the matrix
   for (int j = 0; j < q; j++) {
     for (int i = 0; i < n; i++) {
-      X_std(i, j) = (X(i, j) - col_means(j)) / col_stddevs(j);
+      XStd(i, j) = (X(i, j) - col_means(j)) / col_sds(j);
     }
   }
 
-  return X_std;
+  return XStd;
 }
 // -----------------------------------------------------------------------------
 // edit simAutoReg/.setup/cpp/simAutoReg-sim-var.cpp

@@ -27,20 +27,27 @@ Information criteria to use.
 Valid values include \code{"aic"}, \code{"bic"}, and \code{"ebic"}.}
 
 \item{max_iter}{Integer.
-The maximum number of iterations for the coordinate descent algorithm
+The maximum number of iterations
+for the coordinate descent algorithm
 (e.g., \code{max_iter = 10000}).}
 
 \item{tol}{Numeric.
-Convergence tolerance. The algorithm stops when the change in coefficients
+Convergence tolerance.
+The algorithm stops when the change in coefficients
 between iterations is below this tolerance
 (e.g., \code{tol = 1e-5}).}
 }
 \value{
 List with the following elements:
 \itemize{
-\item List of bootstrap estimates
-\item original \code{X}
-\item List of bootstrapped \code{Y}
+\item \strong{est}: Numeric matrix.
+Original Lasso estimate of the coefficient matrix.
+\item \strong{boot}: Numeric matrix.
+Matrix of vectorized bootstrap estimates of the coefficient matrix.
+\item \strong{X}: Numeric matrix.
+Original \code{X}
+\item \strong{Y}: List of numeric matrices.
+Bootstrapped \code{Y}
 }
 }
 \description{
@@ -48,9 +55,15 @@ Residual Bootstrap for the Vector Autoregressive Model
 Using Lasso Regularization
 }
 \examples{
-pb <- RBootVARLasso(data = dat_p2, p = 2, B = 10,
-  n_lambdas = 100, crit = "ebic", max_iter = 1000, tol = 1e-5)
-str(pb)
+RBootVARLasso(
+  data = dat_p2,
+  p = 2,
+  B = 10,
+  n_lambdas = 100,
+  crit = "ebic",
+  max_iter = 1000,
+  tol = 1e-5
+)
 
 }
 \seealso{
@@ -77,4 +90,4 @@ Ivan Jacob Agaloos Pesigan
 }
 \concept{Fitting Autoregressive Model Functions}
 \keyword{fitAutoReg}
-\keyword{pb}
+\keyword{rb}
