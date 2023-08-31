@@ -86,8 +86,8 @@
 //'     with mean 0 and covariance matrix `chol_cov`.
 //'   * Generate the VAR time series values for each variable `j` at time `t`
 //'     using the formula:
-//'     \deqn{Y_{tj} = constant_j +
-//'     \sum_{l = 1}^{p} \sum_{m = 1}^{k} (coef_{jm} * Y_{im}) +
+//'     \deqn{Y_{tj} = \text{constant}_j +
+//'     \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\text{coef}_{jm} * Y_{im}) +
 //'     \text{noise}_{j}}
 //'     where \eqn{Y_{tj}} is the value of variable `j` at time `t`,
 //'     \eqn{constant_j} is the constant term for variable `j`,

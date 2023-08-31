@@ -34,7 +34,7 @@ knitr::opts_chunk$set(
 
 ## Description
 
-Fit autoregressive models using 'RcppArmadillo', `dynr`, and `Mplus`.
+Fit autoregressive models using 'RcppArmadillo'.
 
 ## Installation
 

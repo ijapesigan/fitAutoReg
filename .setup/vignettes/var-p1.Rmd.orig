@@ -23,7 +23,6 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
-library(simAutoReg)
 library(fitAutoReg)
 ```
 
@@ -46,7 +45,7 @@ coef <- matrix(
   byrow = TRUE
 )
 chol_cov <- chol(diag(3))
-dat_p1 <- simAutoReg::SimVAR(
+dat_p1 <- SimVAR(
   time = time,
   burn_in = burn_in,
   constant = constant,
@@ -91,7 +90,7 @@ dat_p1_mult <- lapply(
   X = seq_len(n),
   FUN = function(i) {
     return(
-      simAutoReg::SimVAR(
+      SimVAR(
         time = 1000L,
         burn_in = 10,
         constant = constant,

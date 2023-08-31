@@ -23,6 +23,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r}
+library(fitAutoReg)
 set.seed(42)
 ```
 
