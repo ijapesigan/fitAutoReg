@@ -1,0 +1,142 @@
+---
+title: "fitAutoReg: Bootstrap"
+author: "Ivan Jacob Agaloos Pesigan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fitAutoReg: Bootstrap}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+```r
+set.seed(42)
+```
+
+## Parametric bootstrap
+
+### Ordinary Least Squares
+
+
+```r
+system.time(
+  pb <- PBootVAROLS(
+    data = dat_p2,
+    p = 2,
+    B = 5000L,
+    burn_in = 20
+  )
+)
+#> Error in PBootVAROLS(data = dat_p2, p = 2, B = 5000L, burn_in = 20): could not find function "PBootVAROLS"
+#> Timing stopped at: 0 0 0
+pb$est
+#> Error in eval(expr, envir, enclos): object 'pb' not found
+```
+
+#### Confidence Intervals
+
+
+```r
+BootCI(pb)
+#> Error in BootCI(pb): could not find function "BootCI"
+```
+
+#### Standard Errors
+
+
+```r
+BootSE(pb)
+#> Error in BootSE(pb): could not find function "BootSE"
+```
+
+### Lasso Regularization
+
+
+```r
+system.time(
+  pb <- PBootVARLasso(
+    data = dat_p2,
+    p = 2,
+    B = 5000L,
+    burn_in = 20,
+    n_lambdas = 100,
+    crit = "ebic",
+    max_iter = 1000,
+    tol = 1e-5
+  )
+)
+#> Error in PBootVARLasso(data = dat_p2, p = 2, B = 5000L, burn_in = 20, : could not find function "PBootVARLasso"
+#> Timing stopped at: 0 0 0
+pb$est
+#> Error in eval(expr, envir, enclos): object 'pb' not found
+```
+
+#### Confidence Intervals
+
+
+```r
+BootCI(pb)
+#> Error in BootCI(pb): could not find function "BootCI"
+```
+
+#### Standard Errors
+
+
+```r
+BootSE(pb)
+#> Error in BootSE(pb): could not find function "BootSE"
+```
+
+## Residual bootstrap
+
+
+```r
+system.time(
+  rb <- RBootVAROLS(
+    data = dat_p2,
+    p = 2,
+    B = 5000L
+  )
+)
+#> Error in RBootVAROLS(data = dat_p2, p = 2, B = 5000L): could not find function "RBootVAROLS"
+#> Timing stopped at: 0.001 0 0
+rb$est
+#> Error in eval(expr, envir, enclos): object 'rb' not found
+```
+
+
+```r
+system.time(
+  rb <- RBootVARLasso(
+    data = dat_p2,
+    p = 2,
+    B = 5000L,
+    n_lambdas = 100,
+    crit = "ebic",
+    max_iter = 1000,
+    tol = 1e-5
+  )
+)
+#> Error in RBootVARLasso(data = dat_p2, p = 2, B = 5000L, n_lambdas = 100, : could not find function "RBootVARLasso"
+#> Timing stopped at: 0 0 0
+rb$est
+#> Error in eval(expr, envir, enclos): object 'rb' not found
+```
+
+#### Confidence Intervals
+
+
+```r
+BootCI(rb)
+#> Error in BootCI(rb): could not find function "BootCI"
+```
+
+#### Standard Errors
+
+
+```r
+BootSE(rb)
+#> Error in BootSE(rb): could not find function "BootSE"
+```
