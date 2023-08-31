@@ -77,6 +77,10 @@
 
 Staging...
 
+The log-likelihood function of the random-effect multivariate meta-analysis is given by
+
+\input{.setup/latex/equations/multivariate-ma}
+
 \nocite{RCoreTeam-2023}
 
 \printbibliography

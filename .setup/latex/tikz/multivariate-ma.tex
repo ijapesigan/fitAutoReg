@@ -1,0 +1,123 @@
+\documentclass[tikz, border=1mm]{standalone}
+
+% convert -density 300 cfa-y.pdf -quality 100 -background white -alpha remove -alpha off cfa-y.png
+
+\usepackage{tikz}
+
+\begin{document}
+
+\usetikzlibrary{
+	er,
+	arrows,
+	positioning
+}
+
+\begin{tikzpicture}[
+		auto,
+		node distance = 15mm and 20mm,
+		latent/.style = {
+			ellipse,
+			draw,
+			thick,
+			inner sep = 0pt,
+			minimum size = 15mm,
+			align = center
+		},
+		manifest/.style = {
+			rectangle,
+			draw,
+			thick,
+			inner sep = 0pt,
+			minimum width = 15mm,
+			minimum height = 10mm
+		},
+    	between/.style = {
+			circle,
+			draw,
+			thick,
+			inner sep = 0pt,
+			minimum size = 15mm,
+			align = center,
+            fill = lightgray
+		},
+		inv/.style = {
+			rectangle,
+			draw=none,
+			fill=none,
+			inner sep = 0pt,
+			minimum width = 15mm,
+			minimum height = 10mm
+		},
+		error/.style = {
+			ellipse,
+			draw,
+			thick,
+			inner sep = 0pt,
+			minimum size = 7mm,
+			align = center
+		},
+		mean/.style={
+			regular polygon,
+			regular polygon sides = 3,
+			draw,
+			thick,
+			inner sep = 0pt,
+			minimum width = 7mm,
+			minimum height = 7mm
+		},
+		path/.style = {
+			->,
+			thick,
+			>=stealth'
+		},
+		cov/.style = {
+			<->,
+			thick,
+			>=stealth'
+		},
+	]
+    \node[manifest] (beta1) {$\beta_{1_{i}}$};
+    \node[inv] (beta1inv1) [ below of = beta1 ] {};
+    \node[inv] (beta1inv2) [ below of = beta1inv1 ] {};
+    \node[manifest] (beta2) [ below of = beta1inv2 ] {$\beta_{2_{i}}$};
+    \node[inv] (beta2inv1) [ below of = beta2 ] {};
+    \node[inv] (beta2inv2) [ below of = beta2inv1 ] {};
+    \node[manifest] (betaq) [ below of = beta2inv2 ] {$\beta_{q_{i}}$};
+    \node[inv] (betaqinv1) [ below of = betaq ] {};
+    \node[inv] (betaqinv2) [ below of = betaqinv1 ] {};
+    \node[inv] (eta1inv) [ right of = beta1 ] {};
+    \node[inv] (eta2inv) [ right of = beta2 ] {};
+    \node[inv] (etaqinv) [ right of = betaq ] {};
+    \node[latent] (eta1) [ right of = eta1inv ] {$\eta_{1}$};
+    \node[latent] (eta2) [ right of = eta2inv ] {$\eta_{2}$};
+    \node[latent] (etaq) [ right of = etaqinv ] {$\eta_{q}$};
+    \node[mean] (eta1mean) [ above of = eta1 ] {$1$};
+    \node[mean] (eta2mean) [ above of = eta2 ] {$1$};
+    \node[mean] (etaqmean) [ above of = etaq ] {$1$};
+    \draw[path] (eta1mean) to node {$\alpha_{1}$} (eta1);
+    \draw[path] (eta2mean) to node {$\alpha_{2}$} (eta2);
+    \draw[path] (etaqmean) to node {$\alpha_{q}$} (etaq);
+    \node[error] (ebeta1) [left = of beta1] {$\varepsilon_{1_{i}}$};
+    \node[error] (ebeta2) [left = of beta2] {$\varepsilon_{2_{i}}$};
+    \node[error] (ebetaq) [left = of betaq] {$\varepsilon_{q_{i}}$};
+    \draw[path] (eta1) to node[above] {$1$} (beta1);
+    \draw[path] (eta2) to node[above] {$1$} (beta2);
+    \draw[path] (etaq) to node[above] {$1$} (betaq);
+    \draw[path] (ebeta1) to node[above] {$1$} (beta1);
+    \draw[path] (ebeta2) to node[above] {$1$} (beta2);
+    \draw[path] (ebetaq) to node[above] {$1$} (betaq);
+    \draw[cov] (eta1) to[out = 250, in = 290, looseness = 5] node[below] {$\psi_{11}$} (eta1);
+    \draw[cov] (eta2) to[out = 250, in = 290, looseness = 5] node[below] {$\psi_{22}$} (eta2);
+    \draw[cov] (etaq) to[out = 250, in = 290, looseness = 5] node[below] {$\psi_{qq}$} (etaq);
+    \draw[cov] (eta1) to[out = 0, in = 0, looseness = 0.8] node[right] {$\psi_{12}$} (eta2);
+    \draw[cov] (eta1) to[out = 0, in = 0, looseness = 0.8] node[right] {$\psi_{1q}$} (etaq);
+    \draw[cov] (eta2) to[out = 0, in = 0, looseness = 0.8] node[right] {$\psi_{2q}$} (etaq);
+    \draw[cov] (ebeta1) to[out = 240, in = 300, looseness = 5] node[below] {$\theta_{11_{i}}$} (ebeta1);
+    \draw[cov] (ebeta2) to[out = 240, in = 300, looseness = 5] node[below] {$\theta_{22_{i}}$} (ebeta2);
+    \draw[cov] (ebetaq) to[out = 240, in = 300, looseness = 5] node[below] {$\theta_{qq_{i}}$} (ebetaq);
+    \draw[cov] (ebeta1) to[out = 180, in = 180, looseness = 0.8] node[left] {$\theta_{12_{i}}$} (ebeta2);
+    \draw[cov] (ebeta1) to[out = 180, in = 180, looseness = 0.8] node[left] {$\theta_{1q_{i}}$} (ebetaq);
+    \draw[cov] (ebeta2) to[out = 180, in = 180, looseness = 0.8] node[left] {$\theta_{2q_{i}}$} (ebetaq);
+\end{tikzpicture}
+
+\end{document}

@@ -34,3 +34,12 @@ reference:
   contents:
   - has_keyword("simAutoReg")
   - has_keyword("fitAutoReg")
+
+articles:
+- title: Vector Autoregressive Model
+  contents:
+  - var-p1.Rmd
+  - var-p2.Rmd
+- title: Bootstrap
+  contents:
+  - bootstrap.Rmd

@@ -1,0 +1,125 @@
+---
+title: "fitAutoReg: Bootstrap"
+author: "Ivan Jacob Agaloos Pesigan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fitAutoReg: Bootstrap}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.path = "fig-vignettes-bootstrap-",
+  fig.cap = "",
+  fig.width = 11,
+  fig.height = 8,
+  fig.retina = 2,
+  dpi = 300,
+  comment = "#>"
+)
+```
+
+```{r}
+set.seed(42)
+```
+
+## Parametric bootstrap
+
+### Ordinary Least Squares
+
+```{r}
+system.time(
+  pb <- PBootVAROLS(
+    data = dat_p2,
+    p = 2,
+    B = 5000L,
+    burn_in = 20
+  )
+)
+pb$est
+```
+
+#### Confidence Intervals
+
+```{r}
+BootCI(pb)
+```
+
+#### Standard Errors
+
+```{r}
+BootSE(pb)
+```
+
+### Lasso Regularization
+
+```{r}
+system.time(
+  pb <- PBootVARLasso(
+    data = dat_p2,
+    p = 2,
+    B = 5000L,
+    burn_in = 20,
+    n_lambdas = 100,
+    crit = "ebic",
+    max_iter = 1000,
+    tol = 1e-5
+  )
+)
+pb$est
+```
+
+#### Confidence Intervals
+
+```{r}
+BootCI(pb)
+```
+
+#### Standard Errors
+
+```{r}
+BootSE(pb)
+```
+
+## Residual bootstrap
+
+```{r}
+system.time(
+  rb <- RBootVAROLS(
+    data = dat_p2,
+    p = 2,
+    B = 5000L
+  )
+)
+rb$est
+```
+
+```{r}
+system.time(
+  rb <- RBootVARLasso(
+    data = dat_p2,
+    p = 2,
+    B = 5000L,
+    n_lambdas = 100,
+    crit = "ebic",
+    max_iter = 1000,
+    tol = 1e-5
+  )
+)
+rb$est
+```
+
+#### Confidence Intervals
+
+```{r}
+BootCI(rb)
+```
+
+#### Standard Errors
+
+```{r}
+BootSE(rb)
+```
