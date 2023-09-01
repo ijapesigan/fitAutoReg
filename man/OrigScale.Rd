@@ -32,16 +32,10 @@ OrigScale(coef_std = coef_std, Y = Y, X = X)
 }
 \seealso{
 Other Fitting Autoregressive Model Functions: 
-\code{\link{FitMLVARDynr}()},
-\code{\link{FitMLVARMplus}()},
-\code{\link{FitVARDynr}()},
 \code{\link{FitVARLassoSearch}()},
 \code{\link{FitVARLasso}()},
-\code{\link{FitVARMplus}()},
 \code{\link{FitVAROLS}()},
 \code{\link{LambdaSeq}()},
-\code{\link{ModelVARP1Dynr}()},
-\code{\link{ModelVARP2Dynr}()},
 \code{\link{PBootVARLasso}()},
 \code{\link{PBootVAROLS}()},
 \code{\link{RBootVARLasso}()},

@@ -65,8 +65,8 @@ from a multivariate normal distribution
 with mean 0 and covariance matrix \code{chol_cov}.
 \item Generate the VAR time series values for each variable \code{j} at time \code{t}
 using the formula:
-\deqn{Y_{tj} = constant_j +
-    \sum_{l = 1}^{p} \sum_{m = 1}^{k} (coef_{jm} * Y_{im}) +
+\deqn{Y_{tj} = \text{constant}_j +
+    \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\text{coef}_{jm} * Y_{im}) +
     \text{noise}_{j}}
 where \eqn{Y_{tj}} is the value of variable \code{j} at time \code{t},
 \eqn{constant_j} is the constant term for variable \code{j},
