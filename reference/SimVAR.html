@@ -26,13 +26,8 @@ from a Vector Autoregressive (VAR) model."><!-- mathjax --><script src="https://
 <li class="active nav-item">
   <a class="nav-link" href="../reference/index.html">Reference</a>
 </li>
-<li class="nav-item dropdown">
-  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
-  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
-    <a class="dropdown-item" href="../articles/session/session.html">fitAutoReg: Session</a>
-    <a class="dropdown-item" href="../articles/var-p1.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 1)</a>
-    <a class="dropdown-item" href="../articles/var-p2.html">fitAutoReg: Vector Autoregressive Model - VAR(p = 2)</a>
-  </div>
+<li class="nav-item">
+  <a class="nav-link" href="../articles/index.html">Articles</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="../news/index.html">Changelog</a>
@@ -133,8 +128,8 @@ from a multivariate normal distribution
 with mean 0 and covariance matrix <code>chol_cov</code>.</p></li>
 <li><p>Generate the VAR time series values for each variable <code>j</code> at time <code>t</code>
 using the formula:
-$$Y_{tj} = constant_j +
-    \sum_{l = 1}^{p} \sum_{m = 1}^{k} (coef_{jm} * Y_{im}) +
+$$Y_{tj} = \text{constant}_j +
+    \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\text{coef}_{jm} * Y_{im}) +
     \text{noise}_{j}$$
 where \(Y_{tj}\) is the value of variable <code>j</code> at time <code>t</code>,
 \(constant_j\) is the constant term for variable <code>j</code>,
