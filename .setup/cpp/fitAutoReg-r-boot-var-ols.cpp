@@ -54,10 +54,12 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
     arma::mat residuals_b = residuals.rows(
         arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
 
-    // 5.2: Generate a new response matrix Y_b by adding the new residuals to X * coef.t()
+    // 5.2: Generate a new response matrix Y_b by adding the new residuals to X
+    // * coef.t()
     arma::mat Y_b = X * coef.t() + residuals_b;
 
-    // 5.3: Fit a VAR model using OLS to obtain VAR coefficients for the bootstrap sample
+    // 5.3: Fit a VAR model using OLS to obtain VAR coefficients for the
+    // bootstrap sample
     arma::mat coef_ols_b = FitVAROLS(Y_b, X);
 
     // 5.4: Vectorize the coefficients and store them in coef_b_mat

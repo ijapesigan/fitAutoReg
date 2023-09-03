@@ -39,7 +39,8 @@
 //' @keywords fitAutoReg rb
 //' @export
 // [[Rcpp::export]]
-Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas, const std::string& crit, int max_iter, double tol) {
+Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
+                         const std::string& crit, int max_iter, double tol) {
   // Step 1: Prepare the data for analysis by extracting lagged variables
   Rcpp::List yx = YX(data, p);
   arma::mat X = yx["X"];
@@ -58,7 +59,8 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas, con
   arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Step 5: Fit VAR Lasso to obtain standardized coefficients
-  arma::mat coef_std = FitVARLassoSearch(YStd, XStd, lambdas, "ebic", max_iter, tol);
+  arma::mat coef_std =
+      FitVARLassoSearch(YStd, XStd, lambdas, "ebic", max_iter, tol);
 
   // Step 6: Extract the constant vector from OLS results
   arma::vec const_vec = ols.col(0);
@@ -78,28 +80,37 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas, con
 
   // Step 11: Perform B bootstrap simulations
   for (int b = 0; b < B; ++b) {
-    // 11.1: Randomly select rows from residuals to create a new residuals matrix for the bootstrap sample
-    arma::mat residuals_b = residuals.rows(arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
+    // 11.1: Randomly select rows from residuals to create a new residuals
+    // matrix for the bootstrap sample
+    arma::mat residuals_b = residuals.rows(
+        arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
 
-    // 11.2: Generate a new response matrix Y_b by adding the new residuals to X * coef.t()
+    // 11.2: Generate a new response matrix Y_b by adding the new residuals to X
+    // * coef.t()
     arma::mat Y_b = X * coef.t() + residuals_b;
 
-    // 11.3: Fit a VAR model using OLS to obtain VAR coefficients for the bootstrap sample
+    // 11.3: Fit a VAR model using OLS to obtain VAR coefficients for the
+    // bootstrap sample
     arma::mat ols_b = FitVAROLS(Y_b, X);
 
     // 11.4: Standardize the Y_b matrix
     arma::mat YStd_b = StdMat(Y);
 
-    // 11.5: Fit VAR Lasso to obtain standardized coefficients for the bootstrap sample
-    arma::mat coef_std_b = FitVARLassoSearch(YStd_b, XStd, lambdas, "ebic", max_iter, tol);
+    // 11.5: Fit VAR Lasso to obtain standardized coefficients for the bootstrap
+    // sample
+    arma::mat coef_std_b =
+        FitVARLassoSearch(YStd_b, XStd, lambdas, "ebic", max_iter, tol);
 
-    // 11.6: Extract the constant vector from OLS results for the bootstrap sample
+    // 11.6: Extract the constant vector from OLS results for the bootstrap
+    // sample
     arma::vec const_vec_b = ols_b.col(0);
 
-    // 11.7: Transform standardized coefficients back to the original scale for the bootstrap sample
+    // 11.7: Transform standardized coefficients back to the original scale for
+    // the bootstrap sample
     arma::mat coef_mat_b = OrigScale(coef_std_b, Y_b, X_no_constant);
 
-    // 11.8: Combine the constant and coefficient matrices for the bootstrap sample
+    // 11.8: Combine the constant and coefficient matrices for the bootstrap
+    // sample
     arma::mat coef_lasso_b = arma::join_horiz(const_vec_b, coef_mat_b);
 
     // 11.9: Vectorize the coefficients and store them in coef_b_mat
