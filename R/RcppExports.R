@@ -256,9 +256,9 @@ OrigScale <- function(coef_std, Y, X) {
 #' PBootVARLasso(
 #'   data = dat_p2,
 #'   p = 2,
-#'   B = 10,
+#'   B = 5,
 #'   burn_in = 20,
-#'   n_lambdas = 100,
+#'   n_lambdas = 10,
 #'   crit = "ebic",
 #'   max_iter = 1000,
 #'   tol = 1e-5
@@ -276,14 +276,7 @@ PBootVARLasso <- function(data, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
 #'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
-#' @param data Numeric matrix.
-#'   The time series data with dimensions `t` by `k`,
-#'   where `t` is the number of observations
-#'   and `k` is the number of variables.
-#' @param p Integer.
-#'   The order of the VAR model (number of lags).
-#' @param B Integer.
-#'   Number of bootstrap samples to generate.
+#' @inheritParams RBootVAROLS
 #' @param burn_in Integer.
 #'   Number of burn-in observations to exclude before returning the results
 #'   in the simulation step.
@@ -295,7 +288,7 @@ PBootVARLasso <- function(data, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
 #'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 #'
 #' @examples
-#' PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
+#' PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg pb
@@ -305,11 +298,85 @@ PBootVAROLS <- function(data, p, B, burn_in) {
 }
 
 #' Residual Bootstrap for the Vector Autoregressive Model
+#' with Exogenous Variables
 #' Using Lasso Regularization
 #'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
-#' @inheritParams PBootVARLasso
+#' @inheritParams RBootVARLasso
+#' @inheritParams RBootVARExoOLS
+#'
+#' @return List with the following elements:
+#'   - **est**: Numeric matrix.
+#'     Original Lasso estimate of the coefficient matrix.
+#'   - **boot**: Numeric matrix.
+#'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+#'   - **X**: Numeric matrix.
+#'     Original `X`
+#'   - **Y**: List of numeric matrices.
+#'     Bootstrapped `Y`
+#'
+#' @examples
+#' data <- dat_p2_exo$data
+#' exo_mat <- dat_p2_exo$exo_mat
+#' RBootVARExoLasso(
+#'   data = data,
+#'   exo_mat = exo_mat,
+#'   p = 2,
+#'   B = 5,
+#'   n_lambdas = 10,
+#'   crit = "ebic",
+#'   max_iter = 1000,
+#'   tol = 1e-5
+#' )
+#'
+#' @family Fitting Autoregressive Model Functions
+#' @keywords fitAutoReg rb
+#' @export
+RBootVARExoLasso <- function(data, exo_mat, p, B, n_lambdas, crit, max_iter, tol) {
+    .Call(`_fitAutoReg_RBootVARExoLasso`, data, exo_mat, p, B, n_lambdas, crit, max_iter, tol)
+}
+
+#' Residual Bootstrap for the Vector Autoregressive Model
+#' with Exogenous Variables
+#' Using Ordinary Least Squares
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @inheritParams RBootVAROLS
+#' @param exo_mat Numeric matrix.
+#'   Matrix of exogenous variables with dimensions `t` by `m`.
+#'
+#' @return List with the following elements:
+#'   - **est**: Numeric matrix.
+#'     Original OLS estimate of the coefficient matrix.
+#'   - **boot**: Numeric matrix.
+#'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+#'   - **X**: Numeric matrix.
+#'     Original `X`
+#'   - **Y**: List of numeric matrices.
+#'     Bootstrapped `Y`
+#'
+#' @examples
+#' data <- dat_p2_exo$data
+#' exo_mat <- dat_p2_exo$exo_mat
+#' RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+#'
+#' @family Fitting Autoregressive Model Functions
+#' @keywords fitAutoReg rb
+#' @export
+RBootVARExoOLS <- function(data, exo_mat, p, B) {
+    .Call(`_fitAutoReg_RBootVARExoOLS`, data, exo_mat, p, B)
+}
+
+#' Residual Bootstrap for the Vector Autoregressive Model
+#' Using Lasso Regularization
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @inheritParams RBootVAROLS
+#' @inheritParams FitVARLassoSearch
+#' @inheritParams LambdaSeq
 #'
 #' @return List with the following elements:
 #'   - **est**: Numeric matrix.
@@ -325,8 +392,8 @@ PBootVAROLS <- function(data, p, B, burn_in) {
 #' RBootVARLasso(
 #'   data = dat_p2,
 #'   p = 2,
-#'   B = 10,
-#'   n_lambdas = 100,
+#'   B = 5,
+#'   n_lambdas = 10,
 #'   crit = "ebic",
 #'   max_iter = 1000,
 #'   tol = 1e-5
@@ -344,7 +411,9 @@ RBootVARLasso <- function(data, p, B, n_lambdas, crit, max_iter, tol) {
 #'
 #' @author Ivan Jacob Agaloos Pesigan
 #'
-#' @inheritParams PBootVAROLS
+#' @inheritParams YX
+#' @param B Integer.
+#'   Number of bootstrap samples to generate.
 #'
 #' @return List with the following elements:
 #'   - **est**: Numeric matrix.
@@ -357,7 +426,7 @@ RBootVARLasso <- function(data, p, B, n_lambdas, crit, max_iter, tol) {
 #'     Bootstrapped `Y`
 #'
 #' @examples
-#' RBootVAROLS(data = dat_p2, p = 2, B = 10)
+#' RBootVAROLS(data = dat_p2, p = 2, B = 5)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg rb
@@ -423,6 +492,48 @@ SearchVARLasso <- function(YStd, XStd, lambdas, max_iter, tol) {
 #' @export
 StdMat <- function(X) {
     .Call(`_fitAutoReg_StdMat`, X)
+}
+
+#' Simulate Data from a Vector Autoregressive (VAR) Model with Exogenous
+#' Variables
+#'
+#' This function generates synthetic time series data
+#' from a Vector Autoregressive (VAR) model with exogenous variables.
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @param time Integer.
+#'   Number of time points to simulate.
+#' @param burn_in Integer.
+#'   Number of burn-in observations to exclude before returning the results.
+#' @param constant Numeric vector.
+#'   The constant term vector of length `k`,
+#'   where `k` is the number of variables.
+#' @param coef Numeric matrix.
+#'   Coefficient matrix with dimensions `k` by `(k * p)`.
+#'   Each `k` by `k` block corresponds to the coefficient matrix
+#'   for a particular lag.
+#' @param chol_cov Numeric matrix.
+#'   The Cholesky decomposition of the covariance matrix
+#'   of the multivariate normal noise.
+#'   It should have dimensions `k` by `k`.
+#' @param exo_mat Numeric matrix.
+#'   Matrix of exogenous covariates with dimensions `time + burn_in` by `x`.
+#'   Each column corresponds to a different exogenous variable.
+#' @param exo_coef Numeric vector.
+#'   Coefficient matrix with dimensions `k` by `x`
+#'   associated with the exogenous covariates.
+#'
+#' @return Numeric matrix containing the simulated time series data
+#'   with dimensions `k` by `time`,
+#'   where `k` is the number of variables and
+#'   `time` is the number of observations.
+#'
+#' @family Simulation of Autoregressive Data Functions
+#' @keywords simAutoReg sim data var
+#' @export
+SimVARExo <- function(time, burn_in, constant, coef, chol_cov, exo_mat, exo_coef) {
+    .Call(`_fitAutoReg_SimVARExo`, time, burn_in, constant, coef, chol_cov, exo_mat, exo_coef)
 }
 
 #' Simulate Data from a Vector Autoregressive (VAR) Model
@@ -506,26 +617,83 @@ StdMat <- function(X) {
 #'     with mean 0 and covariance matrix `chol_cov`.
 #'   * Generate the VAR time series values for each variable `j` at time `t`
 #'     using the formula:
-#'     \deqn{Y_{tj} = \text{constant}_j +
-#'     \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\text{coef}_{jm} * Y_{im}) +
-#'     \text{noise}_{j}}
+#'     \deqn{
+#'       Y_{tj} = \mathrm{constant}_j +
+#'       \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\mathrm{coef}_{jm} * Y_{im}) +
+#'       \mathrm{noise}_{j}
+#'     }
 #'     where \eqn{Y_{tj}} is the value of variable `j` at time `t`,
-#'     \eqn{constant_j} is the constant term for variable `j`,
-#'     \eqn{coef_{jm}} are the coefficients for variable `j`
+#'     \eqn{\mathrm{constant}_j} is the constant term for variable `j`,
+#'     \eqn{\mathrm{coef}_{jm}} are the coefficients for variable `j`
 #'     from lagged variables up to order `p`,
 #'     \eqn{Y_{tm}} are the lagged values of variable `m`
 #'     up to order `p` at time `t`,
-#'     and \eqn{noise_{j}} is the element `j`
+#'     and \eqn{\mathrm{noise}_{j}} is the element `j`
 #'     from the generated vector of random process noise.
 #' - Transpose the matrix `data` and return only
 #'   the required time period after the burn-in period,
 #'   which is from column `burn_in` to column `time + burn_in - 1`.
 #'
 #' @family Simulation of Autoregressive Data Functions
-#' @keywords simAutoReg sim
+#' @keywords simAutoReg sim data var
 #' @export
 SimVAR <- function(time, burn_in, constant, coef, chol_cov) {
     .Call(`_fitAutoReg_SimVAR`, time, burn_in, constant, coef, chol_cov)
+}
+
+#' Create Y and X Matrices with Exogenous Variables
+#'
+#' This function creates the dependent variable (Y)
+#' and predictor variable (X) matrices.
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @param data Numeric matrix.
+#'   The time series data with dimensions `t` by `k`,
+#'   where `t` is the number of observations
+#'   and `k` is the number of variables.
+#' @param p Integer.
+#'   The order of the VAR model (number of lags).
+#' @param exo_mat Numeric matrix.
+#'   Matrix of exogenous variables with dimensions `t` by `m`.
+#'
+#' @return List containing the dependent variable (Y)
+#' and predictor variable (X) matrices.
+#' Note that the resulting matrices will have `t - p` rows.
+#'
+#' @details
+#' The [YX()] function creates the `Y` and `X` matrices
+#' required for fitting a Vector Autoregressive (VAR) model.
+#' Given the input `data` matrix with dimensions `t` by `k`,
+#' where `t` is the number of observations and `k` is the number of variables,
+#' and the order of the VAR model `p` (number of lags),
+#' the function constructs lagged predictor matrix `X`
+#' and the dependent variable matrix `Y`.
+#'
+#' The steps involved in creating the `Y` and `X` matrices are as follows:
+#'
+#' - Determine the number of observations `t` and the number of variables `k`
+#'   from the input data matrix.
+#' - Create matrices `X` and `Y` to store lagged variables
+#'   and the dependent variable, respectively.
+#' - Populate the matrices `X` and `Y` with the appropriate lagged data.
+#'   The predictors matrix `X` contains a column of ones
+#'   and the lagged values of the dependent variables,
+#'   while the dependent variable matrix `Y` contains the original values
+#'   of the dependent variables.
+#' - The function returns a list containing the `Y` and `X` matrices,
+#'   which can be used for further analysis and estimation
+#'   of the VAR model parameters.
+#'
+#' @seealso
+#' The [SimVAR()] function for simulating time series data
+#' from a VAR model.
+#'
+#' @family Simulation of Autoregressive Data Functions
+#' @keywords simAutoReg utils
+#' @export
+YXExo <- function(data, p, exo_mat) {
+    .Call(`_fitAutoReg_YXExo`, data, p, exo_mat)
 }
 
 #' Create Y and X Matrices

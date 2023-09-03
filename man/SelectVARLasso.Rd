@@ -36,7 +36,9 @@ SelectVARLasso(search, crit = "ebic")
 Other Simulation of Autoregressive Data Functions: 
 \code{\link{BootCI}()},
 \code{\link{BootSE}()},
+\code{\link{SimVARExo}()},
 \code{\link{SimVAR}()},
+\code{\link{YXExo}()},
 \code{\link{YX}()}
 }
 \author{

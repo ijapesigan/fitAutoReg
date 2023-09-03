@@ -58,8 +58,8 @@ Using Lasso Regularization
 RBootVARLasso(
   data = dat_p2,
   p = 2,
-  B = 10,
-  n_lambdas = 100,
+  B = 5,
+  n_lambdas = 10,
   crit = "ebic",
   max_iter = 1000,
   tol = 1e-5
@@ -75,6 +75,8 @@ Other Fitting Autoregressive Model Functions:
 \code{\link{OrigScale}()},
 \code{\link{PBootVARLasso}()},
 \code{\link{PBootVAROLS}()},
+\code{\link{RBootVARExoLasso}()},
+\code{\link{RBootVARExoOLS}()},
 \code{\link{RBootVAROLS}()},
 \code{\link{SearchVARLasso}()},
 \code{\link{StdMat}()}

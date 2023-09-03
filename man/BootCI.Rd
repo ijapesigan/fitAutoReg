@@ -31,7 +31,7 @@ system.time(
   pb <- PBootVAROLS(
     data = dat_p2,
     p = 2,
-    B = 10,
+    B = 5,
     burn_in = 20
   )
 )
@@ -41,9 +41,9 @@ system.time(
   pb <- PBootVARLasso(
     data = dat_p2,
     p = 2,
-    B = 10,
+    B = 5,
     burn_in = 20,
-    n_lambdas = 100,
+    n_lambdas = 50,
     crit = "ebic",
     max_iter = 1000,
     tol = 1e-5
@@ -57,7 +57,7 @@ system.time(
   rb <- RBootVAROLS(
     data = dat_p2,
     p = 2,
-    B = 10
+    B = 5
   )
 )
 rb$est
@@ -66,8 +66,8 @@ system.time(
   rb <- RBootVARLasso(
     data = dat_p2,
     p = 2,
-    B = 10,
-    n_lambdas = 100,
+    B = 5,
+    n_lambdas = 50,
     crit = "ebic",
     max_iter = 1000,
     tol = 1e-5
@@ -81,7 +81,9 @@ BootCI(rb)
 Other Simulation of Autoregressive Data Functions: 
 \code{\link{BootSE}()},
 \code{\link{SelectVARLasso}()},
+\code{\link{SimVARExo}()},
 \code{\link{SimVAR}()},
+\code{\link{YXExo}()},
 \code{\link{YX}()}
 }
 \author{

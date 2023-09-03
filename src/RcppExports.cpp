@@ -112,6 +112,38 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RBootVARExoLasso
+Rcpp::List RBootVARExoLasso(const arma::mat& data, const arma::mat& exo_mat, int p, int B, int n_lambdas, const std::string& crit, int max_iter, double tol);
+RcppExport SEXP _fitAutoReg_RBootVARExoLasso(SEXP dataSEXP, SEXP exo_matSEXP, SEXP pSEXP, SEXP BSEXP, SEXP n_lambdasSEXP, SEXP critSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type exo_mat(exo_matSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type B(BSEXP);
+    Rcpp::traits::input_parameter< int >::type n_lambdas(n_lambdasSEXP);
+    Rcpp::traits::input_parameter< const std::string& >::type crit(critSEXP);
+    Rcpp::traits::input_parameter< int >::type max_iter(max_iterSEXP);
+    Rcpp::traits::input_parameter< double >::type tol(tolSEXP);
+    rcpp_result_gen = Rcpp::wrap(RBootVARExoLasso(data, exo_mat, p, B, n_lambdas, crit, max_iter, tol));
+    return rcpp_result_gen;
+END_RCPP
+}
+// RBootVARExoOLS
+Rcpp::List RBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat, int p, int B);
+RcppExport SEXP _fitAutoReg_RBootVARExoOLS(SEXP dataSEXP, SEXP exo_matSEXP, SEXP pSEXP, SEXP BSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type exo_mat(exo_matSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< int >::type B(BSEXP);
+    rcpp_result_gen = Rcpp::wrap(RBootVARExoOLS(data, exo_mat, p, B));
+    return rcpp_result_gen;
+END_RCPP
+}
 // RBootVARLasso
 Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas, const std::string& crit, int max_iter, double tol);
 RcppExport SEXP _fitAutoReg_RBootVARLasso(SEXP dataSEXP, SEXP pSEXP, SEXP BSEXP, SEXP n_lambdasSEXP, SEXP critSEXP, SEXP max_iterSEXP, SEXP tolSEXP) {
@@ -168,6 +200,23 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// SimVARExo
+arma::mat SimVARExo(int time, int burn_in, const arma::vec& constant, const arma::mat& coef, const arma::mat& chol_cov, const arma::mat& exo_mat, const arma::mat& exo_coef);
+RcppExport SEXP _fitAutoReg_SimVARExo(SEXP timeSEXP, SEXP burn_inSEXP, SEXP constantSEXP, SEXP coefSEXP, SEXP chol_covSEXP, SEXP exo_matSEXP, SEXP exo_coefSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type time(timeSEXP);
+    Rcpp::traits::input_parameter< int >::type burn_in(burn_inSEXP);
+    Rcpp::traits::input_parameter< const arma::vec& >::type constant(constantSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type coef(coefSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type chol_cov(chol_covSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type exo_mat(exo_matSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type exo_coef(exo_coefSEXP);
+    rcpp_result_gen = Rcpp::wrap(SimVARExo(time, burn_in, constant, coef, chol_cov, exo_mat, exo_coef));
+    return rcpp_result_gen;
+END_RCPP
+}
 // SimVAR
 arma::mat SimVAR(int time, int burn_in, const arma::vec& constant, const arma::mat& coef, const arma::mat& chol_cov);
 RcppExport SEXP _fitAutoReg_SimVAR(SEXP timeSEXP, SEXP burn_inSEXP, SEXP constantSEXP, SEXP coefSEXP, SEXP chol_covSEXP) {
@@ -180,6 +229,19 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< const arma::mat& >::type coef(coefSEXP);
     Rcpp::traits::input_parameter< const arma::mat& >::type chol_cov(chol_covSEXP);
     rcpp_result_gen = Rcpp::wrap(SimVAR(time, burn_in, constant, coef, chol_cov));
+    return rcpp_result_gen;
+END_RCPP
+}
+// YXExo
+Rcpp::List YXExo(const arma::mat& data, int p, const arma::mat& exo_mat);
+RcppExport SEXP _fitAutoReg_YXExo(SEXP dataSEXP, SEXP pSEXP, SEXP exo_matSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< int >::type p(pSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type exo_mat(exo_matSEXP);
+    rcpp_result_gen = Rcpp::wrap(YXExo(data, p, exo_mat));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -204,11 +266,15 @@ static const R_CallMethodDef CallEntries[] = {
     {"_fitAutoReg_OrigScale", (DL_FUNC) &_fitAutoReg_OrigScale, 3},
     {"_fitAutoReg_PBootVARLasso", (DL_FUNC) &_fitAutoReg_PBootVARLasso, 8},
     {"_fitAutoReg_PBootVAROLS", (DL_FUNC) &_fitAutoReg_PBootVAROLS, 4},
+    {"_fitAutoReg_RBootVARExoLasso", (DL_FUNC) &_fitAutoReg_RBootVARExoLasso, 8},
+    {"_fitAutoReg_RBootVARExoOLS", (DL_FUNC) &_fitAutoReg_RBootVARExoOLS, 4},
     {"_fitAutoReg_RBootVARLasso", (DL_FUNC) &_fitAutoReg_RBootVARLasso, 7},
     {"_fitAutoReg_RBootVAROLS", (DL_FUNC) &_fitAutoReg_RBootVAROLS, 3},
     {"_fitAutoReg_SearchVARLasso", (DL_FUNC) &_fitAutoReg_SearchVARLasso, 5},
     {"_fitAutoReg_StdMat", (DL_FUNC) &_fitAutoReg_StdMat, 1},
+    {"_fitAutoReg_SimVARExo", (DL_FUNC) &_fitAutoReg_SimVARExo, 7},
     {"_fitAutoReg_SimVAR", (DL_FUNC) &_fitAutoReg_SimVAR, 5},
+    {"_fitAutoReg_YXExo", (DL_FUNC) &_fitAutoReg_YXExo, 3},
     {"_fitAutoReg_YX", (DL_FUNC) &_fitAutoReg_YX, 2},
     {NULL, NULL, 0}
 };

@@ -65,16 +65,18 @@ from a multivariate normal distribution
 with mean 0 and covariance matrix \code{chol_cov}.
 \item Generate the VAR time series values for each variable \code{j} at time \code{t}
 using the formula:
-\deqn{Y_{tj} = \text{constant}_j +
-    \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\text{coef}_{jm} * Y_{im}) +
-    \text{noise}_{j}}
+\deqn{
+      Y_{tj} = \mathrm{constant}_j +
+      \sum_{l = 1}^{p} \sum_{m = 1}^{k} (\mathrm{coef}_{jm} * Y_{im}) +
+      \mathrm{noise}_{j}
+    }
 where \eqn{Y_{tj}} is the value of variable \code{j} at time \code{t},
-\eqn{constant_j} is the constant term for variable \code{j},
-\eqn{coef_{jm}} are the coefficients for variable \code{j}
+\eqn{\mathrm{constant}_j} is the constant term for variable \code{j},
+\eqn{\mathrm{coef}_{jm}} are the coefficients for variable \code{j}
 from lagged variables up to order \code{p},
 \eqn{Y_{tm}} are the lagged values of variable \code{m}
 up to order \code{p} at time \code{t},
-and \eqn{noise_{j}} is the element \code{j}
+and \eqn{\mathrm{noise}_{j}} is the element \code{j}
 from the generated vector of random process noise.
 }
 \item Transpose the matrix \code{data} and return only
@@ -114,11 +116,15 @@ Other Simulation of Autoregressive Data Functions:
 \code{\link{BootCI}()},
 \code{\link{BootSE}()},
 \code{\link{SelectVARLasso}()},
+\code{\link{SimVARExo}()},
+\code{\link{YXExo}()},
 \code{\link{YX}()}
 }
 \author{
 Ivan Jacob Agaloos Pesigan
 }
 \concept{Simulation of Autoregressive Data Functions}
+\keyword{data}
 \keyword{sim}
 \keyword{simAutoReg}
+\keyword{var}

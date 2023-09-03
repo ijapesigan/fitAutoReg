@@ -16,7 +16,7 @@
 #'   pb <- PBootVAROLS(
 #'     data = dat_p2,
 #'     p = 2,
-#'     B = 10,
+#'     B = 5,
 #'     burn_in = 20
 #'   )
 #' )
@@ -26,9 +26,9 @@
 #'   pb <- PBootVARLasso(
 #'     data = dat_p2,
 #'     p = 2,
-#'     B = 10,
+#'     B = 5,
 #'     burn_in = 20,
-#'     n_lambdas = 100,
+#'     n_lambdas = 50,
 #'     crit = "ebic",
 #'     max_iter = 1000,
 #'     tol = 1e-5
@@ -42,7 +42,7 @@
 #'   rb <- RBootVAROLS(
 #'     data = dat_p2,
 #'     p = 2,
-#'     B = 10
+#'     B = 5
 #'   )
 #' )
 #' rb$est
@@ -51,8 +51,8 @@
 #'   rb <- RBootVARLasso(
 #'     data = dat_p2,
 #'     p = 2,
-#'     B = 10,
-#'     n_lambdas = 100,
+#'     B = 5,
+#'     n_lambdas = 50,
 #'     crit = "ebic",
 #'     max_iter = 1000,
 #'     tol = 1e-5
