@@ -62,7 +62,7 @@ Using Lasso Regularization
 \examples{
 data <- dat_p2_exo$data
 exo_mat <- dat_p2_exo$exo_mat
-RBootVARExoLasso(
+rb <- RBootVARExoLasso(
   data = data,
   exo_mat = exo_mat,
   p = 2,
@@ -72,6 +72,7 @@ RBootVARExoLasso(
   max_iter = 1000,
   tol = 1e-5
 )
+str(rb)
 
 }
 \seealso{

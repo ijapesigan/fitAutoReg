@@ -55,7 +55,7 @@ Parametric Bootstrap for the Vector Autoregressive Model
 Using Lasso Regularization
 }
 \examples{
-PBootVARLasso(
+pb <- PBootVARLasso(
   data = dat_p2,
   p = 2,
   B = 5,
@@ -65,6 +65,7 @@ PBootVARLasso(
   max_iter = 1000,
   tol = 1e-5
 )
+str(pb)
 
 }
 \seealso{

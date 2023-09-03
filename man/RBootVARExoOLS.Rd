@@ -44,7 +44,8 @@ Using Ordinary Least Squares
 \examples{
 data <- dat_p2_exo$data
 exo_mat <- dat_p2_exo$exo_mat
-RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+rb <- RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+str(rb)
 
 }
 \seealso{

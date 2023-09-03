@@ -55,7 +55,7 @@ Residual Bootstrap for the Vector Autoregressive Model
 Using Lasso Regularization
 }
 \examples{
-RBootVARLasso(
+rb <- RBootVARLasso(
   data = dat_p2,
   p = 2,
   B = 5,
@@ -64,6 +64,7 @@ RBootVARLasso(
   max_iter = 1000,
   tol = 1e-5
 )
+str(rb)
 
 }
 \seealso{

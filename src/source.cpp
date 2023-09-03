@@ -662,7 +662,7 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
 //'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' PBootVARLasso(
+//' pb <- PBootVARLasso(
 //'   data = dat_p2,
 //'   p = 2,
 //'   B = 5,
@@ -672,6 +672,7 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
 //'   max_iter = 1000,
 //'   tol = 1e-5
 //' )
+//' str(pb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
@@ -819,7 +820,8 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
 //'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+//' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+//' str(pb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
@@ -892,7 +894,7 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
 //' @examples
 //' data <- dat_p2_exo$data
 //' exo_mat <- dat_p2_exo$exo_mat
-//' RBootVARExoLasso(
+//' rb <- RBootVARExoLasso(
 //'   data = data,
 //'   exo_mat = exo_mat,
 //'   p = 2,
@@ -902,6 +904,7 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
 //'   max_iter = 1000,
 //'   tol = 1e-5
 //' )
+//' str(rb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg rb
@@ -1032,7 +1035,8 @@ Rcpp::List RBootVARExoLasso(const arma::mat& data, const arma::mat& exo_mat,
 //' @examples
 //' data <- dat_p2_exo$data
 //' exo_mat <- dat_p2_exo$exo_mat
-//' RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+//' rb <- RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+//' str(rb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg rb
@@ -1117,7 +1121,7 @@ Rcpp::List RBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat,
 //'     Bootstrapped `Y`
 //'
 //' @examples
-//' RBootVARLasso(
+//' rb <- RBootVARLasso(
 //'   data = dat_p2,
 //'   p = 2,
 //'   B = 5,
@@ -1126,6 +1130,7 @@ Rcpp::List RBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat,
 //'   max_iter = 1000,
 //'   tol = 1e-5
 //' )
+//' str(rb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg rb
@@ -1252,7 +1257,8 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 //'     Bootstrapped `Y`
 //'
 //' @examples
-//' RBootVAROLS(data = dat_p2, p = 2, B = 5)
+//' rb <- RBootVAROLS(data = dat_p2, p = 2, B = 5)
+//' str(rb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg rb

@@ -37,7 +37,8 @@ Residual Bootstrap for the Vector Autoregressive Model
 Using Ordinary Least Squares
 }
 \examples{
-RBootVAROLS(data = dat_p2, p = 2, B = 5)
+rb <- RBootVAROLS(data = dat_p2, p = 2, B = 5)
+str(rb)
 
 }
 \seealso{

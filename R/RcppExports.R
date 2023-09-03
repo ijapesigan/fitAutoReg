@@ -253,7 +253,7 @@ OrigScale <- function(coef_std, Y, X) {
 #'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 #'
 #' @examples
-#' PBootVARLasso(
+#' pb <- PBootVARLasso(
 #'   data = dat_p2,
 #'   p = 2,
 #'   B = 5,
@@ -263,6 +263,7 @@ OrigScale <- function(coef_std, Y, X) {
 #'   max_iter = 1000,
 #'   tol = 1e-5
 #' )
+#' str(pb)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg pb
@@ -288,7 +289,8 @@ PBootVARLasso <- function(data, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
 #'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 #'
 #' @examples
-#' PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+#' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+#' str(pb)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg pb
@@ -319,7 +321,7 @@ PBootVAROLS <- function(data, p, B, burn_in) {
 #' @examples
 #' data <- dat_p2_exo$data
 #' exo_mat <- dat_p2_exo$exo_mat
-#' RBootVARExoLasso(
+#' rb <- RBootVARExoLasso(
 #'   data = data,
 #'   exo_mat = exo_mat,
 #'   p = 2,
@@ -329,6 +331,7 @@ PBootVAROLS <- function(data, p, B, burn_in) {
 #'   max_iter = 1000,
 #'   tol = 1e-5
 #' )
+#' str(rb)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg rb
@@ -360,7 +363,8 @@ RBootVARExoLasso <- function(data, exo_mat, p, B, n_lambdas, crit, max_iter, tol
 #' @examples
 #' data <- dat_p2_exo$data
 #' exo_mat <- dat_p2_exo$exo_mat
-#' RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+#' rb <- RBootVARExoOLS(data = data, exo_mat = exo_mat, p = 2, B = 5)
+#' str(rb)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg rb
@@ -389,7 +393,7 @@ RBootVARExoOLS <- function(data, exo_mat, p, B) {
 #'     Bootstrapped `Y`
 #'
 #' @examples
-#' RBootVARLasso(
+#' rb <- RBootVARLasso(
 #'   data = dat_p2,
 #'   p = 2,
 #'   B = 5,
@@ -398,6 +402,7 @@ RBootVARExoOLS <- function(data, exo_mat, p, B) {
 #'   max_iter = 1000,
 #'   tol = 1e-5
 #' )
+#' str(rb)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg rb
@@ -426,7 +431,8 @@ RBootVARLasso <- function(data, p, B, n_lambdas, crit, max_iter, tol) {
 #'     Bootstrapped `Y`
 #'
 #' @examples
-#' RBootVAROLS(data = dat_p2, p = 2, B = 5)
+#' rb <- RBootVAROLS(data = dat_p2, p = 2, B = 5)
+#' str(rb)
 #'
 #' @family Fitting Autoregressive Model Functions
 #' @keywords fitAutoReg rb

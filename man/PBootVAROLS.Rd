@@ -37,7 +37,8 @@ Parametric Bootstrap for the Vector Autoregressive Model
 Using Ordinary Least Squares
 }
 \examples{
-PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+pb <- PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+str(pb)
 
 }
 \seealso{
