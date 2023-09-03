@@ -82,7 +82,9 @@ Output of
     <div class="dont-index"><p>Other Simulation of Autoregressive Data Functions: 
 <code><a href="BootCI.html">BootCI</a>()</code>,
 <code><a href="SelectVARLasso.html">SelectVARLasso</a>()</code>,
+<code><a href="SimVARExo.html">SimVARExo</a>()</code>,
 <code><a href="SimVAR.html">SimVAR</a>()</code>,
+<code><a href="YXExo.html">YXExo</a>()</code>,
 <code><a href="YX.html">YX</a>()</code></p></div>
     </div>
     <div class="section level2">
@@ -98,12 +100,12 @@ Output of
 <span class="r-in"><span>  <span class="va">pb</span> <span class="op">&lt;-</span> <span class="fu"><a href="PBootVAROLS.html">PBootVAROLS</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">dat_p2</span>,</span></span>
 <span class="r-in"><span>    p <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>    burn_in <span class="op">=</span> <span class="fl">20</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.021   0.004   0.013 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.018   0.000   0.012 </span>
 <span class="r-in"><span><span class="va">pb</span><span class="op">$</span><span class="va">est</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]        [,2]        [,3]        [,4]        [,5]         [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726  0.36836768 0.008539283  0.02231498  0.11338780  0.024505442</span>
@@ -115,52 +117,52 @@ Output of
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.29620975</span>
 <span class="r-in"><span><span class="fu">BootSE</span><span class="op">(</span><span class="va">pb</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]       [,4]       [,5]       [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2961482 0.02734471 0.02912956 0.03073139 0.03770805 0.03176866</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1584558 0.01942284 0.02368919 0.03273620 0.03645469 0.03350224</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1992781 0.01874850 0.03340307 0.02829851 0.03405137 0.02415483</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.3648676 0.02451411 0.03127928 0.02723355 0.04789385 0.04190886</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.2199721 0.02181435 0.01852744 0.03444278 0.03192600 0.02659343</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2215578 0.01302096 0.04197963 0.02065905 0.04395353 0.02148834</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            [,7]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.03552002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.03015250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.01826943</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.03224394</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.02813527</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.01333655</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">pb</span> <span class="op">&lt;-</span> <span class="fu"><a href="PBootVARLasso.html">PBootVARLasso</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">dat_p2</span>,</span></span>
 <span class="r-in"><span>    p <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">10</span>,</span></span>
+<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">5</span>,</span></span>
 <span class="r-in"><span>    burn_in <span class="op">=</span> <span class="fl">20</span>,</span></span>
-<span class="r-in"><span>    n_lambdas <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>    n_lambdas <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>    crit <span class="op">=</span> <span class="st">"ebic"</span>,</span></span>
 <span class="r-in"><span>    max_iter <span class="op">=</span> <span class="fl">1000</span>,</span></span>
 <span class="r-in"><span>    tol <span class="op">=</span> <span class="fl">1e-5</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  19.678   4.500  12.158 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.869   1.219   2.562 </span>
 <span class="r-in"><span><span class="va">pb</span><span class="op">$</span><span class="va">est</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726 0.3421906 0.0000000 0.0000000 0.08468105 0.0000000 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.0001995 0.0000000 0.4570574 0.0000000 0.00000000 0.2120659 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.0666814 0.0000000 0.0000000 0.5880327 0.00000000 0.0000000 0.2736337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]    [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726 0.34043 0.0000000 0.0000000 0.08292061 0.0000000 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.0001995 0.00000 0.4555224 0.0000000 0.00000000 0.2105309 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.0666814 0.00000 0.0000000 0.5866893 0.00000000 0.0000000 0.2722931</span>
 <span class="r-in"><span><span class="fu">BootSE</span><span class="op">(</span><span class="va">pb</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]        [,4]        [,5]      [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2043588 0.02876971 0.00000000 0.007885977 0.035309545 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1575116 0.00000000 0.04572152 0.000000000 0.004592173 0.0335006</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1527449 0.00000000 0.00000000 0.052575940 0.000000000 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             [,7]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.003629493</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.049996051</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]       [,2]       [,3]       [,4]       [,5]       [,6]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.22911508 0.02801525 0.00000000 0.00000000 0.03203138 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.07295463 0.00000000 0.02446966 0.00000000 0.00000000 0.04757121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.12893135 0.00000000 0.00000000 0.02917335 0.00000000 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            [,7]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.02712867</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Residual bootstrap</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">rb</span> <span class="op">&lt;-</span> <span class="fu"><a href="RBootVAROLS.html">RBootVAROLS</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">dat_p2</span>,</span></span>
 <span class="r-in"><span>    p <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">10</span></span></span>
+<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">5</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   0.003   0.001   0.002 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.000   0.003   0.001 </span>
 <span class="r-in"><span><span class="va">rb</span><span class="op">$</span><span class="va">est</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]        [,2]        [,3]        [,4]        [,5]         [,6]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726  0.36836768 0.008539283  0.02231498  0.11338780  0.024505442</span>
@@ -171,41 +173,41 @@ Output of
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.01815779</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.29620975</span>
 <span class="r-in"><span><span class="fu">BootSE</span><span class="op">(</span><span class="va">rb</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]       [,4]       [,5]       [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1583682 0.01945254 0.02598049 0.03818717 0.02961267 0.03089803</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1769318 0.03302356 0.03353690 0.04415626 0.03843602 0.02236928</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1758599 0.02378732 0.03201804 0.02547774 0.02470660 0.04201701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]       [,4]       [,5]        [,6]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1435961 0.03029526 0.03034269 0.02723993 0.02947239 0.007757184</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1489594 0.02522726 0.01674005 0.02633025 0.01792935 0.017458148</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2133440 0.02539343 0.04924191 0.01684376 0.03071153 0.033001056</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            [,7]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.04068373</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.04741813</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.03623639</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.02363684</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.02852299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.02915080</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">rb</span> <span class="op">&lt;-</span> <span class="fu"><a href="RBootVARLasso.html">RBootVARLasso</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">dat_p2</span>,</span></span>
 <span class="r-in"><span>    p <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">10</span>,</span></span>
-<span class="r-in"><span>    n_lambdas <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>    B <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>    n_lambdas <span class="op">=</span> <span class="fl">50</span>,</span></span>
 <span class="r-in"><span>    crit <span class="op">=</span> <span class="st">"ebic"</span>,</span></span>
 <span class="r-in"><span>    max_iter <span class="op">=</span> <span class="fl">1000</span>,</span></span>
 <span class="r-in"><span>    tol <span class="op">=</span> <span class="fl">1e-5</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    user  system elapsed </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  23.113   5.824  14.562 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.755   1.419   3.099 </span>
 <span class="r-in"><span><span class="va">rb</span><span class="op">$</span><span class="va">est</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726 0.3421906 0.0000000 0.0000000 0.08468105 0.0000000 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.0001995 0.0000000 0.4570574 0.0000000 0.00000000 0.2120659 0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.0666814 0.0000000 0.0000000 0.5880327 0.00000000 0.0000000 0.2736337</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]    [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726 0.34043 0.0000000 0.0000000 0.08292061 0.0000000 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.0001995 0.00000 0.4555224 0.0000000 0.00000000 0.2105309 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.0666814 0.00000 0.0000000 0.5866893 0.00000000 0.0000000 0.2722931</span>
 <span class="r-in"><span><span class="fu">BootSE</span><span class="op">(</span><span class="va">rb</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]        [,2]        [,3]        [,4]        [,5]        [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2921088 0.007785533 0.000000000 0.000000000 0.001926666 0.000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.1416661 0.000000000 0.009194901 0.000000000 0.000000000 0.004266258</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1583758 0.000000000 0.000000000 0.007518227 0.000000000 0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]        [,2]       [,3]        [,4]        [,5]        [,6]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2451917 0.004609479 0.00000000 0.000000000 0.001122759 0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.2770871 0.000000000 0.01377074 0.000000000 0.000000000 0.006364486</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.1866689 0.000000000 0.00000000 0.006006319 0.000000000 0.000000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             [,7]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.000000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.003498512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.002787642</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

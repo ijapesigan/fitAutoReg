@@ -2,12 +2,13 @@ pandoc: 3.1.1
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  bootstrap-exo: bootstrap-exo.html
   bootstrap: bootstrap.html
   fitAutoReg: fitAutoReg.html
   session: session/session.html
   var-p1: var-p1.html
   var-p2: var-p2.html
-last_built: 2023-09-01T05:29Z
+last_built: 2023-09-03T13:40Z
 urls:
   reference: https://github.com/ijapesigan/fitAutoReg/reference
   article: https://github.com/ijapesigan/fitAutoReg/articles

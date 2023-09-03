@@ -7,6 +7,9 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/articles/bootstrap-exo.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/articles/bootstrap.html</loc>
   </url>
   <url>
@@ -61,6 +64,12 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootVAROLS.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/RBootVARExoLasso.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/RBootVARExoOLS.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/RBootVARLasso.html</loc>
   </url>
   <url>
@@ -76,10 +85,16 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/SimVAR.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/SimVARExo.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/StdMat.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/YX.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/YXExo.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_ml_p1.html</loc>
