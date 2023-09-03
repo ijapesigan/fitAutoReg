@@ -6,7 +6,8 @@
 // [[Rcpp::depends(RcppArmadillo)]]
 
 // Generate Data and Fit Model
-arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant, const arma::mat& coef, const arma::mat& chol_cov) {
+arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant,
+                         const arma::mat& coef, const arma::mat& chol_cov) {
   // Step 1: Calculate the number of lags in the VAR model
   int num_lags = coef.n_cols / constant.n_elem;
 

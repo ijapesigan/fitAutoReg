@@ -74,4 +74,3 @@ arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
   //         (columns represent variables, rows represent lags)
   return coef.t();
 }
-
