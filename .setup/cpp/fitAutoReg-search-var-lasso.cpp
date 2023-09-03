@@ -37,48 +37,44 @@
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
-                          const arma::vec& lambdas, int max_iter, double tol) {
-  int n = XStd.n_rows;  // Number of observations (rows in X)
-  int q = XStd.n_cols;  // Number of columns in X (predictors)
+Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd, const arma::vec& lambdas, int max_iter, double tol) {
+  // Step 1: Get the number of time points and predictor variables
+  int time = XStd.n_rows;
+  int num_predictor_vars = XStd.n_cols;
 
-  // Armadillo matrix to store the lambda, AIC, BIC, and EBIC values
+  // Step 2: Initialize matrices to store results and a list to store fitted models
   arma::mat results(lambdas.n_elem, 4, arma::fill::zeros);
-
-  // List to store the output of FitVARLasso for each lambda
   Rcpp::List fit_list(lambdas.n_elem);
 
+  // Step 3: Loop over each lambda value in the 'lambdas' vector
   for (arma::uword i = 0; i < lambdas.n_elem; ++i) {
     double lambda = lambdas(i);
 
-    // Fit the VAR model using Lasso regularization
+    // Step 4: Fit a VAR model with Lasso regularization for the current lambda value
     arma::mat beta = FitVARLasso(YStd, XStd, lambda, max_iter, tol);
 
-    // Calculate the residuals
+    // Step 5: Calculate the residuals, RSS, and the number of nonzero parameters
     arma::mat residuals = YStd - XStd * beta.t();
-
-    // Compute the residual sum of squares (RSS)
     double rss = arma::accu(residuals % residuals);
-
-    // Compute the degrees of freedom for each parameter
     int num_params = arma::sum(arma::vectorise(beta != 0));
 
-    // Compute the AIC, BIC, and EBIC criteria
-    double aic = n * std::log(rss / n) + 2.0 * num_params;
-    double bic = n * std::log(rss / n) + num_params * std::log(n);
-    double ebic =
-        n * std::log(rss / n) + 2.0 * num_params * std::log(n / double(q));
+    // Step 6: Calculate the information criteria (AIC, BIC, and EBIC) for the fitted model
+    double aic = time * std::log(rss / time) + 2.0 * num_params;
+    double bic = time * std::log(rss / time) + num_params * std::log(time);
+    double ebic = time * std::log(rss / time) + 2.0 * num_params * std::log(time / double(num_predictor_vars));
 
-    // Store the lambda, AIC, BIC, and EBIC values in the results matrix
+    // Step 7: Store the lambda value, AIC, BIC, and EBIC in the 'results' matrix
     results(i, 0) = lambda;
     results(i, 1) = aic;
     results(i, 2) = bic;
     results(i, 3) = ebic;
 
-    // Store the output of FitVARLasso for this lambda in the fit_list
+    // Step 8: Store the fitted model (beta) in the 'fit_list'
     fit_list[i] = beta;
   }
 
+  // Step 9: Return a list containing the criteria results and the list of fitted models
   return Rcpp::List::create(Rcpp::Named("criteria") = results,
                             Rcpp::Named("fit") = fit_list);
 }
+

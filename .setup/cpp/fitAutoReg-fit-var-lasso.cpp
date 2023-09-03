@@ -95,34 +95,44 @@
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
-                      const double& lambda, int max_iter, double tol) {
-  int q = XStd.n_cols;  // Number of predictors (excluding the intercept column)
-  int k = YStd.n_cols;  // Number of outcomes
+arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double& lambda, int max_iter, double tol) {
+  // Step 1: Determine the number of predictor variables and outcome variables
+  int num_predictor_vars = XStd.n_cols;
+  int num_outcome_vars = YStd.n_cols;
 
-  // OLS estimates as starting values
+  // Step 2: Initialize matrices to store QR decomposition results
   arma::mat Q, R;
-  arma::qr(Q, R, XStd);
-  arma::mat beta = arma::solve(R, Q.t() * YStd);
 
-  // Coordinate Descent Loop
+  // Step 3: Perform QR decomposition of the standardized predictor matrix XStd
+  arma::qr_econ(Q, R, XStd);
+
+  // Step 4: Initialize a matrix 'coef' to store the estimated coefficients
+  arma::mat coef = arma::solve(R, Q.t() * YStd);
+
+  // Step 5: Iterate for a maximum of 'max_iter' times
   for (int iter = 0; iter < max_iter; iter++) {
-    // Initialize beta_old with the current value of beta
-    arma::mat beta_old = beta;
+    // Step 5.1: Create a copy of the current 'coef' matrix for comparison
+    arma::mat coef_old = coef;
 
-    // Create a copy of YStd to use for updating Y_l
+    // Step 5.2: Create a copy of the outcome matrix 'YStd' for updates
     arma::mat Y_copy = YStd;
 
-    // Update each coefficient for each predictor
-    // using cyclical coordinate descent
-    for (int j = 0; j < q; j++) {
+    // Step 5.3: Loop over predictor variables
+    for (int j = 0; j < num_predictor_vars; j++) {
+      // Step 5.3.1: Extract the j-th column of the standardized predictor matrix XStd
       arma::vec Xj = XStd.col(j);
-      for (int l = 0; l < k; l++) {
-        arma::vec Y_l = Y_copy.col(l);
-        double rho = dot(Xj, Y_l - XStd * beta.col(l) + beta(j, l) * Xj);
-        double z = dot(Xj, Xj);
-        double c = 0;
 
+      // Step 5.3.2: Loop over outcome variables
+      for (int l = 0; l < num_outcome_vars; l++) {
+        // Step 5.3.2.1: Extract the l-th column of the copy of the outcome matrix Y_copy
+        arma::vec Y_l = Y_copy.col(l);
+
+        // Step 5.3.2.2: Compute 'rho' and 'z' for Lasso regularization
+        double rho = dot(Xj, Y_l - XStd * coef.col(l) + coef(j, l) * Xj);
+        double z = dot(Xj, Xj);
+
+        // Step 5.3.2.3: Apply Lasso regularization and update the 'coef' matrix
+        double c = 0;
         if (rho < -lambda / 2) {
           c = (rho + lambda / 2) / z;
         } else if (rho > lambda / 2) {
@@ -130,23 +140,21 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
         } else {
           c = 0;
         }
-        beta(j, l) = c;
+        coef(j, l) = c;
 
-        // Update Y_l for the next iteration
-        Y_l = Y_l - (Xj * (beta(j, l) - beta_old(j, l)));
+        // Step 5.3.2.4: Update the l-th column of the copy of the outcome matrix Y_copy
+        Y_l = Y_l - (Xj * (coef(j, l) - coef_old(j, l)));
       }
     }
 
-    // Check convergence
+    // Step 5.4: Check for convergence based on the change in 'coef'
     if (iter > 0) {
-      if (arma::all(arma::vectorise(arma::abs(beta - beta_old)) < tol)) {
-        break;  // Converged, exit the loop
+      if (arma::all(arma::vectorise(arma::abs(coef - coef_old)) < tol)) {
+        break;
       }
     }
 
-    // If the loop reaches the last iteration and has not broken
-    // (not converged),
-    // emit a warning
+    // Step 5.5: If maximum iterations are reached without convergence, issue a warning
     if (iter == max_iter - 1) {
       Rcpp::warning(
           "The algorithm did not converge within the specified maximum number "
@@ -154,5 +162,6 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
     }
   }
 
-  return beta.t();
+  // Step 6: Return the estimated coefficients (transposed for the desired format)
+  return coef.t();
 }

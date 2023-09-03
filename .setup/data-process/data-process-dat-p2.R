@@ -1,6 +1,6 @@
 #' Data Analysis - `data/dat_p2.rda`
 #'
-DataAnalysisDatP2 <- function() {
+DataProcessDatP2 <- function() {
   rproj <- rprojroot::is_rstudio_project
   data_dir <- rproj$find_file(
     "data"
@@ -42,5 +42,5 @@ DataAnalysisDatP2 <- function() {
     compress = "xz"
   )
 }
-DataAnalysisDatP2()
-rm(DataAnalysisDatP2)
+DataProcessDatP2()
+rm(DataProcessDatP2)

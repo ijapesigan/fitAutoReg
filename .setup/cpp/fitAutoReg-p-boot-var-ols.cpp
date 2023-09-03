@@ -10,14 +10,7 @@
 //'
 //' @author Ivan Jacob Agaloos Pesigan
 //'
-//' @param data Numeric matrix.
-//'   The time series data with dimensions `t` by `k`,
-//'   where `t` is the number of observations
-//'   and `k` is the number of variables.
-//' @param p Integer.
-//'   The order of the VAR model (number of lags).
-//' @param B Integer.
-//'   Number of bootstrap samples to generate.
+//' @inheritParams RBootVAROLS
 //' @param burn_in Integer.
 //'   Number of burn-in observations to exclude before returning the results
 //'   in the simulation step.
@@ -29,47 +22,45 @@
 //'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' PBootVAROLS(data = dat_p2, p = 2, B = 10, burn_in = 20)
+//' PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
 //' @export
 // [[Rcpp::export]]
 Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
-  // Number of observations
-  int t = data.n_rows;
+  // Step 1: Get the number of time points in the data
+  int time = data.n_rows;
 
-  // YX
+  // Step 2: Obtain the YX representation of the data
   Rcpp::List yx = YX(data, p);
   arma::mat X = yx["X"];
   arma::mat Y = yx["Y"];
 
-  // OLS
+  // Step 3: Fit the VAR model using OLS
   arma::mat coef = FitVAROLS(Y, X);
 
-  // Set parameters
+  // Step 4: Extract constant vector and coefficient matrix
   arma::vec const_vec = coef.col(0);
   arma::mat coef_mat = coef.cols(1, coef.n_cols - 1);
 
-  // Calculate the residuals
+  // Step 5: Calculate residuals and their covariance
   arma::mat residuals = Y - X * coef.t();
-
-  // Calculate the covariance of residuals
   arma::mat cov_residuals = arma::cov(residuals);
+
+  // Step 6: Perform Cholesky decomposition of the covariance matrix
   arma::mat chol_cov = arma::chol(cov_residuals);
 
-  // Result matrix
-  arma::mat sim = PBootVAROLSSim(B, t, burn_in, const_vec, coef_mat, chol_cov);
+  // Step 7: Simulate bootstrapped VAR coefficients using PBootVAROLSSim
+  arma::mat sim = PBootVAROLSSim(B, time, burn_in, const_vec, coef_mat, chol_cov);
 
-  // Create a list to store the results
+  // Step 8: Create a result list containing estimated coefficients and bootstrapped samples
   Rcpp::List result;
-
-  // Add coef as the first element
+  // Estimated coefficients
   result["est"] = coef;
-
-  // Add sim as the second element
+  // Bootstrapped coefficient samples
   result["boot"] = sim;
 
-  // Return the list
+  // Step 9: Return the result list
   return result;
 }

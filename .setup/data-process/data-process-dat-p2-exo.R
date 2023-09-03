@@ -1,6 +1,6 @@
 #' Data Analysis - `data/dat_p2_exo.rda`
 #'
-DataAnalysisDatP2Exo <- function() {
+DataProcessDatP2Exo <- function() {
   rproj <- rprojroot::is_rstudio_project
   data_dir <- rproj$find_file(
     "data"
@@ -48,6 +48,10 @@ DataAnalysisDatP2Exo <- function() {
     exo_mat = exo_mat,
     exo_coef = exo_coef
   )
+  dat_p2_exo <- list(
+    data = dat_p2_exo,
+    exo_mat = exo_mat[(burn_in + 1):(time + burn_in), ]
+  )
   save(
     dat_p2_exo,
     file = file.path(
@@ -57,5 +61,5 @@ DataAnalysisDatP2Exo <- function() {
     compress = "xz"
   )
 }
-DataAnalysisDatP2Exo()
-rm(DataAnalysisDatP2Exo)
+DataProcessDatP2Exo()
+rm(DataProcessDatP2Exo)

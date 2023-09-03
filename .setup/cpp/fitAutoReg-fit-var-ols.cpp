@@ -56,12 +56,22 @@
 //' @export
 // [[Rcpp::export]]
 arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
-  // Estimate VAR model parameters using QR decomposition
+  // Step 1: Initialize matrices to store QR decomposition results
   arma::mat Q, R;
+
+  // Step 2: Perform QR decomposition of the design matrix X
   arma::qr_econ(Q, R, X);
 
-  // Solve the linear system R * coef = Q.t() * Y
+  // Step 3: Solve the linear system to obtain the coefficient matrix
+  //   - Transpose of Q (Q.t()) is multiplied by Y to project Y
+  //     onto the column space of X
+  //   - R is the upper triangular matrix from the QR decomposition
+  //   - arma::solve(R, ...) solves the linear system
+  //     R * coef = Q.t() * Y for coef
   arma::mat coef = arma::solve(R, Q.t() * Y);
 
+  // Step 4: Transpose the coefficient matrix to match the desired output format
+  //         (columns represent variables, rows represent lags)
   return coef.t();
 }
+

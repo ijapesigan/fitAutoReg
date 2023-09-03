@@ -24,9 +24,9 @@
 //' PBootVARLasso(
 //'   data = dat_p2,
 //'   p = 2,
-//'   B = 10,
+//'   B = 5,
 //'   burn_in = 20,
-//'   n_lambdas = 100,
+//'   n_lambdas = 10,
 //'   crit = "ebic",
 //'   max_iter = 1000,
 //'   tol = 1e-5
@@ -39,56 +39,55 @@
 Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
                          int n_lambdas, const std::string& crit, int max_iter,
                          double tol) {
-  // Number of observations
-  int t = data.n_rows;
+  // Step 1: Get the number of time periods
+  int time = data.n_rows;
 
-  // YX
+  // Step 2: Prepare the data for analysis by extracting lagged variables
   Rcpp::List yx = YX(data, p);
   arma::mat X = yx["X"];
   arma::mat Y = yx["Y"];
-  arma::mat X_removed = X.cols(1, X.n_cols - 1);
+  
+  // Step 3: Remove the constant term from the lagged variables
+  arma::mat X_no_constant = X.cols(1, X.n_cols - 1);
 
-  // OLS
+  // Step 4: Fit a VAR model using OLS to obtain the constant term and VAR coefficients
   arma::mat ols = FitVAROLS(Y, X);
 
-  // Standardize
-  arma::mat XStd = StdMat(X_removed);
+  // Step 5: Standardize the predictor and response variables
+  arma::mat XStd = StdMat(X_no_constant);
   arma::mat YStd = StdMat(Y);
 
-  // lambdas
+  // Step 6: Generate a sequence of lambda values for LASSO regularization
   arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
-  // Lasso
+  // Step 7: Fit VAR LASSO using the "ebic" criterion
   arma::mat pb_std = FitVARLassoSearch(YStd, XStd, lambdas, "ebic", 1000, 1e-5);
 
-  // Set parameters
-  arma::vec const_vec = ols.col(0);                      // OLS constant vector
-  arma::mat coef_mat = OrigScale(pb_std, Y, X_removed);  // Lasso coefficients
-  arma::mat coef =
-      arma::join_horiz(const_vec, coef_mat);  // OLS and Lasso combined
+  // Step 8: Extract the constant term from the OLS results
+  arma::vec const_vec = ols.col(0);
 
-  // Calculate the residuals
+  // Step 9: Rescale the VAR LASSO coefficients to the original scale
+  arma::mat coef_mat = OrigScale(pb_std, Y, X_no_constant);
+
+  // Step 10: Combine the constant and VAR coefficients
+  arma::mat coef = arma::join_horiz(const_vec, coef_mat);  // OLS and Lasso combined
+
+  // Step 11: Calculate residuals, their covariance, and the Cholesky decomposition of the covariance
   arma::mat residuals = Y - X * coef.t();
-  // arma::mat residuals_tmp = Y.each_row() - const_vec.t();
-  // arma::mat residuals = residuals_tmp - X_removed * coef_mat.t();
-
-  // Calculate the covariance of residuals
   arma::mat cov_residuals = arma::cov(residuals);
   arma::mat chol_cov = arma::chol(cov_residuals);
 
-  // Result matrix
-  arma::mat sim = PBootVARLassoSim(B, t, burn_in, const_vec, coef_mat, chol_cov,
+  // Step 12: Perform bootstrap simulations for VAR LASSO
+  arma::mat sim = PBootVARLassoSim(B, time, burn_in, const_vec, coef_mat, chol_cov,
                                    n_lambdas, crit, max_iter, tol);
 
-  // Create a list to store the results
+  // Step 13: Create a list containing estimation and bootstrap results
   Rcpp::List result;
-
-  // Add coef as the first element
+  // Estimated coefficients
   result["est"] = coef;
-
-  // Add sim as the second element
+  // Bootstrapped coefficient samples
   result["boot"] = sim;
 
-  // Return the list
+  // Step 14: Return the list of results
   return result;
 }

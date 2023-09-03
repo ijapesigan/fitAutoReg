@@ -27,36 +27,38 @@
 //' @export
 // [[Rcpp::export]]
 arma::mat StdMat(const arma::mat& X) {
-  int q = X.n_cols;  // Number of predictors
-  int n = X.n_rows;  // Number of observations
+  // Step 1: Get the number of rows (n) and columns (num_vars) in the input matrix X
+  int n = X.n_rows;
+  int num_vars = X.n_cols;
 
-  // Initialize the standardized matrix
-  arma::mat XStd(n, q, arma::fill::zeros);
+  // Step 2: Initialize the standardized matrix XStd with zeros
+  arma::mat XStd(n, num_vars, arma::fill::zeros);
 
-  // Calculate column means
-  arma::vec col_means(q, arma::fill::zeros);
-  for (int j = 0; j < q; j++) {
+  // Step 3: Calculate column means and store them in the col_means vector
+  arma::vec col_means(num_vars, arma::fill::zeros);
+  for (int j = 0; j < num_vars; j++) {
     for (int i = 0; i < n; i++) {
       col_means(j) += X(i, j);
     }
-    col_means(j) /= n;
+    col_means(j) /= n;  // Calculate the mean for column j
   }
 
-  // Calculate column standard deviations
-  arma::vec col_sds(q, arma::fill::zeros);
-  for (int j = 0; j < q; j++) {
+  // Step 4: Calculate column standard deviations and store them in the col_sds vector
+  arma::vec col_sds(num_vars, arma::fill::zeros);
+  for (int j = 0; j < num_vars; j++) {
     for (int i = 0; i < n; i++) {
       col_sds(j) += std::pow(X(i, j) - col_means(j), 2);
     }
-    col_sds(j) = std::sqrt(col_sds(j) / (n - 1));
+    col_sds(j) = std::sqrt(col_sds(j) / (n - 1));  // Calculate the standard deviation for column j
   }
 
-  // Standardize the matrix
-  for (int j = 0; j < q; j++) {
+  // Step 5: Standardize the matrix X by subtracting column means and dividing by column standard deviations
+  for (int j = 0; j < num_vars; j++) {
     for (int i = 0; i < n; i++) {
-      XStd(i, j) = (X(i, j) - col_means(j)) / col_sds(j);
+      XStd(i, j) = (X(i, j) - col_means(j)) / col_sds(j);  // Standardize each element of X
     }
   }
 
+  // Step 6: Return the standardized matrix XStd
   return XStd;
 }

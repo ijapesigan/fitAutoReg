@@ -1,0 +1,87 @@
+---
+title: "fitAutoReg: Bootstrap with Exogenous Variables"
+author: "Ivan Jacob Agaloos Pesigan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fitAutoReg: Bootstrap with Exogenous Variables}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r}
+#| include = FALSE
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  fig.path = "fig-vignettes-bootstrap-",
+  fig.cap = "",
+  fig.width = 11,
+  fig.height = 8,
+  fig.retina = 2,
+  dpi = 300,
+  comment = "#>"
+)
+```
+
+```{r}
+library(fitAutoReg)
+set.seed(42)
+```
+
+```{r}
+data <- dat_p2_exo$data
+exo_mat <- dat_p2_exo$exo_mat
+```
+
+## Residual bootstrap
+
+```{r}
+system.time(
+  rb <- RBootVARExoOLS(
+    data = data,
+    exo_mat = exo_mat,
+    p = 2,
+    B = 5000L
+  )
+)
+rb$est
+```
+
+#### Confidence Intervals
+
+```{r}
+BootCI(rb)
+```
+
+#### Standard Errors
+
+```{r}
+BootSE(rb)
+```
+
+```{r}
+system.time(
+  rb <- RBootVARLasso(
+    data = data,
+    exo_mat = exo_mat,
+    p = 2,
+    B = 5000L,
+    n_lambdas = 100,
+    crit = "ebic",
+    max_iter = 1000,
+    tol = 1e-5
+  )
+)
+rb$est
+```
+
+#### Confidence Intervals
+
+```{r}
+BootCI(rb)
+```
+
+#### Standard Errors
+
+```{r}
+BootSE(rb)
+```

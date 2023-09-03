@@ -83,31 +83,42 @@
 //' @export
 // [[Rcpp::export]]
 Rcpp::List YX(const arma::mat& data, int p) {
-  int t = data.n_rows;  // Number of observations
-  int k = data.n_cols;  // Number of variables
+  // Step 1: Calculate the dimensions of the 'data' matrix
+  // Number of time steps (rows)
+  int time = data.n_rows;
+  // Number of outcome variables (columns)
+  int num_outcome_vars = data.n_cols;
 
-  // Create matrices to store lagged variables and the dependent variable
-  arma::mat X(t - p, k * p + 1, arma::fill::zeros);  // Add 1 column for the
-                                                     // constant
-  arma::mat Y(t - p, k, arma::fill::zeros);
+  // Step 2: Create matrices 'X' and 'Y'
+  //         to store transformed data 'X' matrix with ones
+  arma::mat X(time - p, num_outcome_vars * p + 1, arma::fill::ones);
+  // 'Y' matrix with zeros
+  arma::mat Y(time - p, num_outcome_vars, arma::fill::zeros);
 
-  // Populate the matrices X and Y with lagged data
-  for (int i = 0; i < (t - p); i++) {
-    X(i, 0) = 1;  // Set the first column to 1 for the constant term
+  // Step 3: Loop through the data and populate 'X' and 'Y'
+  for (int time_index = 0; time_index < (time - p); time_index++) {
+    // Initialize the column index for 'X'
     int index = 1;
-    // Arrange predictors from smallest lag to biggest
+
+    // Nested loop to populate 'X' with lagged values
     for (int lag = p - 1; lag >= 0; lag--) {
-      X.row(i).subvec(index, index + k - 1) = data.row(i + lag);
-      index += k;
+      // Update 'X' by assigning a subvector of 'data' to a subvector of 'X'
+      X.row(time_index).subvec(index, index + num_outcome_vars - 1) =
+          data.row(time_index + lag);
+      // Move to the next set of columns in 'X'
+      index += num_outcome_vars;
     }
-    Y.row(i) = data.row(i + p);
+
+    // Update 'Y' with the target values
+    Y.row(time_index) = data.row(time_index + p);
   }
 
-  // Create a list to store X, Y
+  // Step 4: Create an Rcpp List 'result' and assign 'X' and 'Y' matrices to it
   Rcpp::List result;
   result["X"] = X;
   result["Y"] = Y;
 
+  // Step 5: Return the 'result' List containing the transformed data
   return result;
 }
 

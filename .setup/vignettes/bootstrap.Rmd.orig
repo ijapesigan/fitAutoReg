@@ -98,6 +98,18 @@ system.time(
 rb$est
 ```
 
+#### Confidence Intervals
+
+```{r}
+BootCI(rb)
+```
+
+#### Standard Errors
+
+```{r}
+BootSE(rb)
+```
+
 ```{r}
 system.time(
   rb <- RBootVARLasso(

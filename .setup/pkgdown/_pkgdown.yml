@@ -43,6 +43,7 @@ articles:
 - title: Bootstrap
   contents:
   - bootstrap
+  - bootstrap-exo
 - title: Session
   contents:
   - session/session
