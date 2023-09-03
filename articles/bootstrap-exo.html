@@ -104,7 +104,7 @@ Agaloos Pesigan</h4>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   1.626   0.629   1.148</span></span>
+<span><span class="co">#&gt;   1.005   0.298   0.653</span></span>
 <span><span class="va">rb</span><span class="op">$</span><span class="va">est</span></span>
 <span><span class="co">#&gt;           [,1]        [,2]       [,3]         [,4]         [,5]        [,6]</span></span>
 <span><span class="co">#&gt; [1,] 1.1645442  0.35802166 0.03734862 0.0002366562  0.106855984 -0.02817869</span></span>
@@ -154,7 +154,7 @@ Agaloos Pesigan</h4>
 <span><span class="co">#&gt; [3,] 0.02819177 0.03198098 0.03246780 0.03392554</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span></span>
-<span>  <span class="va">rb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RBootVARLasso.html">RBootVARLasso</a></span><span class="op">(</span></span>
+<span>  <span class="va">rb</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/RBootVARExoLasso.html">RBootVARExoLasso</a></span><span class="op">(</span></span>
 <span>    data <span class="op">=</span> <span class="va">data</span>,</span>
 <span>    exo_mat <span class="op">=</span> <span class="va">exo_mat</span>,</span>
 <span>    p <span class="op">=</span> <span class="fl">2</span>,</span>
@@ -165,17 +165,17 @@ Agaloos Pesigan</h4>
 <span>    tol <span class="op">=</span> <span class="fl">1e-5</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in RBootVARLasso(data = data, exo_mat = exo_mat, p = 2, B = 5000L, : unused argument (exo_mat = exo_mat)</span></span>
-<span><span class="co">#&gt; Timing stopped at: 0.001 0.001 0</span></span>
+<span><span class="co">#&gt;     user   system  elapsed </span></span>
+<span><span class="co">#&gt; 1657.666  519.035 1093.891</span></span>
 <span><span class="va">rb</span><span class="op">$</span><span class="va">est</span></span>
-<span><span class="co">#&gt;           [,1]        [,2]       [,3]         [,4]         [,5]        [,6]</span></span>
-<span><span class="co">#&gt; [1,] 1.1645442  0.35802166 0.03734862 0.0002366562  0.106855984 -0.02817869</span></span>
-<span><span class="co">#&gt; [2,] 0.6746508  0.01936447 0.47104112 0.0408110984  0.042905903  0.20401723</span></span>
-<span><span class="co">#&gt; [3,] 1.1333405 -0.01203039 0.03843933 0.5917764198 -0.002727068 -0.03541278</span></span>
-<span><span class="co">#&gt;             [,7]        [,8]          [,9]        [,10]</span></span>
-<span><span class="co">#&gt; [1,] -0.01532613  0.53449366 -0.0300834881  0.049418742</span></span>
-<span><span class="co">#&gt; [2,] -0.01147251 -0.01486178  0.5239645393 -0.009915481</span></span>
-<span><span class="co">#&gt; [3,]  0.29966676  0.01649533 -0.0009656348  0.418817274</span></span></code></pre></div>
+<span><span class="co">#&gt;           [,1]      [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span></span>
+<span><span class="co">#&gt; [1,] 1.1645442 0.3223107 0.0000000 0.0000000 0.07127916 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; [2,] 0.6746508 0.0000000 0.4448539 0.0000000 0.00000000 0.1720849 0.0000000</span></span>
+<span><span class="co">#&gt; [3,] 1.1333405 0.0000000 0.0000000 0.5682471 0.00000000 0.0000000 0.2731365</span></span>
+<span><span class="co">#&gt;          [,8]      [,9]     [,10]</span></span>
+<span><span class="co">#&gt; [1,] 0.465707 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; [2,] 0.000000 0.4490572 0.0000000</span></span>
+<span><span class="co">#&gt; [3,] 0.000000 0.0000000 0.3112725</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="confidence-intervals-1">Confidence Intervals<a class="anchor" aria-label="anchor" href="#confidence-intervals-1"></a>
@@ -183,38 +183,38 @@ Agaloos Pesigan</h4>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/BootCI.html">BootCI</a></span><span class="op">(</span><span class="va">rb</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $ll</span></span>
-<span><span class="co">#&gt;           [,1]        [,2]       [,3]        [,4]         [,5]        [,6]</span></span>
-<span><span class="co">#&gt; [1,] 0.8061537  0.30429789 -0.0162773 -0.05488401  0.052347521 -0.08134771</span></span>
-<span><span class="co">#&gt; [2,] 0.3038916 -0.03516976  0.4173502 -0.01331327 -0.009919122  0.14847131</span></span>
-<span><span class="co">#&gt; [3,] 0.7575254 -0.06665384 -0.0146747  0.53602522 -0.057635504 -0.08894547</span></span>
-<span><span class="co">#&gt;             [,7]        [,8]        [,9]       [,10]</span></span>
-<span><span class="co">#&gt; [1,] -0.06958521  0.47285084 -0.09175439 -0.01754922</span></span>
-<span><span class="co">#&gt; [2,] -0.06597832 -0.07899913  0.45949697 -0.07497912</span></span>
-<span><span class="co">#&gt; [3,]  0.24597899 -0.04551502 -0.06516815  0.35063868</span></span>
+<span><span class="co">#&gt;           [,1]     [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span></span>
+<span><span class="co">#&gt; [1,] 0.7961103 0.297375 0.0000000 0.0000000 0.06576462 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; [2,] 0.9329965 0.000000 0.4083041 0.0000000 0.00000000 0.1579462 0.0000000</span></span>
+<span><span class="co">#&gt; [3,] 1.2651847 0.000000 0.0000000 0.5258466 0.00000000 0.0000000 0.2527561</span></span>
+<span><span class="co">#&gt;           [,8]     [,9]     [,10]</span></span>
+<span><span class="co">#&gt; [1,] 0.4296774 0.000000 0.0000000</span></span>
+<span><span class="co">#&gt; [2,] 0.0000000 0.412162 0.0000000</span></span>
+<span><span class="co">#&gt; [3,] 0.0000000 0.000000 0.2880466</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $ul</span></span>
-<span><span class="co">#&gt;          [,1]       [,2]       [,3]       [,4]       [,5]       [,6]       [,7]</span></span>
-<span><span class="co">#&gt; [1,] 1.533284 0.41511628 0.08987763 0.05549245 0.15992419 0.02440078 0.03797246</span></span>
-<span><span class="co">#&gt; [2,] 1.049598 0.07424265 0.52694125 0.09477779 0.09725450 0.25700211 0.04301034</span></span>
-<span><span class="co">#&gt; [3,] 1.511836 0.04290514 0.09283828 0.64736248 0.05231296 0.01874213 0.35416018</span></span>
-<span><span class="co">#&gt;            [,8]       [,9]      [,10]</span></span>
-<span><span class="co">#&gt; [1,] 0.59755623 0.03352203 0.11323024</span></span>
-<span><span class="co">#&gt; [2,] 0.04856768 0.58634379 0.05761158</span></span>
-<span><span class="co">#&gt; [3,] 0.07720625 0.06178412 0.48463274</span></span></code></pre></div>
+<span><span class="co">#&gt;          [,1]      [,2]      [,3]      [,4]       [,5]      [,6]      [,7]</span></span>
+<span><span class="co">#&gt; [1,] 1.524423 0.3235663 0.0000000 0.0000000 0.07155685 0.0000000 0.0000000</span></span>
+<span><span class="co">#&gt; [2,] 1.670456 0.0000000 0.4408508 0.0000000 0.00000000 0.1705364 0.0000000</span></span>
+<span><span class="co">#&gt; [3,] 2.012884 0.0000000 0.0000000 0.5565334 0.00000000 0.0000000 0.2675062</span></span>
+<span><span class="co">#&gt;           [,8]      [,9]    [,10]</span></span>
+<span><span class="co">#&gt; [1,] 0.4675213 0.0000000 0.000000</span></span>
+<span><span class="co">#&gt; [2,] 0.0000000 0.4450163 0.000000</span></span>
+<span><span class="co">#&gt; [3,] 0.0000000 0.0000000 0.304856</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="standard-errors-1">Standard Errors<a class="anchor" aria-label="anchor" href="#standard-errors-1"></a>
 </h4>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/BootSE.html">BootSE</a></span><span class="op">(</span><span class="va">rb</span><span class="op">)</span></span>
-<span><span class="co">#&gt;           [,1]       [,2]       [,3]       [,4]       [,5]       [,6]</span></span>
-<span><span class="co">#&gt; [1,] 0.1899002 0.02828822 0.02739483 0.02795965 0.02763577 0.02748793</span></span>
-<span><span class="co">#&gt; [2,] 0.1920405 0.02807034 0.02805847 0.02759376 0.02749599 0.02786318</span></span>
-<span><span class="co">#&gt; [3,] 0.1915017 0.02782644 0.02776910 0.02862253 0.02770058 0.02760922</span></span>
-<span><span class="co">#&gt;            [,7]       [,8]       [,9]      [,10]</span></span>
-<span><span class="co">#&gt; [1,] 0.02760877 0.03207984 0.03254120 0.03304607</span></span>
-<span><span class="co">#&gt; [2,] 0.02781540 0.03230481 0.03184359 0.03368794</span></span>
-<span><span class="co">#&gt; [3,] 0.02819177 0.03198098 0.03246780 0.03392554</span></span></code></pre></div>
+<span><span class="co">#&gt;           [,1]        [,2]        [,3]        [,4]        [,5]        [,6]</span></span>
+<span><span class="co">#&gt; [1,] 0.1873452 0.006650806 0.000000000 0.000000000 0.001470829 0.000000000</span></span>
+<span><span class="co">#&gt; [2,] 0.1874381 0.000000000 0.008382272 0.000000000 0.000000000 0.003242555</span></span>
+<span><span class="co">#&gt; [3,] 0.1919660 0.000000000 0.000000000 0.007915599 0.000000000 0.000000000</span></span>
+<span><span class="co">#&gt;             [,7]        [,8]        [,9]       [,10]</span></span>
+<span><span class="co">#&gt; [1,] 0.000000000 0.009609755 0.000000000 0.000000000</span></span>
+<span><span class="co">#&gt; [2,] 0.000000000 0.000000000 0.008461474 0.000000000</span></span>
+<span><span class="co">#&gt; [3,] 0.003804752 0.000000000 0.000000000 0.004335981</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

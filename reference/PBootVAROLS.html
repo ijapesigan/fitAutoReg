@@ -123,43 +123,11 @@ Matrix of vectorized bootstrap estimates of the coefficient matrix.</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">PBootVAROLS</span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2</span>, p <span class="op">=</span> <span class="fl">2</span>, B <span class="op">=</span> <span class="fl">5</span>, burn_in <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $est</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]        [,2]        [,3]        [,4]        [,5]         [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.7899726  0.36836768 0.008539283  0.02231498  0.11338780  0.024505442</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1.0001995  0.01334496 0.481949237 -0.01730029 -0.03223315  0.234373552</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 1.0666814 -0.03022951 0.014945306  0.60741736 -0.01610408 -0.006149189</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             [,7]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] -0.01143384</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.01815779</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.29620975</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $boot</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]      [,4]         [,5]          [,6]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.8509042 0.9395882 0.9693048 0.3308668  0.013304480 -0.0209405738</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.3718122 1.2037255 0.7700037 0.3496269 -0.051268671  0.0003487481</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.9614792 1.0925744 1.3634373 0.2963154 -0.001225825 -0.0230939382</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 1.0543416 0.9457504 0.7009774 0.4011347  0.008071512  0.0012665285</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.8843706 0.9137012 1.0510415 0.3604491 -0.012759892 -0.0178573775</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             [,7]      [,8]       [,9]        [,10]        [,11]     [,12]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.02053333 0.4977132 0.02955139  0.036910013 -0.018954348 0.6426489</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.01640956 0.5496648 0.00846277  0.029656982 -0.088595157 0.5891099</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.05214069 0.4594739 0.02546132  0.029844505 -0.006414844 0.5518349</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  0.06948492 0.5065122 0.08111799  0.009207306 -0.049475241 0.6545590</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]  0.02564352 0.5137494 0.03331858 -0.002983677  0.044159944 0.6716506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           [,13]        [,14]        [,15]        [,16]     [,17]        [,18]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.11843095 -0.062853439 -0.053670379  0.013882264 0.1896269 -0.033119658</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.16160171 -0.068813547 -0.007368019  0.051611813 0.1840353  0.006559267</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.09791246  0.001046545  0.004604807  0.004758628 0.2305479 -0.009719299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.06218556 -0.065733441  0.005778588 -0.045139617 0.2226011 -0.046108093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.07512597 -0.060604529 -0.013856876 -0.024372655 0.2208311 -0.019537945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            [,19]        [,20]     [,21]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] -0.02547292  0.044137962 0.2746291</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.01483521  0.081293003 0.3377500</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.02931510  0.008041342 0.3236093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] -0.01453899  0.053887542 0.2645917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]  0.02368999 -0.032681749 0.2253141</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">pb</span> <span class="op">&lt;-</span> <span class="fu">PBootVAROLS</span><span class="op">(</span>data <span class="op">=</span> <span class="va">dat_p2</span>, p <span class="op">=</span> <span class="fl">2</span>, B <span class="op">=</span> <span class="fl">5</span>, burn_in <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">pb</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ est : num [1:3, 1:7] 0.79 1.0002 1.0667 0.3684 0.0133 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ boot: num [1:5, 1:21] 0.851 0.372 0.961 1.054 0.884 ...</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
