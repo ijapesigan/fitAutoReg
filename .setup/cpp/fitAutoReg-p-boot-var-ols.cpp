@@ -22,7 +22,8 @@
 //'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
 //'
 //' @examples
-//' PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+//' pb <- PBootVAROLS(data = dat_p2, p = 2, B = 5, burn_in = 20)
+//' str(pb)
 //'
 //' @family Fitting Autoregressive Model Functions
 //' @keywords fitAutoReg pb
@@ -52,11 +53,9 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
   arma::mat chol_cov = arma::chol(cov_residuals);
 
   // Step 7: Simulate bootstrapped VAR coefficients using PBootVAROLSSim
-  arma::mat sim =
-      PBootVAROLSSim(B, time, burn_in, const_vec, coef_mat, chol_cov);
+  arma::mat sim = PBootVAROLSSim(B, time, burn_in, const_vec, coef_mat, chol_cov);
 
-  // Step 8: Create a result list containing estimated coefficients and
-  // bootstrapped samples
+  // Step 8: Create a result list containing estimated coefficients and bootstrapped samples
   Rcpp::List result;
   // Estimated coefficients
   result["est"] = coef;

@@ -24,8 +24,7 @@
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
-                    int n_lambdas) {
+arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd, int n_lambdas) {
   // Step 1: Determine the number of outcome variables
   int num_outcome_vars = YStd.n_cols;
 
@@ -38,13 +37,11 @@ arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
   // Step 4: Compute the logarithm of lambda_max
   double log_lambda_max = std::log10(lambda_max);
 
-  // Step 5: Initialize a vector 'lambda_seq' to store the sequence of lambda
-  // values
+  // Step 5: Initialize a vector 'lambda_seq' to store the sequence of lambda values
   arma::vec lambda_seq(n_lambdas);
 
   // Step 6: Calculate the step size for logarithmic lambda values
-  double log_lambda_step =
-      (std::log10(lambda_max / 1000) - log_lambda_max) / (n_lambdas - 1);
+  double log_lambda_step = (std::log10(lambda_max / 1000) - log_lambda_max) / (n_lambdas - 1);
 
   // Step 7: Generate the sequence of lambda values using a logarithmic scale
   for (int i = 0; i < n_lambdas; ++i) {

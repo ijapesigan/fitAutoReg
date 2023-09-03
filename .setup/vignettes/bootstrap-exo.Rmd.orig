@@ -60,7 +60,7 @@ BootSE(rb)
 
 ```{r}
 system.time(
-  rb <- RBootVARLasso(
+  rb <- RBootVARExoLasso(
     data = data,
     exo_mat = exo_mat,
     p = 2,

@@ -42,15 +42,12 @@
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
-                            const arma::vec& lambdas, const std::string& crit,
-                            int max_iter, double tol) {
+arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd, const arma::vec& lambdas, const std::string& crit, int max_iter, double tol) {
   // Step 1: Get the number of time points and predictor variables
   int time = XStd.n_rows;
   int num_predictor_vars = XStd.n_cols;
 
-  // Step 2: Initialize variables to keep track of the best model based on the
-  // selected criterion
+  // Step 2: Initialize variables to keep track of the best model based on the selected criterion
   double min_criterion = std::numeric_limits<double>::infinity();
   arma::mat coef_min_crit;
 
@@ -58,12 +55,10 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
   for (arma::uword i = 0; i < lambdas.n_elem; ++i) {
     double lambda = lambdas(i);
 
-    // Step 4: Fit a VAR model with Lasso regularization for the current lambda
-    // value
+    // Step 4: Fit a VAR model with Lasso regularization for the current lambda value
     arma::mat coef = FitVARLasso(YStd, XStd, lambda, max_iter, tol);
 
-    // Step 5: Calculate the residuals, RSS, and the number of nonzero
-    // parameters
+    // Step 5: Calculate the residuals, RSS, and the number of nonzero parameters
     arma::mat residuals = YStd - XStd * coef.t();
     double rss = arma::accu(residuals % residuals);
     int num_params = arma::sum(arma::vectorise(coef != 0));
@@ -71,12 +66,9 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
     // Step 6: Calculate the chosen information criterion (AIC, BIC, or EBIC)
     double aic = time * std::log(rss / time) + 2.0 * num_params;
     double bic = time * std::log(rss / time) + num_params * std::log(time);
-    double ebic =
-        time * std::log(rss / time) +
-        2.0 * num_params * std::log(time / double(num_predictor_vars));
+    double ebic = time * std::log(rss / time) + 2.0 * num_params * std::log(time / double(num_predictor_vars));
 
-    // Step 7: Determine the current criterion value based on user choice
-    // ('aic', 'bic', or 'ebic')
+    // Step 7: Determine the current criterion value based on user choice ('aic', 'bic', or 'ebic')
     double current_criterion = 0.0;
     if (crit == "aic") {
       current_criterion = aic;
@@ -86,15 +78,13 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
       current_criterion = ebic;
     }
 
-    // Step 8: Update the best model if the current criterion is smaller than
-    // the minimum
+    // Step 8: Update the best model if the current criterion is smaller than the minimum
     if (current_criterion < min_criterion) {
       min_criterion = current_criterion;
       coef_min_crit = coef;
     }
   }
 
-  // Step 9: Return the coefficients of the best model based on the selected
-  // criterion
+  // Step 9: Return the coefficients of the best model based on the selected criterion
   return coef_min_crit;
 }
