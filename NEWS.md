@@ -3,3 +3,6 @@
 - Fitting function
     - VAR(p) OLS for constant vector, auto and cross regression coefficients
     - VAR(p) Lasso for auto and cross regression coefficients
+- Bootstrap functions (OLS and Lasso)
+    - Residual bootstrap
+    - Parametric bootstrap

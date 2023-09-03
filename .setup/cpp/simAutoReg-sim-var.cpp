@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// edit simAutoReg/.setup/cpp/simAutoReg-sim-var.cpp
+// edit .setup/cpp/simAutoReg-sim-var.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>

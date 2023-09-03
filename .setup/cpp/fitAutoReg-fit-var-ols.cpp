@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-fit-var-ols.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -74,3 +75,4 @@ arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
   //         (columns represent variables, rows represent lags)
   return coef.t();
 }
+

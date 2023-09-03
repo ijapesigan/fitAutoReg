@@ -7,8 +7,6 @@ csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa
 nocite: |
   @RCoreTeam-2023
   @Eddelbuettel-Sanderson-2014
-  @Muthen-Muthen-2017
-  @Ou-Hunter-Chow-2019
 vignette: >
   %\VignetteIndexEntry{fitAutoReg: Fit Autoregressive Models}
   %\VignetteEngine{knitr::rmarkdown}

@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
-// edit simAutoReg/.setup/cpp/simAutoReg-sim-var-exo.cpp
+// edit .setup/cpp/simAutoReg-sim-var-exo.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -35,6 +36,47 @@
 //'   Coefficient matrix with dimensions `k` by `x`
 //'   associated with the exogenous covariates.
 //'
+//' @examples
+//' set.seed(42)
+//' time <- 1000L
+//' burn_in <- 200
+//' k <- 3
+//' p <- 2
+//' constant <- c(1, 1, 1)
+//' coef <- matrix(
+//'   data = c(
+//'     0.4, 0.0, 0.0, 0.1, 0.0, 0.0,
+//'     0.0, 0.5, 0.0, 0.0, 0.2, 0.0,
+//'     0.0, 0.0, 0.6, 0.0, 0.0, 0.3
+//'   ),
+//'   nrow = k,
+//'   byrow = TRUE
+//' )
+//' chol_cov <- chol(diag(3))
+//' exo_mat <- MASS::mvrnorm(
+//'   n = time + burn_in,
+//'   mu = c(0, 0, 0),
+//'   Sigma = diag(3)
+//' )
+//' exo_coef <- matrix(
+//'   data = c(
+//'     0.5, 0.0, 0.0,
+//'     0.0, 0.5, 0.0,
+//'     0.0, 0.0, 0.5
+//'   ),
+//'   nrow = 3
+//' )
+//' y <- SimVARExo(
+//'   time = time,
+//'   burn_in = burn_in,
+//'   constant = constant,
+//'   coef = coef,
+//'   chol_cov = chol_cov,
+//'   exo_mat = exo_mat,
+//'   exo_coef = exo_coef
+//' )
+//' str(y)
+//'
 //' @return Numeric matrix containing the simulated time series data
 //'   with dimensions `k` by `time`,
 //'   where `k` is the number of variables and
@@ -58,8 +100,8 @@ arma::mat SimVARExo(int time, int burn_in, const arma::vec& constant,
   // Step 2: Create a matrix to store simulated data
   arma::mat data(num_outcome_vars, total_time);
 
-  // Step 3: Initialize the data matrix with constant values for each outcome
-  // variable
+  // Step 3: Initialize the data matrix with constant values
+  //         for each outcome variable
   data.each_col() = constant;
 
   // Step 4: Transpose the exogenous matrix for efficient column access

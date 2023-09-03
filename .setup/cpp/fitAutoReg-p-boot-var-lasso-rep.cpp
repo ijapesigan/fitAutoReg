@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-rep.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -36,8 +37,7 @@ arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
   arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
 
   // Step 8: Fit VAR LASSO model to the standardized data
-  arma::mat coef_std_b =
-      FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol);
+  arma::mat coef_std_b = FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol);
 
   // Step 9: Rescale the estimated coefficients to their original scale
   arma::mat coef_orig = OrigScale(coef_std_b, Y, X_no_constant);

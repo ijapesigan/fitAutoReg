@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-sim.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
