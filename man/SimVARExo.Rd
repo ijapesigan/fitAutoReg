@@ -46,6 +46,48 @@ where \code{k} is the number of variables and
 This function generates synthetic time series data
 from a Vector Autoregressive (VAR) model with exogenous variables.
 }
+\examples{
+set.seed(42)
+time <- 1000L
+burn_in <- 200
+k <- 3
+p <- 2
+constant <- c(1, 1, 1)
+coef <- matrix(
+  data = c(
+    0.4, 0.0, 0.0, 0.1, 0.0, 0.0,
+    0.0, 0.5, 0.0, 0.0, 0.2, 0.0,
+    0.0, 0.0, 0.6, 0.0, 0.0, 0.3
+  ),
+  nrow = k,
+  byrow = TRUE
+)
+chol_cov <- chol(diag(3))
+exo_mat <- MASS::mvrnorm(
+  n = time + burn_in,
+  mu = c(0, 0, 0),
+  Sigma = diag(3)
+)
+exo_coef <- matrix(
+  data = c(
+    0.5, 0.0, 0.0,
+    0.0, 0.5, 0.0,
+    0.0, 0.0, 0.5
+  ),
+  nrow = 3
+)
+y <- SimVARExo(
+  time = time,
+  burn_in = burn_in,
+  constant = constant,
+  coef = coef,
+  chol_cov = chol_cov,
+  exo_mat = exo_mat,
+  exo_coef = exo_coef
+)
+str(y)
+
+}
 \seealso{
 Other Simulation of Autoregressive Data Functions: 
 \code{\link{BootCI}()},

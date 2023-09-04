@@ -1,5 +1,6 @@
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/000-forward-declarations.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -85,6 +86,7 @@ Rcpp::List PBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat,
                           int p, int B, int burn_in);
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-fit-var-lasso-search.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -185,6 +187,7 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-fit-var-lasso.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -358,6 +361,7 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-fit-var-ols.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -434,6 +438,7 @@ arma::mat FitVAROLS(const arma::mat& Y, const arma::mat& X) {
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-lambda-seq.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -491,6 +496,7 @@ arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/008-fitAutoReg-orig-scale.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -560,6 +566,7 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-rep.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -610,6 +617,7 @@ arma::vec PBootVARLassoRep(int time, int burn_in, const arma::vec& constant,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-sim.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -641,6 +649,7 @@ arma::mat PBootVARLassoSim(int B, int time, int burn_in,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -738,6 +747,7 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-ols-rep.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -765,6 +775,7 @@ arma::vec PBootVAROLSRep(int time, int burn_in, const arma::vec& constant,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-ols-sim.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -798,6 +809,7 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-ols.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -867,6 +879,7 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-r-boot-var-exo-lasso.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1007,6 +1020,7 @@ Rcpp::List RBootVARExoLasso(const arma::mat& data, const arma::mat& exo_mat,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-r-boot-var-exo-ols.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1096,6 +1110,7 @@ Rcpp::List RBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-r-boot-var-lasso.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1232,6 +1247,7 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-r-boot-var-ols.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1317,6 +1333,7 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-search-var-lasso.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1405,6 +1422,7 @@ Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-std-mat.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1473,7 +1491,8 @@ arma::mat StdMat(const arma::mat& X) {
   return XStd;
 }
 // -----------------------------------------------------------------------------
-// edit simAutoReg/.setup/cpp/simAutoReg-sim-var-exo.cpp
+// edit .setup/cpp/simAutoReg-sim-var-exo.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1509,6 +1528,47 @@ arma::mat StdMat(const arma::mat& X) {
 //'   Coefficient matrix with dimensions `k` by `x`
 //'   associated with the exogenous covariates.
 //'
+//' @examples
+//' set.seed(42)
+//' time <- 1000L
+//' burn_in <- 200
+//' k <- 3
+//' p <- 2
+//' constant <- c(1, 1, 1)
+//' coef <- matrix(
+//'   data = c(
+//'     0.4, 0.0, 0.0, 0.1, 0.0, 0.0,
+//'     0.0, 0.5, 0.0, 0.0, 0.2, 0.0,
+//'     0.0, 0.0, 0.6, 0.0, 0.0, 0.3
+//'   ),
+//'   nrow = k,
+//'   byrow = TRUE
+//' )
+//' chol_cov <- chol(diag(3))
+//' exo_mat <- MASS::mvrnorm(
+//'   n = time + burn_in,
+//'   mu = c(0, 0, 0),
+//'   Sigma = diag(3)
+//' )
+//' exo_coef <- matrix(
+//'   data = c(
+//'     0.5, 0.0, 0.0,
+//'     0.0, 0.5, 0.0,
+//'     0.0, 0.0, 0.5
+//'   ),
+//'   nrow = 3
+//' )
+//' y <- SimVARExo(
+//'   time = time,
+//'   burn_in = burn_in,
+//'   constant = constant,
+//'   coef = coef,
+//'   chol_cov = chol_cov,
+//'   exo_mat = exo_mat,
+//'   exo_coef = exo_coef
+//' )
+//' str(y)
+//'
 //' @return Numeric matrix containing the simulated time series data
 //'   with dimensions `k` by `time`,
 //'   where `k` is the number of variables and
@@ -1532,8 +1592,8 @@ arma::mat SimVARExo(int time, int burn_in, const arma::vec& constant,
   // Step 2: Create a matrix to store simulated data
   arma::mat data(num_outcome_vars, total_time);
 
-  // Step 3: Initialize the data matrix with constant values for each outcome
-  // variable
+  // Step 3: Initialize the data matrix with constant values
+  //         for each outcome variable
   data.each_col() = constant;
 
   // Step 4: Transpose the exogenous matrix for efficient column access
@@ -1580,7 +1640,8 @@ arma::mat SimVARExo(int time, int burn_in, const arma::vec& constant,
   return data.t();
 }
 // -----------------------------------------------------------------------------
-// edit simAutoReg/.setup/cpp/simAutoReg-sim-var.cpp
+// edit .setup/cpp/simAutoReg-sim-var.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1742,7 +1803,8 @@ arma::mat SimVAR(int time, int burn_in, const arma::vec& constant,
 
 // Dependencies
 // -----------------------------------------------------------------------------
-// edit simAutoReg/.setup/cpp/simAutoReg-y-x.cpp
+// edit .setup/cpp/simAutoReg-y-x.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
@@ -1847,7 +1909,8 @@ Rcpp::List YXExo(const arma::mat& data, int p, const arma::mat& exo_mat) {
   return result;
 }
 // -----------------------------------------------------------------------------
-// edit simAutoReg/.setup/cpp/simAutoReg-y-x.cpp
+// edit .setup/cpp/simAutoReg-y-x.cpp
+// Ivan Jacob Agaloos Pesigan
 // -----------------------------------------------------------------------------
 
 #include <RcppArmadillo.h>
