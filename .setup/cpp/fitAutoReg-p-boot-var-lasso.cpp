@@ -52,8 +52,8 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
   // Step 3: Remove the constant term from the lagged variables
   arma::mat X_no_constant = X.cols(1, X.n_cols - 1);
 
-  // Step 4: Fit a VAR model using OLS to obtain the constant term and VAR
-  // coefficients
+  // Step 4: Fit a VAR model using OLS to obtain the constant term
+  //         and VAR coefficients
   arma::mat ols = FitVAROLS(Y, X);
 
   // Step 5: Standardize the predictor and response variables
@@ -73,11 +73,11 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
   arma::mat coef_mat = OrigScale(pb_std, Y, X_no_constant);
 
   // Step 10: Combine the constant and VAR coefficients
-  arma::mat coef =
-      arma::join_horiz(const_vec, coef_mat);  // OLS and Lasso combined
+  // OLS and Lasso combined
+  arma::mat coef = arma::join_horiz(const_vec, coef_mat);
 
-  // Step 11: Calculate residuals, their covariance, and the Cholesky
-  // decomposition of the covariance
+  // Step 11: Calculate residuals, their covariance,
+  //          and the Cholesky decomposition of the covariance
   arma::mat residuals = Y - X * coef.t();
   arma::mat cov_residuals = arma::cov(residuals);
   arma::mat chol_cov = arma::chol(cov_residuals);

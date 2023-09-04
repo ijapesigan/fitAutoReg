@@ -168,7 +168,7 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
     }
   }
 
-  // Step 6: Return the estimated coefficients (transposed for the desired
-  // format)
+  // Step 6: Return the estimated coefficients
+  //         (transposed for the desired format)
   return coef.t();
 }

@@ -39,8 +39,8 @@ arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
   // Step 4: Compute the logarithm of lambda_max
   double log_lambda_max = std::log10(lambda_max);
 
-  // Step 5: Initialize a vector 'lambda_seq' to store the sequence of lambda
-  // values
+  // Step 5: Initialize a vector 'lambda_seq' to store the sequence
+  //         of lambda values
   arma::vec lambda_seq(n_lambdas);
 
   // Step 6: Calculate the step size for logarithmic lambda values

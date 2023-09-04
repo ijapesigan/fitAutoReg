@@ -50,8 +50,8 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
   int time = XStd.n_rows;
   int num_predictor_vars = XStd.n_cols;
 
-  // Step 2: Initialize variables to keep track of the best model based on the
-  // selected criterion
+  // Step 2: Initialize variables to keep track of the best model
+  //         based on the selected criterion
   double min_criterion = std::numeric_limits<double>::infinity();
   arma::mat coef_min_crit;
 
@@ -77,7 +77,7 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
         2.0 * num_params * std::log(time / double(num_predictor_vars));
 
     // Step 7: Determine the current criterion value based on user choice
-    // ('aic', 'bic', or 'ebic')
+    //         ('aic', 'bic', or 'ebic')
     double current_criterion = 0.0;
     if (crit == "aic") {
       current_criterion = aic;
@@ -87,15 +87,15 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
       current_criterion = ebic;
     }
 
-    // Step 8: Update the best model if the current criterion is smaller than
-    // the minimum
+    // Step 8: Update the best model if the current criterion is smaller
+    //         than the minimum
     if (current_criterion < min_criterion) {
       min_criterion = current_criterion;
       coef_min_crit = coef;
     }
   }
 
-  // Step 9: Return the coefficients of the best model based on the selected
-  // criterion
+  // Step 9: Return the coefficients of the best model based
+  //         on the selected criterion
   return coef_min_crit;
 }

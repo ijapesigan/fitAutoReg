@@ -57,8 +57,8 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
   arma::mat sim =
       PBootVAROLSSim(B, time, burn_in, const_vec, coef_mat, chol_cov);
 
-  // Step 8: Create a result list containing estimated coefficients and
-  // bootstrapped samples
+  // Step 8: Create a result list containing estimated coefficients
+  //         and bootstrapped samples
   Rcpp::List result;
   // Estimated coefficients
   result["est"] = coef;

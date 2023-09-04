@@ -112,8 +112,8 @@ arma::mat SimVARExo(int time, int burn_in, const arma::vec& constant,
     // Step 5.1: Generate random noise vector
     arma::vec noise = arma::randn(num_outcome_vars);
 
-    // Step 5.2: Multiply the noise vector by the Cholesky decomposition of the
-    // covariance matrix
+    // Step 5.2: Multiply the noise vector by the Cholesky decomposition
+    //           of the covariance matrix
     arma::vec mult_noise = chol_cov * noise;
 
     // Step 5.3: Iterate over outcome variables
