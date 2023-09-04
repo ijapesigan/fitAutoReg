@@ -96,7 +96,8 @@
 //' @keywords fitAutoReg fit
 //' @export
 // [[Rcpp::export]]
-arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double& lambda, int max_iter, double tol) {
+arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
+                      const double& lambda, int max_iter, double tol) {
   // Step 1: Determine the number of predictor variables and outcome variables
   int num_predictor_vars = XStd.n_cols;
   int num_outcome_vars = YStd.n_cols;
@@ -120,12 +121,14 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double
 
     // Step 5.3: Loop over predictor variables
     for (int j = 0; j < num_predictor_vars; j++) {
-      // Step 5.3.1: Extract the j-th column of the standardized predictor matrix XStd
+      // Step 5.3.1: Extract the j-th column of the standardized predictor
+      // matrix XStd
       arma::vec Xj = XStd.col(j);
 
       // Step 5.3.2: Loop over outcome variables
       for (int l = 0; l < num_outcome_vars; l++) {
-        // Step 5.3.2.1: Extract the l-th column of the copy of the outcome matrix Y_copy
+        // Step 5.3.2.1: Extract the l-th column of the copy of the outcome
+        // matrix Y_copy
         arma::vec Y_l = Y_copy.col(l);
 
         // Step 5.3.2.2: Compute 'rho' and 'z' for Lasso regularization
@@ -143,7 +146,8 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double
         }
         coef(j, l) = c;
 
-        // Step 5.3.2.4: Update the l-th column of the copy of the outcome matrix Y_copy
+        // Step 5.3.2.4: Update the l-th column of the copy of the outcome
+        // matrix Y_copy
         Y_l = Y_l - (Xj * (coef(j, l) - coef_old(j, l)));
       }
     }
@@ -155,7 +159,8 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double
       }
     }
 
-    // Step 5.5: If maximum iterations are reached without convergence, issue a warning
+    // Step 5.5: If maximum iterations are reached without convergence, issue a
+    // warning
     if (iter == max_iter - 1) {
       Rcpp::warning(
           "The algorithm did not converge within the specified maximum number "
@@ -163,6 +168,7 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd, const double
     }
   }
 
-  // Step 6: Return the estimated coefficients (transposed for the desired format)
+  // Step 6: Return the estimated coefficients (transposed for the desired
+  // format)
   return coef.t();
 }

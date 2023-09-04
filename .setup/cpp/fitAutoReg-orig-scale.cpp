@@ -31,12 +31,14 @@
 //' @keywords fitAutoReg utils
 //' @export
 // [[Rcpp::export]]
-arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y, const arma::mat& X) {
+arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
+                    const arma::mat& X) {
   // Step 1: Get the number of outcome variables and predictor variables
   int num_outcome_vars = coef_std.n_rows;
   int num_predictor_vars = coef_std.n_cols;
 
-  // Step 2: Initialize vectors to store standard deviations of outcome (Y) and predictor (X) variables
+  // Step 2: Initialize vectors to store standard deviations of outcome (Y) and
+  // predictor (X) variables
   arma::vec sd_Y(num_outcome_vars);
   arma::vec sd_X(num_predictor_vars);
 
@@ -50,10 +52,12 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y, const arma::m
     sd_X(j) = arma::as_scalar(arma::stddev(X.col(j), 0, 0));
   }
 
-  // Step 5: Initialize a matrix 'orig' to store coefficients in the original scale
+  // Step 5: Initialize a matrix 'orig' to store coefficients in the original
+  // scale
   arma::mat orig(num_outcome_vars, num_predictor_vars);
 
-  // Step 6: Compute original-scale coefficients by scaling back from standardized coefficients
+  // Step 6: Compute original-scale coefficients by scaling back from
+  // standardized coefficients
   for (int l = 0; l < num_outcome_vars; l++) {
     for (int j = 0; j < num_predictor_vars; j++) {
       double orig_coef = coef_std(l, j) * sd_Y(l) / sd_X(j);
