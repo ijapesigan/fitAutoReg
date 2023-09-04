@@ -238,6 +238,81 @@ OrigScale <- function(coef_std, Y, X) {
 }
 
 #' Parametric Bootstrap for the Vector Autoregressive Model
+#' with Exogenous Variables
+#' Using Lasso Regularization
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @inheritParams PBootVARLasso
+#' @inheritParams PBootVARExoOLS
+#'
+#' @return List with the following elements:
+#'   - **est**: Numeric matrix.
+#'     Original OLS estimate of the coefficient matrix.
+#'   - **boot**: Numeric matrix.
+#'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+#'
+#' @examples
+#' data <- dat_p2_exo$data
+#' exo_mat <- dat_p2_exo$exo_mat
+#' pb <- PBootVARExoLasso(
+#'   data = data,
+#'   exo_mat = exo_mat,
+#'   p = 2,
+#'   B = 5,
+#'   burn_in = 0,
+#'   n_lambdas = 10,
+#'   crit = "ebic",
+#'   max_iter = 1000,
+#'   tol = 1e-5
+#' )
+#' str(pb)
+#'
+#' @family Fitting Autoregressive Model Functions
+#' @keywords fitAutoReg pb
+#' @export
+PBootVARExoLasso <- function(data, exo_mat, p, B, burn_in, n_lambdas, crit, max_iter, tol) {
+    .Call(`_fitAutoReg_PBootVARExoLasso`, data, exo_mat, p, B, burn_in, n_lambdas, crit, max_iter, tol)
+}
+
+#' Parametric Bootstrap for the Vector Autoregressive Model
+#' with Exogenous Variables
+#' Using Ordinary Least Squares
+#'
+#' @author Ivan Jacob Agaloos Pesigan
+#'
+#' @inheritParams PBootVAROLS
+#' @inheritParams YXExo
+#' @param exo_mat Numeric matrix.
+#'   Matrix of exogenous variables with dimensions `t + burn_in` by `m`.
+#'   If the number of rows is equal to `t`, set `burn_in = 0`.
+#'
+#' @return List with the following elements:
+#'   - **est**: Numeric matrix.
+#'     Original OLS estimate of the coefficient matrix.
+#'   - **boot**: Numeric matrix.
+#'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+#'
+#' @examples
+#' data <- dat_p2_exo$data
+#' exo_mat <- dat_p2_exo$exo_mat
+#' pb <- PBootVARExoOLS(
+#'   data = data,
+#'   exo_mat = exo_mat,
+#'   p = 2,
+#'   B = 5,
+#'   burn_in = 0
+#' )
+#' str(pb)
+#'
+#' @family Fitting Autoregressive Model Functions
+#' @keywords fitAutoReg pb
+#' @export
+PBootVARExoOLS <- function(data, exo_mat, p, B, burn_in) {
+    .Call(`_fitAutoReg_PBootVARExoOLS`, data, exo_mat, p, B, burn_in)
+}
+
+#' Parametric Bootstrap for the Vector Autoregressive Model
 #' Using Lasso Regularization
 #'
 #' @author Ivan Jacob Agaloos Pesigan
@@ -707,6 +782,52 @@ SimVAR <- function(time, burn_in, constant, coef, chol_cov) {
 #' @return List containing the dependent variable (Y)
 #' and predictor variable (X) matrices.
 #' Note that the resulting matrices will have `t - p` rows.
+#'
+#' @examples
+#' set.seed(42)
+#' time <- 1000L
+#' burn_in <- 200
+#' k <- 3
+#' p <- 2
+#' constant <- c(1, 1, 1)
+#' coef <- matrix(
+#'   data = c(
+#'     0.4, 0.0, 0.0, 0.1, 0.0, 0.0,
+#'     0.0, 0.5, 0.0, 0.0, 0.2, 0.0,
+#'     0.0, 0.0, 0.6, 0.0, 0.0, 0.3
+#'   ),
+#'   nrow = k,
+#'   byrow = TRUE
+#' )
+#' chol_cov <- chol(diag(3))
+#' exo_mat <- MASS::mvrnorm(
+#'   n = time + burn_in,
+#'   mu = c(0, 0, 0),
+#'   Sigma = diag(3)
+#' )
+#' exo_coef <- matrix(
+#'   data = c(
+#'     0.5, 0.0, 0.0,
+#'     0.0, 0.5, 0.0,
+#'     0.0, 0.0, 0.5
+#'   ),
+#'   nrow = 3
+#' )
+#' y <- SimVARExo(
+#'   time = time,
+#'   burn_in = burn_in,
+#'   constant = constant,
+#'   coef = coef,
+#'   chol_cov = chol_cov,
+#'   exo_mat = exo_mat,
+#'   exo_coef = exo_coef
+#' )
+#' yx <- YXExo(
+#'   data = y,
+#'   p = 2,
+#'   exo_mat = exo_mat[(burn_in + 1):(time + burn_in), ]
+#' )
+#' str(yx)
 #'
 #' @details
 #' The [YX()] function creates the `Y` and `X` matrices

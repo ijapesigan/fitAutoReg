@@ -1,4 +1,4 @@
-## ---- test-fitAutoReg-var-p2-exo-lasso
+## ---- test-fitAutoReg-var-p2-exo-search-lasso
 lapply(
   X = 1,
   FUN = function(i,
@@ -87,5 +87,5 @@ lapply(
     SelectVARLasso(search, crit = "bic")
   },
   tol = 0.19, # allow for some bias
-  text = "test-fitAutoReg-var-p2-exo-lasso"
+  text = "test-fitAutoReg-var-p2-exo-search-lasso"
 )

@@ -35,6 +35,8 @@ Other Fitting Autoregressive Model Functions:
 \code{\link{FitVARLasso}()},
 \code{\link{FitVAROLS}()},
 \code{\link{OrigScale}()},
+\code{\link{PBootVARExoLasso}()},
+\code{\link{PBootVARExoOLS}()},
 \code{\link{PBootVARLasso}()},
 \code{\link{PBootVAROLS}()},
 \code{\link{RBootVARExoLasso}()},

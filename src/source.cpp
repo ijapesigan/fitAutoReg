@@ -136,8 +136,8 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
   int time = XStd.n_rows;
   int num_predictor_vars = XStd.n_cols;
 
-  // Step 2: Initialize variables to keep track of the best model based on the
-  // selected criterion
+  // Step 2: Initialize variables to keep track of the best model
+  //         based on the selected criterion
   double min_criterion = std::numeric_limits<double>::infinity();
   arma::mat coef_min_crit;
 
@@ -163,7 +163,7 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
         2.0 * num_params * std::log(time / double(num_predictor_vars));
 
     // Step 7: Determine the current criterion value based on user choice
-    // ('aic', 'bic', or 'ebic')
+    //         ('aic', 'bic', or 'ebic')
     double current_criterion = 0.0;
     if (crit == "aic") {
       current_criterion = aic;
@@ -173,16 +173,16 @@ arma::mat FitVARLassoSearch(const arma::mat& YStd, const arma::mat& XStd,
       current_criterion = ebic;
     }
 
-    // Step 8: Update the best model if the current criterion is smaller than
-    // the minimum
+    // Step 8: Update the best model if the current criterion is smaller
+    //         than the minimum
     if (current_criterion < min_criterion) {
       min_criterion = current_criterion;
       coef_min_crit = coef;
     }
   }
 
-  // Step 9: Return the coefficients of the best model based on the selected
-  // criterion
+  // Step 9: Return the coefficients of the best model based
+  //         on the selected criterion
   return coef_min_crit;
 }
 // -----------------------------------------------------------------------------
@@ -355,8 +355,8 @@ arma::mat FitVARLasso(const arma::mat& YStd, const arma::mat& XStd,
     }
   }
 
-  // Step 6: Return the estimated coefficients (transposed for the desired
-  // format)
+  // Step 6: Return the estimated coefficients
+  //         (transposed for the desired format)
   return coef.t();
 }
 // -----------------------------------------------------------------------------
@@ -477,8 +477,8 @@ arma::vec LambdaSeq(const arma::mat& YStd, const arma::mat& XStd,
   // Step 4: Compute the logarithm of lambda_max
   double log_lambda_max = std::log10(lambda_max);
 
-  // Step 5: Initialize a vector 'lambda_seq' to store the sequence of lambda
-  // values
+  // Step 5: Initialize a vector 'lambda_seq' to store the sequence
+  //         of lambda values
   arma::vec lambda_seq(n_lambdas);
 
   // Step 6: Calculate the step size for logarithmic lambda values
@@ -533,8 +533,8 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
   int num_outcome_vars = coef_std.n_rows;
   int num_predictor_vars = coef_std.n_cols;
 
-  // Step 2: Initialize vectors to store standard deviations of outcome (Y) and
-  // predictor (X) variables
+  // Step 2: Initialize vectors to store standard deviations
+  //         of outcome (Y) and predictor (X) variables
   arma::vec sd_Y(num_outcome_vars);
   arma::vec sd_X(num_predictor_vars);
 
@@ -548,12 +548,12 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
     sd_X(j) = arma::as_scalar(arma::stddev(X.col(j), 0, 0));
   }
 
-  // Step 5: Initialize a matrix 'orig' to store coefficients in the original
-  // scale
+  // Step 5: Initialize a matrix 'orig' to store coefficients
+  //         in the original scale
   arma::mat orig(num_outcome_vars, num_predictor_vars);
 
-  // Step 6: Compute original-scale coefficients by scaling back from
-  // standardized coefficients
+  // Step 6: Compute original-scale coefficients by scaling back
+  //         from standardized coefficients
   for (int l = 0; l < num_outcome_vars; l++) {
     for (int j = 0; j < num_predictor_vars; j++) {
       double orig_coef = coef_std(l, j) * sd_Y(l) / sd_X(j);
@@ -563,6 +563,336 @@ arma::mat OrigScale(const arma::mat& coef_std, const arma::mat& Y,
 
   // Step 7: Return the coefficients in the original scale
   return orig;
+}
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/fitAutoReg-p-boot-var-exo-lasso-rep.cpp
+// Ivan Jacob Agaloos Pesigan
+// -----------------------------------------------------------------------------
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+// Generate Data and Fit Model
+arma::vec PBootVARExoLassoRep(int time, int burn_in, const arma::vec& constant,
+                              const arma::mat& coef, const arma::mat& chol_cov,
+                              const arma::mat& exo_mat,
+                              const arma::mat& exo_coef, int n_lambdas,
+                              const std::string& crit, int max_iter,
+                              double tol) {
+  // Step 1: Determine the number of lags in the VAR model
+  int num_lags = coef.n_cols / constant.n_elem;
+
+  // Step 2: Simulate a VAR process using the SimVARExo function
+  arma::mat data =
+      SimVARExo(time, burn_in, constant, coef, chol_cov, exo_mat, exo_coef);
+
+  // Step 3: Create lagged matrices X and Y using the YXExo function
+  Rcpp::List yx = YXExo(data, num_lags, exo_mat);
+  arma::mat X = yx["X"];
+  arma::mat Y = yx["Y"];
+
+  // Step 4: Exclude the constant column from X for standardization
+  arma::mat X_no_constant = X.cols(1, X.n_cols - 1);
+
+  // Step 5: Fit an OLS model to estimate the constant vector
+  arma::mat ols = FitVAROLS(Y, X);
+  arma::vec const_b = ols.col(0);
+
+  // Step 6: Standardize the predictor and response variables
+  arma::mat XStd = StdMat(X_no_constant);
+  arma::mat YStd = StdMat(Y);
+
+  // Step 7: Generate a sequence of lambda values for LASSO regularization
+  arma::vec lambdas = LambdaSeq(YStd, XStd, n_lambdas);
+
+  // Step 8: Fit VAR LASSO model to the standardized data
+  arma::mat coef_std_b =
+      FitVARLassoSearch(YStd, XStd, lambdas, crit, max_iter, tol);
+
+  // Step 9: Rescale the estimated coefficients to their original scale
+  arma::mat coef_orig = OrigScale(coef_std_b, Y, X_no_constant);
+
+  // Step 10: Combine the estimated constant and original scale coefficients
+  arma::mat coef_b = arma::join_horiz(const_b, coef_orig);
+
+  // Step 11: Vectorize the coefficient matrix for bootstrapping
+  return arma::vectorise(coef_b);
+}
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/fitAutoReg-p-boot-var-exo-ols-sim.cpp
+// -----------------------------------------------------------------------------
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+// Function to generate VAR time series data and fit VAR model B times
+arma::mat PBootVARExoLassoSim(int B, int time, int burn_in,
+                              const arma::vec& constant, const arma::mat& coef,
+                              const arma::mat& chol_cov,
+                              const arma::mat& exo_mat,
+                              const arma::mat& exo_coef, int n_lambdas,
+                              const std::string& crit, int max_iter,
+                              double tol) {
+  // Step 1: Calculate the total number of coefficients in the VAR model
+  int num_coef = constant.n_elem + coef.n_elem + exo_coef.n_elem;
+
+  // Step 2: Initialize the result matrix to store bootstrapped coefficient
+  // estimates
+  arma::mat result(B, num_coef, arma::fill::zeros);
+
+  // Step 3: Perform bootstrapping B times
+  for (int b = 0; b < B; b++) {
+    // Step 4: Obtain bootstrapped VAR coefficient estimates
+    //         using PBootVARLassoRep
+    arma::vec coef_est =
+        PBootVARExoLassoRep(time, burn_in, constant, coef, chol_cov, exo_mat,
+                            exo_coef, n_lambdas, crit, max_iter, tol);
+
+    // Step 5: Store the estimated coefficients in the result matrix
+    result.row(b) = arma::trans(coef_est);
+  }
+
+  // Step 6: Return the result matrix containing
+  //         bootstrapped coefficient estimates
+  return result;
+}
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/fitAutoReg-p-boot-var-exo-ols.cpp
+// -----------------------------------------------------------------------------
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+//' Parametric Bootstrap for the Vector Autoregressive Model
+//' with Exogenous Variables
+//' Using Lasso Regularization
+//'
+//' @author Ivan Jacob Agaloos Pesigan
+//'
+//' @inheritParams PBootVARLasso
+//' @inheritParams PBootVARExoOLS
+//'
+//' @return List with the following elements:
+//'   - **est**: Numeric matrix.
+//'     Original OLS estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+//'
+//' @examples
+//' data <- dat_p2_exo$data
+//' exo_mat <- dat_p2_exo$exo_mat
+//' pb <- PBootVARExoLasso(
+//'   data = data,
+//'   exo_mat = exo_mat,
+//'   p = 2,
+//'   B = 5,
+//'   burn_in = 0,
+//'   n_lambdas = 10,
+//'   crit = "ebic",
+//'   max_iter = 1000,
+//'   tol = 1e-5
+//' )
+//' str(pb)
+//'
+//' @family Fitting Autoregressive Model Functions
+//' @keywords fitAutoReg pb
+//' @export
+// [[Rcpp::export]]
+Rcpp::List PBootVARExoLasso(const arma::mat& data, const arma::mat& exo_mat,
+                            int p, int B, int burn_in, int n_lambdas,
+                            const std::string& crit, int max_iter, double tol) {
+  // Step 1: Get the number of time points and outcome variables in the data
+  // Number of time steps (rows) in 'data'
+  int time = data.n_rows;
+  // Number of outcome variables (columns) in 'data'
+  int num_outcome_vars = data.n_cols;
+
+  // Step 2: Obtain the YX representation of the data
+  Rcpp::List yx = YXExo(data, p, exo_mat);
+  arma::mat X = yx["X"];
+  arma::mat Y = yx["Y"];
+
+  // Step 3: Fit the VAR model using OLS
+  arma::mat coef = FitVAROLS(Y, X);
+
+  // Step 4: Extract constant vector and coefficient matrix
+  arma::vec const_vec = coef.col(0);
+  arma::mat coef_mat = coef.cols(1, coef.n_cols - 1);
+  arma::mat coef_lag = coef_mat.cols(0, p * num_outcome_vars - 1);
+  arma::mat coef_exo = coef_mat.cols(p * num_outcome_vars, coef_mat.n_cols - 1);
+
+  // Step 5: Calculate residuals and their covariance
+  arma::mat residuals = Y - X * coef.t();
+  arma::mat cov_residuals = arma::cov(residuals);
+
+  // Step 6: Perform Cholesky decomposition of the covariance matrix
+  arma::mat chol_cov = arma::chol(cov_residuals);
+
+  // Step 7: Simulate bootstrapped VAR coefficients using PBootVAROLSSim
+  arma::mat sim =
+      PBootVARExoLassoSim(B, time, burn_in, const_vec, coef_lag, chol_cov,
+                          exo_mat, coef_exo, n_lambdas, crit, max_iter, tol);
+
+  // Step 8: Create a result list containing estimated coefficients
+  //         and bootstrapped samples
+  Rcpp::List result;
+  // Estimated coefficients
+  result["est"] = coef;
+  // Bootstrapped coefficient samples
+  result["boot"] = sim;
+
+  // Step 9: Return the result list
+  return result;
+}
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/fitAutoReg-p-boot-var-exo-ols-rep.cpp
+// Ivan Jacob Agaloos Pesigan
+// -----------------------------------------------------------------------------
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+// Generate Data and Fit Model
+arma::vec PBootVARExoOLSRep(int time, int burn_in, const arma::vec& constant,
+                            const arma::mat& coef, const arma::mat& chol_cov,
+                            const arma::mat& exo_mat,
+                            const arma::mat& exo_coef) {
+  // Step 1: Calculate the number of lags in the VAR model
+  int num_lags = coef.n_cols / constant.n_elem;
+
+  // Step 2: Simulate a VAR process using the SimVARExo function
+  arma::mat data =
+      SimVARExo(time, burn_in, constant, coef, chol_cov, exo_mat, exo_coef);
+
+  // Step 3: Create lagged matrices X and Y using the YXExo function
+  Rcpp::List yx = YXExo(data, num_lags, exo_mat);
+  arma::mat X = yx["X"];
+  arma::mat Y = yx["Y"];
+
+  // Step 4: Estimate VAR coefficients using the FitVAROLS function
+  arma::mat coef_b = FitVAROLS(Y, X);
+
+  // Step 5: Return the estimated coefficients as a vector
+  return arma::vectorise(coef_b);
+}
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/fitAutoReg-p-boot-var-exo-ols-sim.cpp
+// -----------------------------------------------------------------------------
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+// Function to generate VAR time series data and fit VAR model B times
+arma::mat PBootVARExoOLSSim(int B, int time, int burn_in,
+                            const arma::vec& constant, const arma::mat& coef,
+                            const arma::mat& chol_cov, const arma::mat& exo_mat,
+                            const arma::mat& exo_coef) {
+  // Step 1: Calculate the total number of coefficients in the VAR model
+  int num_coef = constant.n_elem + coef.n_elem + exo_coef.n_elem;
+
+  // Step 2: Initialize the result matrix
+  //         to store bootstrapped coefficient estimates
+  arma::mat result(B, num_coef, arma::fill::zeros);
+
+  // Step 3: Perform bootstrapping B times
+  for (int b = 0; b < B; b++) {
+    // Step 4: Obtain bootstrapped VAR coefficient estimates
+    //         using PBootVAROLSRep
+    arma::vec coef_est = PBootVARExoOLSRep(time, burn_in, constant, coef,
+                                           chol_cov, exo_mat, exo_coef);
+
+    // Step 5: Store the estimated coefficients in the result matrix
+    result.row(b) = arma::trans(coef_est);
+  }
+
+  // Step 6: Return the result matrix containing
+  //         bootstrapped coefficient estimates
+  return result;
+}
+// -----------------------------------------------------------------------------
+// edit .setup/cpp/fitAutoReg-p-boot-var-exo-ols.cpp
+// -----------------------------------------------------------------------------
+
+#include <RcppArmadillo.h>
+// [[Rcpp::depends(RcppArmadillo)]]
+
+//' Parametric Bootstrap for the Vector Autoregressive Model
+//' with Exogenous Variables
+//' Using Ordinary Least Squares
+//'
+//' @author Ivan Jacob Agaloos Pesigan
+//'
+//' @inheritParams PBootVAROLS
+//' @inheritParams YXExo
+//' @param exo_mat Numeric matrix.
+//'   Matrix of exogenous variables with dimensions `t + burn_in` by `m`.
+//'   If the number of rows is equal to `t`, set `burn_in = 0`.
+//'
+//' @return List with the following elements:
+//'   - **est**: Numeric matrix.
+//'     Original OLS estimate of the coefficient matrix.
+//'   - **boot**: Numeric matrix.
+//'     Matrix of vectorized bootstrap estimates of the coefficient matrix.
+//'
+//' @examples
+//' data <- dat_p2_exo$data
+//' exo_mat <- dat_p2_exo$exo_mat
+//' pb <- PBootVARExoOLS(
+//'   data = data,
+//'   exo_mat = exo_mat,
+//'   p = 2,
+//'   B = 5,
+//'   burn_in = 0
+//' )
+//' str(pb)
+//'
+//' @family Fitting Autoregressive Model Functions
+//' @keywords fitAutoReg pb
+//' @export
+// [[Rcpp::export]]
+Rcpp::List PBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat,
+                          int p, int B, int burn_in) {
+  // Step 1: Get the number of time points and outcome variables in the data
+  // Number of time steps (rows) in 'data'
+  int time = data.n_rows;
+  // Number of outcome variables (columns) in 'data'
+  int num_outcome_vars = data.n_cols;
+
+  // Step 2: Obtain the YX representation of the data
+  Rcpp::List yx = YXExo(data, p, exo_mat);
+  arma::mat X = yx["X"];
+  arma::mat Y = yx["Y"];
+
+  // Step 3: Fit the VAR model using OLS
+  arma::mat coef = FitVAROLS(Y, X);
+
+  // Step 4: Extract constant vector and coefficient matrix
+  arma::vec const_vec = coef.col(0);
+  arma::mat coef_mat = coef.cols(1, coef.n_cols - 1);
+  arma::mat coef_lag = coef_mat.cols(0, p * num_outcome_vars - 1);
+  arma::mat coef_exo = coef_mat.cols(p * num_outcome_vars, coef_mat.n_cols - 1);
+
+  // Step 5: Calculate residuals and their covariance
+  arma::mat residuals = Y - X * coef.t();
+  arma::mat cov_residuals = arma::cov(residuals);
+
+  // Step 6: Perform Cholesky decomposition of the covariance matrix
+  arma::mat chol_cov = arma::chol(cov_residuals);
+
+  // Step 7: Simulate bootstrapped VAR coefficients using PBootVAROLSSim
+  arma::mat sim = PBootVARExoOLSSim(B, time, burn_in, const_vec, coef_lag,
+                                    chol_cov, exo_mat, coef_exo);
+
+  // Step 8: Create a result list containing estimated coefficients
+  //         and bootstrapped samples
+  Rcpp::List result;
+  // Estimated coefficients
+  result["est"] = coef;
+  // Bootstrapped coefficient samples
+  result["boot"] = sim;
+
+  // Step 9: Return the result list
+  return result;
 }
 // -----------------------------------------------------------------------------
 // edit .setup/cpp/fitAutoReg-p-boot-var-lasso-rep.cpp
@@ -701,8 +1031,8 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
   // Step 3: Remove the constant term from the lagged variables
   arma::mat X_no_constant = X.cols(1, X.n_cols - 1);
 
-  // Step 4: Fit a VAR model using OLS to obtain the constant term and VAR
-  // coefficients
+  // Step 4: Fit a VAR model using OLS to obtain the constant term
+  //         and VAR coefficients
   arma::mat ols = FitVAROLS(Y, X);
 
   // Step 5: Standardize the predictor and response variables
@@ -722,11 +1052,11 @@ Rcpp::List PBootVARLasso(const arma::mat& data, int p, int B, int burn_in,
   arma::mat coef_mat = OrigScale(pb_std, Y, X_no_constant);
 
   // Step 10: Combine the constant and VAR coefficients
-  arma::mat coef =
-      arma::join_horiz(const_vec, coef_mat);  // OLS and Lasso combined
+  // OLS and Lasso combined
+  arma::mat coef = arma::join_horiz(const_vec, coef_mat);
 
-  // Step 11: Calculate residuals, their covariance, and the Cholesky
-  // decomposition of the covariance
+  // Step 11: Calculate residuals, their covariance,
+  //          and the Cholesky decomposition of the covariance
   arma::mat residuals = Y - X * coef.t();
   arma::mat cov_residuals = arma::cov(residuals);
   arma::mat chol_cov = arma::chol(cov_residuals);
@@ -788,14 +1118,14 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
   // Step 1: Calculate the total number of coefficients in the VAR model
   int num_coef = constant.n_elem + coef.n_elem;
 
-  // Step 2: Initialize the result matrix to store bootstrapped coefficient
-  // estimates
+  // Step 2: Initialize the result matrix
+  //         to store bootstrapped coefficient estimates
   arma::mat result(B, num_coef, arma::fill::zeros);
 
   // Step 3: Perform bootstrapping B times
   for (int b = 0; b < B; b++) {
-    // Step 4: Obtain bootstrapped VAR coefficient estimates using
-    // PBootVAROLSRep
+    // Step 4: Obtain bootstrapped VAR coefficient estimates
+    //         using PBootVAROLSRep
     arma::vec coef_est =
         PBootVAROLSRep(time, burn_in, constant, coef, chol_cov);
 
@@ -803,8 +1133,8 @@ arma::mat PBootVAROLSSim(int B, int time, int burn_in,
     result.row(b) = arma::trans(coef_est);
   }
 
-  // Step 6: Return the result matrix containing bootstrapped coefficient
-  // estimates
+  // Step 6: Return the result matrix containing
+  //         bootstrapped coefficient estimates
   return result;
 }
 // -----------------------------------------------------------------------------
@@ -866,8 +1196,8 @@ Rcpp::List PBootVAROLS(const arma::mat& data, int p, int B, int burn_in) {
   arma::mat sim =
       PBootVAROLSSim(B, time, burn_in, const_vec, coef_mat, chol_cov);
 
-  // Step 8: Create a result list containing estimated coefficients and
-  // bootstrapped samples
+  // Step 8: Create a result list containing estimated coefficients
+  //         and bootstrapped samples
   Rcpp::List result;
   // Estimated coefficients
   result["est"] = coef;
@@ -965,37 +1295,37 @@ Rcpp::List RBootVARExoLasso(const arma::mat& data, const arma::mat& exo_mat,
 
   // Step 11: Perform B bootstrap simulations
   for (int b = 0; b < B; ++b) {
-    // 11.1: Randomly select rows from residuals to create a new residuals
-    // matrix for the bootstrap sample
+    // 11.1: Randomly select rows from residuals
+    //       to create a new residuals matrix for the bootstrap sample
     arma::mat residuals_b = residuals.rows(
         arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
 
-    // 11.2: Generate a new response matrix Y_b by adding the new residuals to X
-    // * coef.t()
+    // 11.2: Generate a new response matrix Y_b by adding the new residuals
+    //       to X * coef.t()
     arma::mat Y_b = X * coef.t() + residuals_b;
 
-    // 11.3: Fit a VAR model using OLS to obtain VAR coefficients for the
-    // bootstrap sample
+    // 11.3: Fit a VAR model using OLS to obtain VAR coefficients
+    //       for the bootstrap sample
     arma::mat ols_b = FitVAROLS(Y_b, X);
 
     // 11.4: Standardize the Y_b matrix
     arma::mat YStd_b = StdMat(Y);
 
-    // 11.5: Fit VAR Lasso to obtain standardized coefficients for the bootstrap
-    // sample
+    // 11.5: Fit VAR Lasso to obtain standardized coefficients
+    //       for the bootstrap sample
     arma::mat coef_std_b =
         FitVARLassoSearch(YStd_b, XStd, lambdas, "ebic", max_iter, tol);
 
-    // 11.6: Extract the constant vector from OLS results for the bootstrap
-    // sample
+    // 11.6: Extract the constant vector from OLS results
+    //       for the bootstrap sample
     arma::vec const_vec_b = ols_b.col(0);
 
-    // 11.7: Transform standardized coefficients back to the original scale for
-    // the bootstrap sample
+    // 11.7: Transform standardized coefficients back to the original scale
+    //       for the bootstrap sample
     arma::mat coef_mat_b = OrigScale(coef_std_b, Y_b, X_no_constant);
 
-    // 11.8: Combine the constant and coefficient matrices for the bootstrap
-    // sample
+    // 11.8: Combine the constant and coefficient matrices
+    //       for the bootstrap sample
     arma::mat coef_lasso_b = arma::join_horiz(const_vec_b, coef_mat_b);
 
     // 11.9: Vectorize the coefficients and store them in coef_b_mat
@@ -1080,12 +1410,12 @@ Rcpp::List RBootVARExoOLS(const arma::mat& data, const arma::mat& exo_mat,
     arma::mat residuals_b = residuals.rows(
         arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
 
-    // 5.2: Generate a new response matrix Y_b by adding the new residuals to X
-    // * coef.t()
+    // 5.2: Generate a new response matrix Y_b by adding the new residuals
+    //      to X * coef.t()
     arma::mat Y_b = X * coef.t() + residuals_b;
 
-    // 5.3: Fit a VAR model using OLS to obtain VAR coefficients for the
-    // bootstrap sample
+    // 5.3: Fit a VAR model using OLS to obtain VAR coefficients
+    //      for the bootstrap sample
     arma::mat coef_ols_b = FitVAROLS(Y_b, X);
 
     // 5.4: Vectorize the coefficients and store them in coef_b_mat
@@ -1192,37 +1522,37 @@ Rcpp::List RBootVARLasso(const arma::mat& data, int p, int B, int n_lambdas,
 
   // Step 11: Perform B bootstrap simulations
   for (int b = 0; b < B; ++b) {
-    // 11.1: Randomly select rows from residuals to create a new residuals
-    // matrix for the bootstrap sample
+    // 11.1: Randomly select rows from residuals
+    //       to create a new residuals matrix for the bootstrap sample
     arma::mat residuals_b = residuals.rows(
         arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
 
-    // 11.2: Generate a new response matrix Y_b by adding the new residuals to X
-    // * coef.t()
+    // 11.2: Generate a new response matrix Y_b by adding the new residuals
+    //       to X * coef.t()
     arma::mat Y_b = X * coef.t() + residuals_b;
 
-    // 11.3: Fit a VAR model using OLS to obtain VAR coefficients for the
-    // bootstrap sample
+    // 11.3: Fit a VAR model using OLS to obtain VAR coefficients
+    //       for the bootstrap sample
     arma::mat ols_b = FitVAROLS(Y_b, X);
 
     // 11.4: Standardize the Y_b matrix
     arma::mat YStd_b = StdMat(Y);
 
-    // 11.5: Fit VAR Lasso to obtain standardized coefficients for the bootstrap
-    // sample
+    // 11.5: Fit VAR Lasso to obtain standardized coefficients
+    //       for the bootstrap sample
     arma::mat coef_std_b =
         FitVARLassoSearch(YStd_b, XStd, lambdas, "ebic", max_iter, tol);
 
-    // 11.6: Extract the constant vector from OLS results for the bootstrap
-    // sample
+    // 11.6: Extract the constant vector from OLS results
+    //       for the bootstrap sample
     arma::vec const_vec_b = ols_b.col(0);
 
-    // 11.7: Transform standardized coefficients back to the original scale for
-    // the bootstrap sample
+    // 11.7: Transform standardized coefficients back to the original scale
+    //       for the bootstrap sample
     arma::mat coef_mat_b = OrigScale(coef_std_b, Y_b, X_no_constant);
 
-    // 11.8: Combine the constant and coefficient matrices for the bootstrap
-    // sample
+    // 11.8: Combine the constant and coefficient matrices
+    //       for the bootstrap sample
     arma::mat coef_lasso_b = arma::join_horiz(const_vec_b, coef_mat_b);
 
     // 11.9: Vectorize the coefficients and store them in coef_b_mat
@@ -1303,12 +1633,12 @@ Rcpp::List RBootVAROLS(const arma::mat& data, int p, int B) {
     arma::mat residuals_b = residuals.rows(
         arma::randi<arma::uvec>(time, arma::distr_param(0, time - 1)));
 
-    // 5.2: Generate a new response matrix Y_b by adding the new residuals to X
-    // * coef.t()
+    // 5.2: Generate a new response matrix Y_b by adding the new residuals
+    //      to X * coef.t()
     arma::mat Y_b = X * coef.t() + residuals_b;
 
-    // 5.3: Fit a VAR model using OLS to obtain VAR coefficients for the
-    // bootstrap sample
+    // 5.3: Fit a VAR model using OLS to obtain VAR coefficients
+    //      for the bootstrap sample
     arma::mat coef_ols_b = FitVAROLS(Y_b, X);
 
     // 5.4: Vectorize the coefficients and store them in coef_b_mat
@@ -1377,8 +1707,8 @@ Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
   int time = XStd.n_rows;
   int num_predictor_vars = XStd.n_cols;
 
-  // Step 2: Initialize matrices to store results and a list to store fitted
-  // models
+  // Step 2: Initialize matrices to store results and a list
+  //         to store fitted models
   arma::mat results(lambdas.n_elem, 4, arma::fill::zeros);
   Rcpp::List fit_list(lambdas.n_elem);
 
@@ -1386,26 +1716,26 @@ Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
   for (arma::uword i = 0; i < lambdas.n_elem; ++i) {
     double lambda = lambdas(i);
 
-    // Step 4: Fit a VAR model with Lasso regularization for the current lambda
-    // value
+    // Step 4: Fit a VAR model with Lasso regularization
+    //         for the current lambda value
     arma::mat beta = FitVARLasso(YStd, XStd, lambda, max_iter, tol);
 
-    // Step 5: Calculate the residuals, RSS, and the number of nonzero
-    // parameters
+    // Step 5: Calculate the residuals, RSS,
+    //         and the number of nonzero parameters
     arma::mat residuals = YStd - XStd * beta.t();
     double rss = arma::accu(residuals % residuals);
     int num_params = arma::sum(arma::vectorise(beta != 0));
 
-    // Step 6: Calculate the information criteria (AIC, BIC, and EBIC) for the
-    // fitted model
+    // Step 6: Calculate the information criteria (AIC, BIC, and EBIC)
+    //         for the fitted model
     double aic = time * std::log(rss / time) + 2.0 * num_params;
     double bic = time * std::log(rss / time) + num_params * std::log(time);
     double ebic =
         time * std::log(rss / time) +
         2.0 * num_params * std::log(time / double(num_predictor_vars));
 
-    // Step 7: Store the lambda value, AIC, BIC, and EBIC in the 'results'
-    // matrix
+    // Step 7: Store the lambda value, AIC, BIC, and EBIC
+    //         in the 'results' matrix
     results(i, 0) = lambda;
     results(i, 1) = aic;
     results(i, 2) = bic;
@@ -1415,8 +1745,8 @@ Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
     fit_list[i] = beta;
   }
 
-  // Step 9: Return a list containing the criteria results and the list of
-  // fitted models
+  // Step 9: Return a list containing the criteria results
+  //         and the list of fitted models
   return Rcpp::List::create(Rcpp::Named("criteria") = results,
                             Rcpp::Named("fit") = fit_list);
 }
@@ -1450,8 +1780,8 @@ Rcpp::List SearchVARLasso(const arma::mat& YStd, const arma::mat& XStd,
 //' @export
 // [[Rcpp::export]]
 arma::mat StdMat(const arma::mat& X) {
-  // Step 1: Get the number of rows (n) and columns (num_vars) in the input
-  // matrix X
+  // Step 1: Get the number of rows (n) and columns (num_vars)
+  //         in the input matrix X
   int n = X.n_rows;
   int num_vars = X.n_cols;
 
@@ -1464,26 +1794,27 @@ arma::mat StdMat(const arma::mat& X) {
     for (int i = 0; i < n; i++) {
       col_means(j) += X(i, j);
     }
-    col_means(j) /= n;  // Calculate the mean for column j
+    // Calculate the mean for column j
+    col_means(j) /= n;
   }
 
-  // Step 4: Calculate column standard deviations and store them in the col_sds
-  // vector
+  // Step 4: Calculate column standard deviations
+  //         and store them in the col_sds vector
   arma::vec col_sds(num_vars, arma::fill::zeros);
   for (int j = 0; j < num_vars; j++) {
     for (int i = 0; i < n; i++) {
       col_sds(j) += std::pow(X(i, j) - col_means(j), 2);
     }
-    col_sds(j) = std::sqrt(
-        col_sds(j) / (n - 1));  // Calculate the standard deviation for column j
+    // Calculate the standard deviation for column j
+    col_sds(j) = std::sqrt(col_sds(j) / (n - 1));
   }
 
-  // Step 5: Standardize the matrix X by subtracting column means and dividing
-  // by column standard deviations
+  // Step 5: Standardize the matrix X by subtracting column means
+  //         and dividing by column standard deviations
   for (int j = 0; j < num_vars; j++) {
     for (int i = 0; i < n; i++) {
-      XStd(i, j) = (X(i, j) - col_means(j)) /
-                   col_sds(j);  // Standardize each element of X
+      // Standardize each element of X
+      XStd(i, j) = (X(i, j) - col_means(j)) / col_sds(j);
     }
   }
 
@@ -1604,8 +1935,8 @@ arma::mat SimVARExo(int time, int burn_in, const arma::vec& constant,
     // Step 5.1: Generate random noise vector
     arma::vec noise = arma::randn(num_outcome_vars);
 
-    // Step 5.2: Multiply the noise vector by the Cholesky decomposition of the
-    // covariance matrix
+    // Step 5.2: Multiply the noise vector by the Cholesky decomposition
+    //           of the covariance matrix
     arma::vec mult_noise = chol_cov * noise;
 
     // Step 5.3: Iterate over outcome variables
@@ -1762,8 +2093,8 @@ arma::mat SimVAR(int time, int burn_in, const arma::vec& constant,
   // Step 2: Create a matrix to store simulated data
   arma::mat data(num_outcome_vars, total_time);
 
-  // Step 3: Initialize the data matrix with constant values for each outcome
-  // variable
+  // Step 3: Initialize the data matrix with constant values
+  //         for each outcome variable
   data.each_col() = constant;
 
   // Step 4: Simulate VAR data using a loop
@@ -1829,6 +2160,52 @@ arma::mat SimVAR(int time, int burn_in, const arma::vec& constant,
 //' @return List containing the dependent variable (Y)
 //' and predictor variable (X) matrices.
 //' Note that the resulting matrices will have `t - p` rows.
+//'
+//' @examples
+//' set.seed(42)
+//' time <- 1000L
+//' burn_in <- 200
+//' k <- 3
+//' p <- 2
+//' constant <- c(1, 1, 1)
+//' coef <- matrix(
+//'   data = c(
+//'     0.4, 0.0, 0.0, 0.1, 0.0, 0.0,
+//'     0.0, 0.5, 0.0, 0.0, 0.2, 0.0,
+//'     0.0, 0.0, 0.6, 0.0, 0.0, 0.3
+//'   ),
+//'   nrow = k,
+//'   byrow = TRUE
+//' )
+//' chol_cov <- chol(diag(3))
+//' exo_mat <- MASS::mvrnorm(
+//'   n = time + burn_in,
+//'   mu = c(0, 0, 0),
+//'   Sigma = diag(3)
+//' )
+//' exo_coef <- matrix(
+//'   data = c(
+//'     0.5, 0.0, 0.0,
+//'     0.0, 0.5, 0.0,
+//'     0.0, 0.0, 0.5
+//'   ),
+//'   nrow = 3
+//' )
+//' y <- SimVARExo(
+//'   time = time,
+//'   burn_in = burn_in,
+//'   constant = constant,
+//'   coef = coef,
+//'   chol_cov = chol_cov,
+//'   exo_mat = exo_mat,
+//'   exo_coef = exo_coef
+//' )
+//' yx <- YXExo(
+//'   data = y,
+//'   p = 2,
+//'   exo_mat = exo_mat[(burn_in + 1):(time + burn_in), ]
+//' )
+//' str(yx)
 //'
 //' @details
 //' The [YX()] function creates the `Y` and `X` matrices
