@@ -38,7 +38,6 @@ lapply(
       Y = Y,
       X = X[, -1]
     )
-    print(lasso)
     phi <- c(
       lasso[1, 1],
       lasso[2, 2],
