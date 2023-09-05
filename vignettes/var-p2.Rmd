@@ -1,0 +1,77 @@
+---
+title: "fitAutoReg: Vector Autoregressive Model - VAR(p = 2)"
+author: "Ivan Jacob Agaloos Pesigan"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{fitAutoReg: Vector Autoregressive Model - VAR(p = 2)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+
+```r
+library(fitAutoReg)
+```
+
+## Generate data
+
+
+```r
+set.seed(42)
+time <- 1000L
+burn_in <- 200L
+k <- 3
+p <- 2
+constant <- c(1, 1, 1)
+coef <- matrix(
+  data = c(
+    0.4, 0.0, 0.0, 0.1, 0.0, 0.0,
+    0.0, 0.5, 0.0, 0.0, 0.2, 0.0,
+    0.0, 0.0, 0.6, 0.0, 0.0, 0.3
+  ),
+  nrow = k,
+  byrow = TRUE
+)
+chol_cov <- chol(diag(3))
+dat_p2 <- SimVAR(
+  time = time,
+  burn_in = burn_in,
+  constant = constant,
+  coef = coef,
+  chol_cov = chol_cov
+)
+```
+
+## Ordinary Least Squares
+
+
+```r
+Y <- dat_p2_yx$Y
+X <- dat_p2_yx$X
+FitVAROLS(Y = Y, X = X)
+#>           [,1]        [,2]        [,3]        [,4]        [,5]         [,6]
+#> [1,] 0.7899726  0.36836768 0.008539283  0.02231498  0.11338780  0.024505442
+#> [2,] 1.0001995  0.01334496 0.481949237 -0.01730029 -0.03223315  0.234373552
+#> [3,] 1.0666814 -0.03022951 0.014945306  0.60741736 -0.01610408 -0.006149189
+#>             [,7]
+#> [1,] -0.01143384
+#> [2,]  0.01815779
+#> [3,]  0.29620975
+```
+
+## Lasso Regularization
+
+
+```r
+YStd <- StdMat(dat_p2_yx$Y)
+XStd <- StdMat(dat_p2_yx$X[, -1])
+lambdas <- LambdaSeq(YStd = YStd, XStd = XStd, n_lambdas = 100)
+FitVARLassoSearch(YStd = YStd, XStd = XStd, lambdas = lambdas,
+  crit = "ebic", max_iter = 1000, tol = 1e-5)
+#>           [,1]     [,2]     [,3]       [,4]      [,5]      [,6]
+#> [1,] 0.3429428 0.000000 0.000000 0.08487819 0.0000000 0.0000000
+#> [2,] 0.0000000 0.457026 0.000000 0.00000000 0.2120426 0.0000000
+#> [3,] 0.0000000 0.000000 0.588127 0.00000000 0.0000000 0.2737749
+```
