@@ -58,6 +58,12 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/OrigScale.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootVARExoLasso.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootVARExoOLS.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/PBootVARLasso.html</loc>
   </url>
   <url>
