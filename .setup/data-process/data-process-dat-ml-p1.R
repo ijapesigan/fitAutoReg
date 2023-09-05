@@ -2,15 +2,6 @@
 #'
 DataProcessDatMLP1 <- function() {
   rproj <- rprojroot::is_rstudio_project
-  data_process_dir <- rproj$find_file(
-    "data-process"
-  )
-  fn <- "dat_ml_p1"
-  fn_rds <- paste0(fn, ".Rds")
-  fn_rda <- paste0(fn, ".rda")
-
-
-
   data_dir <- rproj$find_file(
     "data"
   )

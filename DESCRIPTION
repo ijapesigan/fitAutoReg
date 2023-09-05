@@ -27,4 +27,3 @@ Suggests:
     rmarkdown,
     testthat,
     MASS
-RoxygenNote: 7.2.3
