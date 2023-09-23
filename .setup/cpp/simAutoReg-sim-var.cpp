@@ -128,17 +128,13 @@ arma::mat SimVAR(int time, int burn_in, const arma::vec& constant,
   // Step 4: Simulate VAR data using a loop
   for (int t = num_lags; t < total_time; t++) {
     // Step 4.1: Generate random noise vector
-    arma::vec noise = arma::randn(num_outcome_vars);
+    arma::vec noise = chol_cov * arma::randn(num_outcome_vars);
 
-    // Step 4.2: Multiply the noise vector
-    //           by the Cholesky decomposition of the covariance matrix
-    arma::vec mult_noise = chol_cov * noise;
-
-    // Step 4.3: Iterate over outcome variables
+    // Step 4.2: Iterate over outcome variables
     for (int j = 0; j < num_outcome_vars; j++) {
-      // Step 4.4: Iterate over lags
+      // Step 4.3: Iterate over lags
       for (int lag = 0; lag < num_lags; lag++) {
-        // Step 4.5: Iterate over outcome variables again
+        // Step 4.4: Iterate over outcome variables again
         for (int l = 0; l < num_outcome_vars; l++) {
           // Update data by applying VAR coefficients and lagged data
           data(j, t) +=
@@ -146,8 +142,8 @@ arma::mat SimVAR(int time, int burn_in, const arma::vec& constant,
         }
       }
 
-      // Step 4.6: Add the corresponding element from the noise vector
-      data(j, t) += mult_noise(j);
+      // Step 4.5: Add the corresponding element from the noise vector
+      data(j, t) += noise(j);
     }
   }
 
