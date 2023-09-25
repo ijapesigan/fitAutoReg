@@ -43,16 +43,34 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/BootSE.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitMLVARDynr.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitMLVARMplus.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARDynr.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARLasso.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARLassoSearch.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVARMplus.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/FitVAROLS.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/LambdaSeq.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/ModelVARP1Dynr.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/ModelVARP2Dynr.html</loc>
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/OrigScale.html</loc>
@@ -103,6 +121,9 @@
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/YXExo.html</loc>
   </url>
   <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/coef.dynr_model.html</loc>
+  </url>
+  <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/dat_ml_p1.html</loc>
   </url>
   <url>
@@ -131,5 +152,11 @@
   </url>
   <url>
     <loc>https://github.com/ijapesigan/fitAutoReg/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/plot.dynr_model.html</loc>
+  </url>
+  <url>
+    <loc>https://github.com/ijapesigan/fitAutoReg/reference/print.dynr_model.html</loc>
   </url>
 </urlset>
