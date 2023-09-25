@@ -18,11 +18,11 @@ Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr
 Depends: R (>= 3.5.0)
 LinkingTo: Rcpp, RcppArmadillo
-Imports: Rcpp
+Imports: Rcpp, dynr
 Suggests: knitr, rmarkdown, testthat, MASS
 RoxygenNote: 7.2.3
 NeedsCompilation: yes
-Packaged: 2023-09-23 07:23:01 UTC; root
+Packaged: 2023-09-25 04:01:03 UTC; root
 Author: Ivan Jacob Agaloos Pesigan [aut, cre, cph]
     (<https://orcid.org/0000-0003-4818-8420>)
 Maintainer: Ivan Jacob Agaloos Pesigan <r.ijapesigan@gmail.com>
